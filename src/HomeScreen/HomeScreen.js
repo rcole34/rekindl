@@ -1,24 +1,21 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 
-class HomeScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: 'Home',
-    tabBarIcon: ({ tintColor }) => {
-      return <Image
-        source={require('../../assets/icons/home-white.png')}
-        style={[{width: 26, height: 26}, {tintColor: tintColor}]}
-      />
-    },
-  };
-
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
-      </View>
-    );
-  }
-}
+const HomeScreen = ({ navigation }) => (
+  <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+    <FlatList
+      data={[
+        {key: 'Claire R.'},
+        {key: 'John S.'},
+        {key: 'Nate G.'},
+        {key: 'Ella E.'},
+      ]}
+      renderItem={({item}) => <Button
+        onPress={() => navigation.navigate('Detail', {name: item.key})}
+        title={item.key}
+      />}
+    />
+  </View>
+);
 
 export default HomeScreen;
