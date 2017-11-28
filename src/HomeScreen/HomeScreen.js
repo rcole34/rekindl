@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import { Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+var width = Dimensions.get('window').width;
 
 const HomeScreen = ({ navigation }) => (
   <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
@@ -13,13 +14,13 @@ const HomeScreen = ({ navigation }) => (
       
       renderItem={({item}) => <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
         onPress={() => navigation.navigate('Detail', {name: item.key})}> 
-        <View style={{flex: 1, height: 100, flexDirection: 'row', justifyContent: 'center'}}>
-          <Image source={item.photo} style={{height:83, width:83, margin:10}}/>
-          <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+        <View style={{flex: 1, height: 100, width:width, flexDirection: 'row', justifyContent: 'center'}}>
+          <Image source={item.photo} style={{height:83, width:83, marginRight:10, marginTop:10, position:'absolute', left:10}}/>
+          <View style={{flexDirection: 'column', justifyContent: 'center', position:'absolute', left: 103, top:15}}>
             <Text style={{fontSize: 42, color:'#444'}}>{item.key}</Text>
-            <Text style={{fontSize: 15, color:'#888'}}>last connected {item.lastConnected}</Text>
+            <Text style={{fontSize: 14, color:'#888'}}>last connected {item.lastConnected}</Text>
           </View>
-          <Image source={item.fire}/>
+          <Image source={item.fire} style={{position:'absolute', right:0}}/>
         </View>
       </TouchableHighlight>}
 
@@ -33,10 +34,10 @@ renderSeparator = () => {
       <View
         style={{
           height: 1,
-          width: "86%",
-          backgroundColor: "#999",
-          marginLeft: "5%",
-          marginRight: "5%"
+          width: '90%',
+          backgroundColor: '#999',
+          marginLeft: '5%',
+          marginRight: '5%'
         }}
       />
     );
