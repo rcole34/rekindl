@@ -35,22 +35,13 @@ class ProfileScreen extends React.Component {
             <Text style={{fontSize:18, color:'#555', textDecorationLine:'underline'}}>Connect Account</Text>
           </View>
         </TouchableHighlight>
-        <View stlye={{flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
-          <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-          onPress={() => navigate('Calendar', user)}> 
-            <View style={{flexDirection: 'column', alignItems:'center', justifyContent:'center', marginTop:20}}>
-              <Image source={require('../../assets/icons/calendar-blue.png')} style={{height:80, width:76, marginBottom:5}}/>
-              <Text style={{fontSize:18, color:'#444'}}>Update Schedule</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-          onPress={() => navigate('Memories', user)}> 
-            <View style={{flexDirection: 'column', alignItems:'center', justifyContent:'center', marginTop:20}}>
-              <Image source={require('../../assets/icons/memories-black.png')} style={{height:80, width:80, marginBottom:5, tintColor:'#F2C94C'}}/>
-              <Text style={{fontSize:18, color:'#444'}}>View Memories</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
+        <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+        onPress={() => navigate('Schedule', user)}> 
+          <View style={{flexDirection: 'column', alignItems:'center', justifyContent:'center', marginTop:20}}>
+            <Image source={require('../../assets/icons/calendar-black.png')} style={{height:80, width:76, marginBottom:5}}/>
+            <Text style={{fontSize:18, color:'#444'}}>Update Schedule</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 
-const CalendarScreen = ({navigation}) => (
+const ScheduleScreen = ({navigation}) => (
   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>Calendar</Text>
+    <Text>Schedule</Text>
   </View>
 );
 
-export default CalendarScreen;
+export default ScheduleScreen;
