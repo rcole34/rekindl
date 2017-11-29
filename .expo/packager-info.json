@@ -1,13 +1,5 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-<<<<<<< Updated upstream
-  "packagerPid": 28107
-=======
-<<<<<<< HEAD
-  "packagerPid": 56576
-=======
-  "packagerPid": 28107
->>>>>>> origin/master
->>>>>>> Stashed changes
+  "packagerPort": 19002,
+  "packagerPid": 58062
 }
