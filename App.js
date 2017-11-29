@@ -25,6 +25,15 @@ const RootTabs = TabNavigator({
   },
   Profile: {
     screen: ProfileNavigator,
+    navigationOptions: {
+      tabBarLabel: 'Profile',
+      tabBarIcon: ({ tintColor }) => {
+        return <Image
+          source={require('./assets/icons/profile-white.png')}
+          style={[{width: 26, height: 26}, {tintColor: tintColor}]}
+        />
+      },
+    },
   },
   Settings: {
     screen: SettingsScreen,
