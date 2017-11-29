@@ -1,22 +1,27 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
+import * as OpenAnything from 'react-native-openanything';
 
 // name accessed via {navigation.state.params.name}
 
 function schedulePress() {
-
+	
 };
 
 function memoriesPress() {
 
 };
 
-function sendTextPress() {
-
+function sendTextPress(name) {
+	OpenAnything.Text('+18326460004', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
 };
 
 function highFivePress() {
+
+};
+
+function notificationPress() {
 
 };
 
@@ -25,45 +30,40 @@ const DetailScreen = ({navigation}) => (
   <View style={styles.container}>
     {/* Name and thumbnail icon */}
     <View style={styles.title}>
-    	<Image source={require('../../assets/images/john.png')} style={styles.thumbnail}/>
-    	<Text style={styles.name}>John Snow</Text>
+    	<Image source={navigation.state.params.photo} style={styles.thumbnail}/>
+    	<Text style={styles.name}>{navigation.state.params.name}</Text>
     </View>
    
 
 	{/* Fire/Notifications swiper */}
-	<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false}>
+	<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false} loop={false}>
         <View style={styles.slide}>
-          <Image source={require('../../assets/icons/large_fire.png')} style={styles.fireIcon}/>
+          <Image source={navigation.state.params.fire} style={styles.fireIcon}/>
         </View>
         <ScrollView style={styles.slideScrollView}>
-	        <View style={styles.slide}>
-	        	<FlatList
-			      data={[
-			        {key: '1', extra: 'Notification'},
-			        {key: '2', extra: 'Notification'},
-			        {key: '3', extra: 'Notification'},
-			        {key: '4', extra: 'Notification'},
-			        {key: '5', extra: 'Notification'},
-			        {key: '6', extra: 'Notification'},
-			        {key: '7', extra: 'Notification'},
-			        {key: '8', extra: 'Notification'},
-			        {key: '9', extra: 'Notification'},
-			        {key: '10', extra: 'Notification'},
-			      ]}
-			      renderItem={({item}) => 
-			      		<TouchableHighlight style={styles.notification} underlayColor={'silver'} onPress={schedulePress}>
-				    		<View >
-				    			<Image source={require('../../assets/icons/calendar-black.png')} style={styles.icon}/>
-				    		</View>	
-				    	</TouchableHighlight>}
-			    />
-	        </View>
+        	<FlatList
+		      data={[
+		        {key: '1', icon: require('../../assets/icons/hand-black.png'), message: 'Claire high fived you!', date: 'Oct 25'},
+		      	{key: '2', icon: require('../../assets/icons/memories-black.png'), message: 'Claire added a memory', date: 'Oct 24'},
+		      ]}
+
+		      renderItem={({item}) => 
+	      		<TouchableHighlight  flex={3} underlayColor={'silver'} onPress={notificationPress}>
+		    		<View style={styles.notification}>
+		    			<Image source={item.icon} style={styles.notificationIcon}/>
+		    			<View>
+			    			<Text style={styles.notificationText}>{item.message}</Text>
+			    			<Text style={styles.notificationText}>{item.date}</Text>
+		    			</View>
+		    		</View>	
+		    	</TouchableHighlight>}
+	   		/>
         </ScrollView>
         
     </Swiper>
 
     <View>
-    	<Text style={styles.captionText}>last connected 1 week ago</Text>
+    	<Text style={styles.captionText}>last connected {navigation.state.params.lastConnected}</Text>
     </View>
 
     <View style={styles.buttonContainer}>
@@ -82,7 +82,7 @@ const DetailScreen = ({navigation}) => (
 	    </View>
 
 	    <View style={styles.iconButton}>
-	    	<TouchableHighlight underlayColor={'silver'} onPress={sendTextPress}>
+	    	<TouchableHighlight underlayColor={'silver'} onPress={() => sendTextPress(navigation.state.params.name)}>
 	    		<Image source={require('../../assets/icons/send-text-black.png')} style={styles.icon}/>
 	    	</TouchableHighlight>
 	    	<Text style={styles.buttonText}>Send Text</Text>
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
 		flex:1,
 		alignItems: 'center', 
 		justifyContent: 'center', 
-		backgroundColor: 'whitesmoke'
 	},
 
 	title: {
@@ -133,7 +132,6 @@ const styles = StyleSheet.create({
 	},
 
 	swiper: {
-		backgroundColor: '#f1f1f1',
 	},
 
 	slide: {
@@ -153,7 +151,7 @@ const styles = StyleSheet.create({
 
 	captionText: {
 		fontSize: 25,
-		color: 'dimgray',
+		color: 'black',
 		padding: 10,
 		marginBottom: 20,
 	},
@@ -178,12 +176,26 @@ const styles = StyleSheet.create({
 
 	buttonText: {
 		fontSize: 17.5,
-		color: 'dimgray',
+		color: 'black',
 	},
 
 	notification:{
+		borderBottomColor: 'black',
+		borderBottomWidth: 0.5,
+		flexDirection: 'row',
 		width: '100%',
+		padding: 10,
 	},
+
+	notificationIcon: {
+		width: 40,
+		height: 40,
+	},
+
+	notificationText: {
+		fontSize: 20,
+		marginLeft: 10,
+	}
 });
 
 export default DetailScreen;
