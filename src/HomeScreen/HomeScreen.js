@@ -1,9 +1,30 @@
 import React from 'react';
 import { Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+//var SearchBar = require('react-native-search-bar');
 var width = Dimensions.get('window').width;
+
+/*var allData=[
+        {key: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/smallFire.png'), lastConnected:"1 week ago"},
+        {key: 'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/largeFire.png'), lastConnected:"yesterday"},
+        {key: 'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/mediumFire.png'), lastConnected:"4 days ago"},
+        {key: 'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/deadFire.png'), lastConnected:"2 weeks ago"},
+      ]
+
+var currData = allData;
+function filterData(text) {
+  var newData = [];
+  for (var i = 0; i < allData.length; i++) {
+    if(allData[i].key.toLowerCase.includes(text.toLowerCase()))
+      newData.push(allData[i]);
+  };
+  currData = newData;
+}
+
+this.state = {text: ''}*/
 
 const HomeScreen = ({ navigation }) => (
   <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+    
     <FlatList
       data={[
         {key: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/smallFire.png'), lastConnected:"1 week ago"},
