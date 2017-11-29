@@ -1,4 +1,5 @@
 platforms/
 platforms
 node_modules
+.expo/packager-info.json
 .DS_Store
