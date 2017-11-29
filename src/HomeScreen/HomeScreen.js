@@ -6,24 +6,24 @@ import Swipeout from 'react-native-swipeout'
 class HomeScreen extends React.Component {
   // width = Dimensions.get('window').width;
   // allData=[
-  //       {key: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/smallFire.png'), lastConnected:"1 week ago"},
-  //       {key: 'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/largeFire.png'), lastConnected:"yesterday"},
-  //       {key: 'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/mediumFire.png'), lastConnected:"4 days ago"},
-  //       {key: 'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/deadFire.png'), lastConnected:"2 weeks ago"},
+  //       {key: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 week ago"},
+  //       {key: 'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday"},
+  //       {key: 'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago"},
+  //       {key: 'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago"},
   //     ]
   
   constructor(props) {
     super(props);
     this.state = {allData: [
-        {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/smallFire.png'), lastConnected:"1 week ago"},
-        {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/largeFire.png'), lastConnected:"yesterday"},
-        {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/mediumFire.png'), lastConnected:"4 days ago"},
-        {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/deadFire.png'), lastConnected:"2 weeks ago"}
+        {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 week ago"},
+        {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday"},
+        {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago"},
+        {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago"}
       ], currData: [
-        {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/smallFire.png'), lastConnected:"1 week ago"},
-        {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/largeFire.png'), lastConnected:"yesterday"},
-        {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/mediumFire.png'), lastConnected:"4 days ago"},
-        {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/deadFire.png'), lastConnected:"2 weeks ago"}
+        {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 week ago"},
+        {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday"},
+        {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago"},
+        {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago"}
       ], width : Dimensions.get('window').width};
     this._removeFriend = this._removeFriend.bind(this)
   }
