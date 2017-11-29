@@ -77,6 +77,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return(
     <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
       
@@ -86,7 +87,14 @@ class HomeScreen extends React.Component {
 
         ItemSeparatorComponent={this.renderSeparator}
       />
+      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+            onPress={() => navigate('AddFriend')} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
+        <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
+          <Text style={{color:'#FFF', fontSize:32, marginBottom:5}}>+</Text>
+        </View>
+      </TouchableHighlight>
     </View>
+
   )};
 
   renderSeparator = () => {
