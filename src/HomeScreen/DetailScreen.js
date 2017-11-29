@@ -31,7 +31,7 @@ const DetailScreen = ({navigation}) => (
    
 
 	{/* Fire/Notifications swiper */}
-	<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} loop={false}>
+	<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false}>
         <View style={styles.slide}>
           <Image source={require('../../assets/icons/large_fire.png')} style={styles.fireIcon}/>
         </View>
