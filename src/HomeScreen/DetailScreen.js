@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal } from 'react-native';
+import { Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as OpenAnything from 'react-native-openanything';
 
@@ -20,14 +20,21 @@ export default class DetailScreen extends React.Component {
   	};
 
   	_highFivePress = function() {
+  		this._setModalVisible(true)
+  	};
 
+  	_sendHighFive = function() {
+  		this._setModalVisible(false)
+  		setTimeout(() => {
+			Alert.alert('Success','High five sent!');
+  		}, 500);
   	};
 
   	_notificationPress = function() {
 
   	};
 
-  	setModalVisible(visible) {
+  	_setModalVisible = function(visible) {
   		var newState = this.state;
   		newState.modalVisible = visible;
 		this.setState(newState);
@@ -77,62 +84,54 @@ export default class DetailScreen extends React.Component {
 
 			    <View style={styles.buttonContainer}>
 				    <View style={styles.iconButton}>
-				    	<TouchableHighlight underlayColor={'silver'} onPress={this._schedulePress}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={this._schedulePress}>
 				    		<Image source={require('../../assets/icons/calendar-black.png')} style={styles.icon}/>
-				    	</TouchableHighlight>
+				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Schedule</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
-				    	<TouchableHighlight underlayColor={'silver'} onPress={this._memoriesPress}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={this._memoriesPress}>
 				    		<Image source={require('../../assets/icons/memories-black.png')} style={styles.icon}/>
-				    	</TouchableHighlight>
+				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Memories</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
-				    	<TouchableHighlight underlayColor={'silver'} onPress={() => this._sendTextPress(navigation.state.params.name)}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendTextPress(navigation.state.params.name)}>
 				    		<Image source={require('../../assets/icons/send-text-black.png')} style={styles.icon}/>
-				    	</TouchableHighlight>
+				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Send Text</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
-				    	<TouchableHighlight underlayColor={'silver'} onPress={this._highFivePress}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._highFivePress()}>
 				    		<Image source={require('../../assets/icons/hand-black.png')} style={styles.icon}/>
-				    	</TouchableHighlight>
+				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>High Five</Text>
 				    </View>
 			    	
 			    </View>
-			    <View style={{marginTop: 22}}>
-			        <Modal
-			          animationType="slide"
-			          transparent={false}
-			          visible={this.state.modalVisible}
-			          onRequestClose={() => {alert("Modal has been closed.")}}
-			          >
-			         <View style={{marginTop: 22}}>
-			          <View>
-			            <Text>Hello World!</Text>
+			    <View>
+			        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} >
+		         		<View style={{marginTop: 20, flexDirection: 'column'}}>
+			         		<View style={{margin: 20, flexDirection: 'row'}}>
+				         		<TouchableOpacity activeOpacity={0.25} onPress={() => this._setModalVisible(false)}>
+						    		<Image source={require('../../assets/icons/cancel-black.png')} style={styles.modalCancel}/>
+						    	</TouchableOpacity>
+			         		</View>
+			         		<View style={{marginTop: 50, flexDirection: 'column', alignItems: 'center'}}>
+				         		<Text style={styles.modalText}>Give {navigation.state.params.name} a high five!</Text>
+				         		<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendHighFive()}>
+						    		<Image source={require('../../assets/icons/hand-black.png')} style={styles.modalIcon}/>
+						    	</TouchableOpacity>
+						    	<Text style={[styles.modalText]}>tap to confirm</Text>
+			         		</View>
+		         		</View>
 
-			            <TouchableHighlight onPress={() => {
-			              this.setModalVisible(!this.state.modalVisible)
-			            }}>
-			              <Text>Hide Modal</Text>
-			            </TouchableHighlight>
-
-			          </View>
-			         </View>
+		         	
 			        </Modal>
-
-			        <TouchableHighlight onPress={() => {
-			          this.setModalVisible(true)
-			        }}>
-			          <Text>Show Modal</Text>
-			        </TouchableHighlight>
-
-			      </View>
+			    </View>
 			</View>
 		);
   	}
@@ -233,5 +232,28 @@ const styles = StyleSheet.create({
 	notificationText: {
 		fontSize: 20,
 		marginLeft: 10,
-	}
+	},
+
+	modalView: {
+		flexDirection: 'row',
+		margin: 20,
+	},
+
+	modalText: {
+		fontSize: 30,
+		fontFamily: 'Avenir Next',
+	},
+
+	modalCancel: {
+		width: 50, 
+		height: 50,
+	},
+
+	modalIcon: {
+		width: 175,
+		height: 175,
+		margin: 75,
+		marginLeft: 65,
+	},
+
 });
