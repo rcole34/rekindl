@@ -25,12 +25,12 @@ const RootNavigator = StackNavigator({
       title: 'Edit Profile',
     }),
   },
-  Memories: {
-    screen: MemoriesScreen,
-    navigationOptions: ({navigation}) => ({
-      title: 'All Memories',
-    }),
-  },
+  // Memories: {
+  //   screen: MemoriesScreen,
+  //   navigationOptions: ({navigation}) => ({
+  //     title: 'All Memories',
+  //   }),
+  // },
 });
 
 export default RootNavigator;
