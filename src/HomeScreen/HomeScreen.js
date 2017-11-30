@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import { Alert, Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import Swipeout from 'react-native-swipeout'
 //var SearchBar = require('react-native-search-bar');
 
@@ -26,11 +26,12 @@ class HomeScreen extends React.Component {
         {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago"}
       ], width : Dimensions.get('window').width};
     this._removeFriend = this._removeFriend.bind(this)
+    this._removeFriendPressed = this._removeFriendPressed.bind(this)
   }
   
+_removeFriend = (item) => {
 
-  _removeFriend = (item) => {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.state.allData.length; i++) {
       if(this.state.allData[i].key === item.key) {
         this.state.allData.splice(i,1);
@@ -39,6 +40,19 @@ class HomeScreen extends React.Component {
     this.setState({currData : this.state.allData});
     console.log(this.state.currData);
   }
+
+  _removeFriendPressed(item) {
+    Alert.alert('Delete ' + item.name + '?', 
+      'This will delete all your memories with this friend.', 
+      [
+        {text: 'Delete', onPress: () => this._removeFriend(item)},
+        {text: 'Cancel'}
+      ])
+  }
+
+  
+
+
   /*function filterData(text) {
     var newData = [];
     for (var i = 0; i < allData.length; i++) {
@@ -49,16 +63,16 @@ class HomeScreen extends React.Component {
   }*/
 
   _renderItem(item, navigation) {
-    let swipeBtns = [{
+    let swipeBtns = [/*{
       text: 'High Five',
       backgroundColor: 'green',
       underlayColor: 'rgba(0, 0, 0, 0.6)'
-    },
+    },*/
     {
       text: 'Remove',
       backgroundColor: 'red',
       underlayColor: 'rgba(0, 0, 0, 0.6)',
-      onPress: () => {this._removeFriend(item)}
+      onPress: () => {this._removeFriendPressed(item)}
     }];
     return(
           <Swipeout right={swipeBtns} backgroundColor= 'transparent' autoClose={true}>
@@ -82,6 +96,7 @@ class HomeScreen extends React.Component {
     <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
       
       <FlatList
+        visible={this.state.currData.length!==0}
         data={this.state.currData}
         renderItem={({item}) => this._renderItem(item, {navigate})}
 
