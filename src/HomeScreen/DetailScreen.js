@@ -59,8 +59,8 @@ export default class DetailScreen extends React.Component {
 			        <ScrollView style={styles.slideScrollView}>
 			        	<FlatList
 					      data={[
-					        {key: '1', icon: require('../../assets/icons/hand-black.png'), message: 'Claire high fived you!', date: 'Oct 25'},
-					      	{key: '2', icon: require('../../assets/icons/memories-black.png'), message: 'Claire added a memory', date: 'Oct 24'},
+					        {key: '1', icon: require('../../assets/icons/hand.png'), message: 'Claire high fived you!', date: 'Oct 25'},
+					      	{key: '2', icon: require('../../assets/icons/memories.png'), message: 'Claire added a memory', date: 'Oct 24'},
 					      ]}
 
 					      renderItem={({item}) => 
@@ -85,29 +85,33 @@ export default class DetailScreen extends React.Component {
 			    <View style={styles.buttonContainer}>
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={this._schedulePress}>
-				    		<Image source={require('../../assets/icons/calendar-black.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/calendar.png')} style={styles.icon}/>
 				    	</TouchableOpacity>
+				    	<Text style={styles.buttonText}>View</Text>
 				    	<Text style={styles.buttonText}>Schedule</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={this._memoriesPress}>
-				    		<Image source={require('../../assets/icons/memories-black.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/friends.png')} style={styles.icon}/>
 				    	</TouchableOpacity>
+				    	<Text style={styles.buttonText}>Shared</Text>
 				    	<Text style={styles.buttonText}>Memories</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendTextPress(navigation.state.params.name)}>
-				    		<Image source={require('../../assets/icons/send-text-black.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/send-text.png')} style={styles.icon}/>
 				    	</TouchableOpacity>
-				    	<Text style={styles.buttonText}>Send Text</Text>
+				    	<Text style={styles.buttonText}>Send</Text>
+				    	<Text style={styles.buttonText}>Message</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._highFivePress()}>
-				    		<Image source={require('../../assets/icons/hand-black.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/hand.png')} style={styles.icon}/>
 				    	</TouchableOpacity>
+				    	<Text style={styles.buttonText}>Send</Text>
 				    	<Text style={styles.buttonText}>High Five</Text>
 				    </View>
 			    	
@@ -117,13 +121,13 @@ export default class DetailScreen extends React.Component {
 		         		<View style={{marginTop: 20, flexDirection: 'column'}}>
 			         		<View style={{margin: 20, flexDirection: 'row'}}>
 				         		<TouchableOpacity activeOpacity={0.25} onPress={() => this._setModalVisible(false)}>
-						    		<Image source={require('../../assets/icons/cancel-black.png')} style={styles.modalCancel}/>
+						    		<Image source={require('../../assets/icons/cancel.png')} style={styles.modalCancel}/>
 						    	</TouchableOpacity>
 			         		</View>
 			         		<View style={{marginTop: 50, flexDirection: 'column', alignItems: 'center'}}>
 				         		<Text style={styles.modalText}>Give {navigation.state.params.name} a high five!</Text>
 				         		<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendHighFive()}>
-						    		<Image source={require('../../assets/icons/hand-black.png')} style={styles.modalIcon}/>
+						    		<Image source={require('../../assets/icons/hand.png')} style={styles.modalIcon}/>
 						    	</TouchableOpacity>
 						    	<Text style={[styles.modalText]}>tap to confirm</Text>
 			         		</View>

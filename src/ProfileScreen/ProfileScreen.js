@@ -8,7 +8,7 @@ class ProfileScreen extends React.Component {
     tabBarLabel: 'Profile',
     tabBarIcon: ({ tintColor }) => {
       return <Image
-        source={require('../../assets/icons/profile-white.png')}
+        source={require('../../assets/icons/profile.png')}
         style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     },
@@ -38,7 +38,7 @@ class ProfileScreen extends React.Component {
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
         onPress={() => navigate('Schedule', user)}> 
           <View style={{flexDirection: 'column', alignItems:'center', justifyContent:'center', marginTop:20}}>
-            <Image source={require('../../assets/icons/calendar-black.png')} style={{height:80, width:76, marginBottom:5}}/>
+            <Image source={require('../../assets/icons/calendar.png')} style={{height:80, width:76, marginBottom:5}}/>
             <Text style={{fontSize:18, color:'#444'}}>Update Schedule</Text>
           </View>
         </TouchableHighlight>

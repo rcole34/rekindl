@@ -14,7 +14,7 @@ const RootTabs = TabNavigator({
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => {
         return <Image
-          source={require('./assets/icons/home-white.png')}
+          source={require('./assets/icons/home.png')}
           style={[{width: 26, height: 26}, {tintColor: tintColor}]}
         />
       },
@@ -29,7 +29,7 @@ const RootTabs = TabNavigator({
       tabBarLabel: 'Profile',
       tabBarIcon: ({ tintColor }) => {
         return <Image
-          source={require('./assets/icons/profile-white.png')}
+          source={require('./assets/icons/profile.png')}
           style={[{width: 26, height: 26}, {tintColor: tintColor}]}
         />
       },

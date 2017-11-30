@@ -7,7 +7,7 @@ class MemoriesScreen extends React.Component {
     tabBarLabel: 'Memories',
     tabBarIcon: ({ tintColor }) => {
       return <Image
-        source={require('../../assets/icons/memories-white.png')}
+        source={require('../../assets/icons/memories.png')}
         style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     },
@@ -33,7 +33,7 @@ export default class MemoriesScreen extends React.Component {
     tabBarLabel: 'Memories',
     tabBarIcon: ({ tintColor }) => {
       return <Image
-        source={require('../../assets/icons/memories-white.png')}
+        source={require('../../assets/icons/memories.png')}
         style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     },

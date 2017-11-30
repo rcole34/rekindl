@@ -6,7 +6,7 @@ class SettingsScreen extends React.Component {
     tabBarLabel: 'Settings',
     tabBarIcon: ({ tintColor }) => {
       return <Image
-        source={require('../../assets/icons/settings-white.png')}
+        source={require('../../assets/icons/settings.png')}
         style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     },
