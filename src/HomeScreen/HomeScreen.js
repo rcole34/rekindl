@@ -70,7 +70,7 @@ class HomeScreen extends React.Component {
                 <Text style={{fontSize: 42, color:'#444'}}>{item.name}</Text>
                 <Text style={{fontSize: 14, color:'#888'}}>last connected {item.lastConnected}</Text>
               </View>
-              <Image source={item.fire} style={{position:'absolute', right:0}}/>
+              <Image source={item.fire} style={{position:'absolute', right:0, width: 95, height: 95}}/>
             </View>
           </TouchableHighlight>
         </Swipeout>);
