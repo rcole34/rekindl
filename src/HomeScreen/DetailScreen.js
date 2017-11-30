@@ -1,105 +1,143 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal } from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as OpenAnything from 'react-native-openanything';
 
 // name accessed via {navigation.state.params.name}
 
-function schedulePress() {
-	
-};
+export default class DetailScreen extends React.Component {
+	constructor(props) {
+    	super(props);
+    	this.state = {modalVisible: false};
+  	}
 
-function memoriesPress() {
+  	_schedulePress = function() {
 
-};
+  	};
 
-function sendTextPress(name) {
-	OpenAnything.Text('+18326460004', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
-};
+  	_sendTextPress = function(name) {
+  		OpenAnything.Text('+18326460004', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
+  	};
 
-function highFivePress() {
+  	_highFivePress = function() {
 
-};
+  	};
 
-function notificationPress() {
+  	_notificationPress = function() {
 
-};
+  	};
 
+  	setModalVisible(visible) {
+  		var newState = this.state;
+  		newState.modalVisible = visible;
+		this.setState(newState);
+	}
 
-const DetailScreen = ({navigation}) => (
-  <View style={styles.container}>
-    {/* Name and thumbnail icon */}
-    <View style={styles.title}>
-    	<Image source={navigation.state.params.photo} style={styles.thumbnail}/>
-    	<Text style={styles.name}>{navigation.state.params.name}</Text>
-    </View>
-   
+  	render() {
+  		const navigation = this.props.navigation;
+  		return (
+	  		<View style={styles.container}>
+			    {/* Name and thumbnail icon */}
+			    <View style={styles.title}>
+			    	<Image source={navigation.state.params.photo} style={styles.thumbnail}/>
+			    	<Text style={styles.name}>{navigation.state.params.name}</Text>
+			    </View>
+			   
 
-	{/* Fire/Notifications swiper */}
-	<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false} loop={false}>
-        <View style={styles.slide}>
-          <Image source={navigation.state.params.fire} style={styles.fireIcon}/>
-        </View>
-        <ScrollView style={styles.slideScrollView}>
-        	<FlatList
-		      data={[
-		        {key: '1', icon: require('../../assets/icons/hand-black.png'), message: 'Claire high fived you!', date: 'Oct 25'},
-		      	{key: '2', icon: require('../../assets/icons/memories-black.png'), message: 'Claire added a memory', date: 'Oct 24'},
-		      ]}
+				{/* Fire/Notifications swiper */}
+				<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false} loop={false}>
+			        <View style={styles.slide}>
+			          <Image source={navigation.state.params.fire} style={styles.fireIcon}/>
+			        </View>
+			        <ScrollView style={styles.slideScrollView}>
+			        	<FlatList
+					      data={[
+					        {key: '1', icon: require('../../assets/icons/hand-black.png'), message: 'Claire high fived you!', date: 'Oct 25'},
+					      	{key: '2', icon: require('../../assets/icons/memories-black.png'), message: 'Claire added a memory', date: 'Oct 24'},
+					      ]}
 
-		      renderItem={({item}) => 
-	      		<TouchableHighlight  flex={3} underlayColor={'silver'} onPress={notificationPress}>
-		    		<View style={styles.notification}>
-		    			<Image source={item.icon} style={styles.notificationIcon}/>
-		    			<View>
-			    			<Text style={styles.notificationText}>{item.message}</Text>
-			    			<Text style={styles.notificationText}>{item.date}</Text>
-		    			</View>
-		    		</View>	
-		    	</TouchableHighlight>}
-	   		/>
-        </ScrollView>
-        
-    </Swiper>
+					      renderItem={({item}) => 
+				      		<TouchableHighlight  flex={3} underlayColor={'silver'} onPress={this._notificationPress}>
+					    		<View style={styles.notification}>
+					    			<Image source={item.icon} style={styles.notificationIcon}/>
+					    			<View>
+						    			<Text style={styles.notificationText}>{item.message}</Text>
+						    			<Text style={styles.notificationText}>{item.date}</Text>
+					    			</View>
+					    		</View>	
+					    	</TouchableHighlight>}
+				   		/>
+			        </ScrollView>
+			        
+			    </Swiper>
 
-    <View>
-    	<Text style={styles.captionText}>last connected {navigation.state.params.lastConnected}</Text>
-    </View>
+			    <View>
+			    	<Text style={styles.captionText}>last connected {navigation.state.params.lastConnected}</Text>
+			    </View>
 
-    <View style={styles.buttonContainer}>
-	    <View style={styles.iconButton}>
-	    	<TouchableHighlight underlayColor={'silver'} onPress={schedulePress}>
-	    		<Image source={require('../../assets/icons/calendar-black.png')} style={styles.icon}/>
-	    	</TouchableHighlight>
-	    	<Text style={styles.buttonText}>Schedule</Text>
-	    </View>
+			    <View style={styles.buttonContainer}>
+				    <View style={styles.iconButton}>
+				    	<TouchableHighlight underlayColor={'silver'} onPress={this._schedulePress}>
+				    		<Image source={require('../../assets/icons/calendar-black.png')} style={styles.icon}/>
+				    	</TouchableHighlight>
+				    	<Text style={styles.buttonText}>Schedule</Text>
+				    </View>
 
-	    <View style={styles.iconButton}>
-	    	<TouchableHighlight underlayColor={'silver'} onPress={memoriesPress}>
-	    		<Image source={require('../../assets/icons/memories-black.png')} style={styles.icon}/>
-	    	</TouchableHighlight>
-	    	<Text style={styles.buttonText}>Memories</Text>
-	    </View>
+				    <View style={styles.iconButton}>
+				    	<TouchableHighlight underlayColor={'silver'} onPress={this._memoriesPress}>
+				    		<Image source={require('../../assets/icons/memories-black.png')} style={styles.icon}/>
+				    	</TouchableHighlight>
+				    	<Text style={styles.buttonText}>Memories</Text>
+				    </View>
 
-	    <View style={styles.iconButton}>
-	    	<TouchableHighlight underlayColor={'silver'} onPress={() => sendTextPress(navigation.state.params.name)}>
-	    		<Image source={require('../../assets/icons/send-text-black.png')} style={styles.icon}/>
-	    	</TouchableHighlight>
-	    	<Text style={styles.buttonText}>Send Text</Text>
-	    </View>
+				    <View style={styles.iconButton}>
+				    	<TouchableHighlight underlayColor={'silver'} onPress={() => this._sendTextPress(navigation.state.params.name)}>
+				    		<Image source={require('../../assets/icons/send-text-black.png')} style={styles.icon}/>
+				    	</TouchableHighlight>
+				    	<Text style={styles.buttonText}>Send Text</Text>
+				    </View>
 
-	    <View style={styles.iconButton}>
-	    	<TouchableHighlight underlayColor={'silver'} onPress={highFivePress}>
-	    		<Image source={require('../../assets/icons/hand-black.png')} style={styles.icon}/>
-	    	</TouchableHighlight>
-	    	<Text style={styles.buttonText}>High Five</Text>
-	    </View>
-    	
-    </View>
+				    <View style={styles.iconButton}>
+				    	<TouchableHighlight underlayColor={'silver'} onPress={this._highFivePress}>
+				    		<Image source={require('../../assets/icons/hand-black.png')} style={styles.icon}/>
+				    	</TouchableHighlight>
+				    	<Text style={styles.buttonText}>High Five</Text>
+				    </View>
+			    	
+			    </View>
+			    <View style={{marginTop: 22}}>
+			        <Modal
+			          animationType="slide"
+			          transparent={false}
+			          visible={this.state.modalVisible}
+			          onRequestClose={() => {alert("Modal has been closed.")}}
+			          >
+			         <View style={{marginTop: 22}}>
+			          <View>
+			            <Text>Hello World!</Text>
 
-  </View>
-);
+			            <TouchableHighlight onPress={() => {
+			              this.setModalVisible(!this.state.modalVisible)
+			            }}>
+			              <Text>Hide Modal</Text>
+			            </TouchableHighlight>
 
+			          </View>
+			         </View>
+			        </Modal>
+
+			        <TouchableHighlight onPress={() => {
+			          this.setModalVisible(true)
+			        }}>
+			          <Text>Show Modal</Text>
+			        </TouchableHighlight>
+
+			      </View>
+			</View>
+		);
+  	}
+
+}
 
 const styles = StyleSheet.create({
 	container: {  
@@ -197,5 +235,3 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 	}
 });
-
-export default DetailScreen;
