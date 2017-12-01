@@ -6,7 +6,7 @@ class ProfileScreen extends React.Component {
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
-        this.state = {user: {name: 'Michael West', photo: require('../../assets/profilePictures/mike.png'), birthday: 'Decmber 5, 1996'}}
+        this.state = {user: {name: 'Michael West', photo: require('../../assets/profilePictures/mike.png'), birthday: 'December 5, 1996'}}
     }
   static navigationOptions = {
     tabBarLabel: 'Profile',
