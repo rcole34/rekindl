@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, FlatList, StyleSheet, TouchableHighlight, Image, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker'
+import { ImagePicker } from 'expo';
 
 class EditProfileScreen extends React.Component {
 
@@ -9,6 +10,18 @@ class EditProfileScreen extends React.Component {
         const navigation = this.props.navigation;
         this.state = {user: navigation.state.params.user};
     }
+
+    _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.cancelled) {
+        const user = Object.assign({}, this.state.user, { photo: result.uri }); 
+        this.setState({ user });
+    }
+  };
 
     // pickImage() {
     //     console.log(ImagePicker)
@@ -28,8 +41,8 @@ class EditProfileScreen extends React.Component {
     const navigation = this.props.navigation;
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', flexDirection:'column', marginTop:'20%' }}>
-            <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {}}>
-                <Image source = {this.state.user.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150}}>
+            <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
+                <Image source = {{uri: this.state.user.photo}} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
                     <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.7)'}}>
                         <Text>change profile picture</Text>
                     </View>
