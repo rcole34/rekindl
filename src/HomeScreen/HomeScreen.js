@@ -63,14 +63,15 @@ _removeFriend = (item) => {
   }*/
 
   _renderItem(item, navigation) {
-    let swipeBtns = [/*{
+    let swipeBtns = [{
       text: 'High Five',
-      backgroundColor: 'green',
-      underlayColor: 'rgba(0, 0, 0, 0.6)'
-    },*/
+      backgroundColor: 'goldenrod',
+      underlayColor: 'rgba(0, 0, 0, 0.6)',
+      onPress: () => {Alert.alert('Success','High five sent!');}
+    },
     {
       text: 'Remove',
-      backgroundColor: 'red',
+      backgroundColor: 'crimson',
       underlayColor: 'rgba(0, 0, 0, 0.6)',
       onPress: () => {this._removeFriendPressed(item)}
     }];
