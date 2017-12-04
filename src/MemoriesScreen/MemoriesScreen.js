@@ -1,72 +1,62 @@
-/*import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableHighlight, FlatList, Image } from 'react-native';
 
 
 class MemoriesScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: 'Memories',
-    tabBarIcon: ({ tintColor }) => {
-      return <Image
-        source={require('../../assets/icons/memories.png')}
-        style={[{width: 26, height: 26}, {tintColor: tintColor}]}
-      />
-    },
-  };
-
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Memories Screen</Text>
-      </View>
-    );
+  constructor(props) {
+    super(props);
+    this.state={ memories: [
+      {key: '1', photo: require('../../assets/memories/hiking.png')}
+    ]};
   }
-}
 
-export default MemoriesScreen;*/
-
-import React from 'react';
-import { Button, Image, View } from 'react-native';
-import { ImagePicker } from 'expo';
-
-export default class MemoriesScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: 'Memories',
-    tabBarIcon: ({ tintColor }) => {
-      return <Image
-        source={require('../../assets/icons/memories.png')}
-        style={[{width: 26, height: 26}, {tintColor: tintColor}]}
-      />
-    },
-  };
-  state = {
-    image: null,
-  };
+ _renderItem(item, navigation) {
+    console.log(item)
+    return(
+      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'>
+        <View style={{flex: 1, height: 100, width:100, flexDirection: 'row', justifyContent: 'center'}}>
+            <Image source={item.photo} style={{height:83, width:83, marginRight:10, marginTop:10, position:'absolute', left:10}}/>
+        </View>
+      </TouchableHighlight>
+  );
+  }
 
   render() {
-    let { image } = this.state;
+    const { navigate } = this.props.navigation;
+    return(
+      <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+        <FlatList
+          visible={this.state.memories.length!==0}
+          data={this.state.memories}
+          renderItem={({item}) => this._renderItem(item, {navigate})}
 
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
+          ItemSeparatorComponent={this.renderSeparator}
         />
-        {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      </View>
+
+      <Image source={this.state.memories.photo} style={{height:83, width:83, marginRight:10, marginTop:10, position:'absolute', left:10}}/>
+
+      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+        onPress={() => navigate('AddMemory')} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
+          <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
+            <Text style={{color:'#FFF', fontSize:32, marginBottom:5}}>+</Text>
+          </View>
+      </TouchableHighlight>
+    </View>
+  )};
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '90%',
+          backgroundColor: '#999',
+          marginLeft: '5%',
+          marginRight: '5%'
+        }}
+      />
     );
-  }
-
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
   };
 }
+
+export default MemoriesScreen;
