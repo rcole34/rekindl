@@ -1,8 +1,23 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 
 
-const AddFriendScreen = ({navigation}) => (
+
+class AddFriendScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    
+  }
+
+  _enterManually = function() {
+
+  }
+
+  
+render() {
+    const navigation = this.props.navigation;
+    return(
   <View style={{flex:1, flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
   	<Text style={{fontSize:36, position:'absolute', top:'10%'}}>New Connection</Text>
   	<Text style={{fontSize:24, position:'absolute', top:'25%'}}>Add from</Text>
@@ -20,15 +35,16 @@ const AddFriendScreen = ({navigation}) => (
   			</View>
   		</TouchableHighlight>
   	</View>
-  	{/*}
+  	
 	<Text style={{fontSize:24, position:'absolute', top:'60%'}}>or</Text>
-	<Text style={{fontSize:28, position:'absolute', top:'69%', textDecorationLine:'underline'}}>Enter Manually</Text>
-    */}
+	<TouchableOpacity activeOpacity={0.25} style={{position:'absolute', top:'70%'}} onPress={() => navigation.navigate('AddFriendInfo',{onSave: navigation.state.params.onSave})}>
+    <Text style={{fontSize:28, textDecorationLine:'underline'}}>Enter Manually</Text>
+  </TouchableOpacity>
 
   </View>
 );
-
-
+}
+}
 
 
 export default AddFriendScreen;

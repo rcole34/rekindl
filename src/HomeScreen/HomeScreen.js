@@ -49,6 +49,20 @@ _removeFriend = (item) => {
       ])
   }
 
+  onSave = user => {
+    console.log('saving new friend...');
+    user.key = this.state.currData[this.state.currData.length - 1].key + 1;
+    user.fire = require('../../assets/fires/large_fire.png');
+    user.lastConnectionType = 'Added Friend';
+    user.lastConnected = 'just now';
+    user.notificationCount = 1;
+    delete user.phone;
+    const copyData = this.state.allData.slice();
+    copyData.unshift(user);
+    this.setState({currData: copyData});
+    
+  };
+
   
 
 
@@ -93,7 +107,7 @@ _removeFriend = (item) => {
               navigation.navigate('Detail', {name: item.name, photo: item.photo, fire: item.fire, lastConnected: item.lastConnected});
             }}> 
               <View style={{flex: 1, height: 100, width:this.state.width, flexDirection: 'row', justifyContent: 'center'}}>
-                <Image source={item.photo} style={{height:83, width:83, marginRight:10, marginTop:10, position:'absolute', left:10}}/>
+                <Image source={item.photo} style={{height:83, width:83, borderRadius:83/2, marginRight:10, marginTop:10, position:'absolute', left:10}}/>
                 <View style={{display:item.notificationCount==0?'none':'flex', alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:26, width:26, borderRadius:26/2, position:'absolute', top:7, left:7}}>
                   <Text style={{color:'#FFF', fontSize:14,}}>{item.notificationCount}</Text>
                 </View>
@@ -115,12 +129,13 @@ _removeFriend = (item) => {
       <FlatList
         visible={this.state.currData.length!==0}
         data={this.state.currData}
+        extraData={this.state}
         renderItem={({item}) => this._renderItem(item, {navigate})}
 
         ItemSeparatorComponent={this.renderSeparator}
       />
       <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-            onPress={() => navigate('AddFriend')} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
+            onPress={() => navigate('AddFriend', {onSave: this.onSave})} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
         <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
           <Text style={{color:'#FFF', fontSize:32, marginBottom:5}}>+</Text>
         </View>
