@@ -19,7 +19,6 @@ class ProfileScreen extends React.Component {
   };
 
   onSave = user => {
-    console.log('On save called! with user', user);
     this.setState({user: user});
   };
 
