@@ -43,7 +43,7 @@ export default class DetailScreen extends React.Component {
   	render() {
   		const navigation = this.props.navigation;
   		return (
-	  		<View style={styles.container}>
+	  		<View style={[styles.container, {backgroundColor: '#EEEEEE'}]}>
 			    {/* Name and thumbnail icon */}
 			    <View style={styles.title}>
 			    	<Image source={navigation.state.params.photo} style={styles.thumbnail}/>
@@ -59,17 +59,21 @@ export default class DetailScreen extends React.Component {
 			        <ScrollView style={styles.slideScrollView}>
 			        	<FlatList
 					      data={[
-					        {key: '1', icon: require('../../assets/icons/hand.png'), message: 'Claire high fived you!', date: 'Oct 25'},
-					      	{key: '2', icon: require('../../assets/icons/memories.png'), message: 'Claire added a memory', date: 'Oct 24'},
+					      	{key: '1', icon: require('../../assets/icons/dead_fire.png'),  message: 'Your fire with Ella is out!', date: 'Dec 5', status: 'new'},
+					      	{key: '2', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D', message: 'Ella added a memory', date: 'Nov 3', status: 'checked'},
+					        {key: '3', icon: require('../../assets/icons/calendar.png'), tintColor: '#814374', message: 'You and Ella met up', date: 'Oct 25', status: 'checked'},
+					      	{key: '4', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D', message: 'Ella added a memory', date: 'Oct 24', status: 'checked'},
+					      	{key: '5', icon: require('../../assets/icons/hand.png'), tintColor: '#CDBB79', message: 'Ella high fived you!', date: 'Oct 17', status: 'checked'},
+					      	{key: '6', icon: require('../../assets/icons/hand.png'), tintColor: '#CDBB79', message: 'Ella high fived you!', date: 'Oct 3', status: 'checked'},
 					      ]}
 
 					      renderItem={({item}) => 
 				      		<TouchableHighlight  flex={3} underlayColor={'silver'} onPress={this._notificationPress}>
 					    		<View style={styles.notification}>
-					    			<Image source={item.icon} style={styles.notificationIcon}/>
+					    			<Image source={item.icon} style={[styles.notificationIcon, {tintColor: item.tintColor}]}/>
 					    			<View>
-						    			<Text style={styles.notificationText}>{item.message}</Text>
-						    			<Text style={styles.notificationText}>{item.date}</Text>
+										<Text style={{fontSize: 20, marginLeft: 10, fontWeight: item.status == 'new' ? '800' : 'normal', color: item.status == 'new' ? 'black' : 'black'}}>{item.message}</Text>
+						    			<Text style={{fontSize: 20, marginLeft: 10, fontWeight: item.status == 'new' ? '800' : 'normal', color: item.status == 'new' ? 'black' : 'black'}}>{item.date}</Text>
 					    			</View>
 					    		</View>	
 					    	</TouchableHighlight>}
@@ -85,7 +89,7 @@ export default class DetailScreen extends React.Component {
 			    <View style={styles.buttonContainer}>
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={this._schedulePress}>
-				    		<Image source={require('../../assets/icons/calendar.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/calendar.png')} style={[styles.icon, {tintColor: '#814374'}]}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>View</Text>
 				    	<Text style={styles.buttonText}>Schedule</Text>
@@ -93,7 +97,7 @@ export default class DetailScreen extends React.Component {
 
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={this._memoriesPress}>
-				    		<Image source={require('../../assets/icons/friends.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/friends.png')} style={[styles.icon, {tintColor: '#51A39D'}]}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Shared</Text>
 				    	<Text style={styles.buttonText}>Memories</Text>
@@ -101,18 +105,18 @@ export default class DetailScreen extends React.Component {
 
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendTextPress(navigation.state.params.name)}>
-				    		<Image source={require('../../assets/icons/send-text.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/send-text.png')} style={[styles.icon, {tintColor: '#B7695C'}]}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Send</Text>
-				    	<Text style={styles.buttonText}>Message</Text>
+				    	<Text style={styles.buttonText}>Text</Text>
 				    </View>
 
 				    <View style={styles.iconButton}>
 				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._highFivePress()}>
-				    		<Image source={require('../../assets/icons/hand.png')} style={styles.icon}/>
+				    		<Image source={require('../../assets/icons/hand.png')} style={[styles.icon, {tintColor: '#CDBB79'}]}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Send</Text>
-				    	<Text style={styles.buttonText}>High Five</Text>
+				    	<Text style={styles.buttonText}>High-Five</Text>
 				    </View>
 			    	
 			    </View>

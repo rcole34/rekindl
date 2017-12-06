@@ -13,7 +13,6 @@ class AddFriendScreen extends React.Component {
   _enterManually = function() {
 
   }
-
   
 render() {
     const navigation = this.props.navigation;
@@ -37,7 +36,7 @@ render() {
   	</View>
   	
 	<Text style={{fontSize:24, position:'absolute', top:'60%'}}>or</Text>
-	<TouchableOpacity activeOpacity={0.25} style={{position:'absolute', top:'70%'}} onPress={() => navigation.navigate('AddFriendInfo',{onSave: navigation.state.params.onSave})}>
+	<TouchableOpacity activeOpacity={0.25} style={{position:'absolute', top:'70%'}} onPress={() => navigation.navigate('AddFriendInfo',{onSave: navigation.state.params.onSave, goBack: () => {navigation.goBack()}})}>
     <Text style={{fontSize:28, textDecorationLine:'underline'}}>Enter Manually</Text>
   </TouchableOpacity>
 
