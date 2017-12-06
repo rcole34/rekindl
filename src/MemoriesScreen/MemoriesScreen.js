@@ -47,10 +47,11 @@ class MemoriesScreen extends React.Component {
           <Text style={{fontSize: 25, marginTop: 25 }}> Memories With: </Text>
 
           <ModalDropdown
-            options={[' All Friends ', ' Claire R. ', ' John S. ', ' Nate G. ', ' Ella E. ']}
-            defaultValue=' All Friends '
+            options={['All Friends', 'Claire R.', 'John S.', 'Nate G.', 'Ella E.']}
+            defaultValue= 'All Friends'
             showsVerticalScrollIndicator={true}
-            textStyle={{backgroundColor: 'white', borderColor: 'gray', borderWidth:1, fontSize: 28, marginTop: 23.5 }}>
+            textStyle={{textAlign: 'center', width: 150, backgroundColor: 'white', borderColor: 'gray', borderWidth:1, fontSize: 28, marginTop: 23.5}}
+            dropdownStyle={{alignItems: 'center', width: 150}}>
           </ModalDropdown>
         </View>
 
@@ -59,7 +60,6 @@ class MemoriesScreen extends React.Component {
             visible={this.state.memories.length!==0}
             data={this.state.memories}
             numColumns='3'
-            contentContainerStyle={this.container}
             renderItem={({item}) => this._renderItem(item, {navigate})}
 
             ItemSeparatorComponent={this.renderSeparator}
@@ -80,14 +80,6 @@ class MemoriesScreen extends React.Component {
       />
     );
   };
-
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    marginBottom: 40
-}
 }
 
 export default MemoriesScreen;
