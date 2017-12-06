@@ -47,10 +47,10 @@ class MemoriesScreen extends React.Component {
           <Text style={{fontSize: 25, marginTop: 25 }}> Memories With: </Text>
 
           <ModalDropdown
-            options={['All Friends', 'Claire R.', 'John S.', 'Nate G.', 'Ella E.']}
-            defaultValue='All Friends'
+            options={[' All Friends ', ' Claire R. ', ' John S. ', ' Nate G. ', ' Ella E. ']}
+            defaultValue=' All Friends '
             showsVerticalScrollIndicator={true}
-            textStyle={{color: 'darkgray', fontSize: 28, marginTop: 23.5 }}>
+            textStyle={{backgroundColor: 'white', borderColor: 'gray', borderWidth:1, fontSize: 28, marginTop: 23.5 }}>
           </ModalDropdown>
         </View>
 

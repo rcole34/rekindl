@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import { StackNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import MemoriesScreen from './MemoriesScreen.js';
 import AddMemoryScreen from './AddMemoryScreen.js'
@@ -12,10 +12,12 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Memories',
       headerRight: 
-      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+      <TouchableWithoutFeedback
         onPress={() => navigation.navigate('AddMemory')}>
-        <Text style={{color: '#007AFF', fontWeight: '300', fontSize: 38, marginRight: 13, marginBottom: 9}}>+</Text>
-      </TouchableHighlight>
+          <View>
+            <Text style={{color: '#007AFF', fontWeight: '300', fontSize: 38, marginRight: 13, marginBottom: 9}}>+</Text>
+          </View>
+      </TouchableWithoutFeedback>
     }),
   },
 

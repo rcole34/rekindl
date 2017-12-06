@@ -49,7 +49,7 @@ class EditProfileScreen extends React.Component {
                 </Image>
             </TouchableHighlight>
             <TextInput
-                style={{textAlign:'center', borderColor: 'gray', borderWidth:1, height: 64, fontSize:48}}
+                style={{textAlign:'center', borderColor: 'gray', backgroundColor: 'white', borderWidth:1, height: 64, fontSize:48}}
                 autoCapitalize='words'
                 placeholder="Enter name here"
                 value={this.state.user.name}
@@ -75,7 +75,7 @@ class EditProfileScreen extends React.Component {
                     customStyles={{
                         dateText:{fontSize:18, color:'#666'}
                     }}
-                    style={{width:200}}/>
+                    style={{width:200, backgroundColor: 'white'}}/>
             </View>
             
 
