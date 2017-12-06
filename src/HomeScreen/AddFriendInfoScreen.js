@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextInput, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { ImagePicker } from 'expo';
+import { NavigationActions } from 'react-navigation'
 
 
 class AddFriendInfoScreen extends React.Component {
@@ -65,7 +66,8 @@ render() {
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
                     navigation.state.params.onSave(this.state.newFriend);
-                    navigation.goBack();
+                    navigation.goBack()
+                    navigation.state.params.goBack()
 
                 }}>
                 <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
