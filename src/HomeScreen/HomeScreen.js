@@ -15,12 +15,12 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {allData: [
-        {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 week ago", lastConnectionType:"High-Fived", notificationCount:1},
+        {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"just now", lastConnectionType:"High-Fived", notificationCount:1},
         {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday", lastConnectionType:"Sent Text", notificationCount:0},
         {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago", lastConnectionType:"Added Memory", notificationCount:0},
         {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago", lastConnectionType:"High-Fived", notificationCount:0}
       ], currData: [
-        {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 week ago", lastConnectionType:"High-Fived", notificationCount:1},
+        {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"just now", lastConnectionType:"High-Fived", notificationCount:1},
         {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday", lastConnectionType:"Sent Text", notificationCount:0},
         {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago", lastConnectionType:"Added Memory", notificationCount:0},
         {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago", lastConnectionType:"High-Fived", notificationCount:0}
@@ -89,7 +89,7 @@ _removeFriend = (item) => {
   _renderItem(item, navigation) {
     let swipeBtns = [{
       text: 'High Five',
-      backgroundColor: 'goldenrod',
+      backgroundColor: '#CDBB79',
       underlayColor: 'rgba(0, 0, 0, 0.6)',
       onPress: () => {Alert.alert('Success','High five sent!');}
     },
