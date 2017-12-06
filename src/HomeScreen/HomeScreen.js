@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import Swipeout from 'react-native-swipeout'
+import { NavigationActions } from 'react-navigation'
 //var SearchBar = require('react-native-search-bar');
 
 class HomeScreen extends React.Component {
@@ -50,7 +51,6 @@ _removeFriend = (item) => {
   }
 
   onSave = user => {
-    console.log('saving new friend...');
     user.key = this.state.currData[this.state.currData.length - 1].key + 1;
     user.fire = require('../../assets/fires/large_fire.png');
     user.lastConnectionType = 'Added Friend';
@@ -60,6 +60,11 @@ _removeFriend = (item) => {
     const copyData = this.state.allData.slice();
     copyData.unshift(user);
     this.setState({currData: copyData});
+    // const backAction = NavigationActions.back({
+    //     key: 'Home'
+    // })
+    // this.props.navigation.dispatch(backAction)
+    
     
   };
 
