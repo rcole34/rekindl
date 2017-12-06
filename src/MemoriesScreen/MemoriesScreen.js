@@ -8,24 +8,20 @@ class MemoriesScreen extends React.Component {
     super(props);
     this.state={ memories: [
       {key: '1', photo: require('../../assets/memories/hiking.png')},
-      {key: '2', photo: require('../../assets/memories/hiking.png')},
-      {key: '3', photo: require('../../assets/memories/hiking.png')},
-      {key: '4', photo: require('../../assets/memories/hiking.png')},
-      {key: '5', photo: require('../../assets/memories/hiking.png')},
-      {key: '6', photo: require('../../assets/memories/hiking.png')},
-      {key: '7', photo: require('../../assets/memories/hiking.png')},
-      {key: '9', photo: require('../../assets/memories/hiking.png')},
-      {key: '10', photo: require('../../assets/memories/hiking.png')},
-      {key: '11', photo: require('../../assets/memories/hiking.png')},
-      {key: '12', photo: require('../../assets/memories/hiking.png')},
-      {key: '13', photo: require('../../assets/memories/hiking.png')},
-      {key: '14', photo: require('../../assets/memories/hiking.png')},
-      {key: '15', photo: require('../../assets/memories/hiking.png')},
-      {key: '16', photo: require('../../assets/memories/hiking.png')},
-      {key: '17', photo: require('../../assets/memories/hiking.png')},
-      {key: '18', photo: require('../../assets/memories/hiking.png')},
-      {key: '19', photo: require('../../assets/memories/hiking.png')},
-      {key: '20', photo: require('../../assets/memories/hiking.png')}
+      {key: '2', photo: require('../../assets/memories/friends2.png')},
+      {key: '3', photo: require('../../assets/memories/friends13.png')},
+      {key: '4', photo: require('../../assets/memories/friends4.png')},
+      {key: '5', photo: require('../../assets/memories/friends5.png')},
+      {key: '6', photo: require('../../assets/memories/friends6.png')},
+      {key: '7', photo: require('../../assets/memories/friends7.png')},
+      {key: '9', photo: require('../../assets/memories/friends8.png')},
+      {key: '10', photo: require('../../assets/memories/friends9.png')},
+      {key: '11', photo: require('../../assets/memories/friends10.png')},
+      {key: '12', photo: require('../../assets/memories/friends11.png')},
+      {key: '13', photo: require('../../assets/memories/friends12.png')},
+      {key: '14', photo: require('../../assets/memories/friends3.png')},
+      {key: '15', photo: require('../../assets/memories/friends14.png')},
+      {key: '16', photo: require('../../assets/memories/friends15.png')},
     ], user: "java"};
   }
 
