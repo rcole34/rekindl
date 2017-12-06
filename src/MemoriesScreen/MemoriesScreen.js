@@ -26,7 +26,6 @@ class MemoriesScreen extends React.Component {
   }
 
  _renderItem(item, navigation) {
-    console.log(item)
     return(
       <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
         onPress={() => navigation.navigate('MemoryDetail')}>
@@ -51,7 +50,8 @@ class MemoriesScreen extends React.Component {
             defaultValue= 'All Friends'
             showsVerticalScrollIndicator={true}
             textStyle={{textAlign: 'center', width: 150, backgroundColor: 'white', borderColor: 'gray', borderWidth:1, fontSize: 28, marginTop: 23.5}}
-            dropdownStyle={{alignItems: 'center', width: 150}}>
+            dropdownStyle={{width: 150}}
+            dropdownTextStyle={{textAlign: 'center', width:150, fontSize: 18}}>
           </ModalDropdown>
         </View>
 
