@@ -51,7 +51,7 @@ _removeFriend = (item) => {
   }
 
   onSave = user => {
-    user.key = this.state.currData[this.state.currData.length - 1].key + 1;
+    user.key = this.state.currData.length + 1;
     user.fire = require('../../assets/fires/large_fire.png');
     user.lastConnectionType = 'Added Friend';
     user.lastConnected = 'just now';
@@ -117,7 +117,7 @@ _removeFriend = (item) => {
                   <Text style={{color:'#FFF', fontSize:14,}}>{item.notificationCount}</Text>
                 </View>
                 <View style={{flexDirection: 'column', justifyContent: 'center', position:'absolute', left: 103, top:15}}>
-                  <Text style={{fontSize: 42, color:'#444', fontWeight:item.notificationCount==0?'normal':'bold'}}>{item.name}</Text>
+                  <Text numberOfLines={1} style={{width: this.state.width/1.8, fontSize: 36, color:'#444', fontWeight:item.notificationCount==0?'normal':'bold'}}>{item.name}</Text>
                   <Text style={{fontSize: 14, color:'#888'}}>{item.lastConnectionType} {item.lastConnected}</Text>
                 </View>
                 <Image source={item.fire} style={{position:'absolute', right:0, width: 95, height: 95}}/>

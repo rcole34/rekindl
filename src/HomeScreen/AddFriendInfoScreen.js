@@ -7,7 +7,7 @@ import { NavigationActions } from 'react-navigation'
 class AddFriendInfoScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {newFriend:{name:'', photo:0, phone:''}};
+    this.state = {newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}};
     
   }
 
