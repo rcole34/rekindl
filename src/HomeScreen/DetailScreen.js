@@ -200,6 +200,7 @@ export default class DetailScreen extends React.Component {
   		if (this.state.isLoading) {
 	      return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Loading...</Text></View>;
 	    }
+	    const navigation = this.props.navigation
 
   		return (
 	  		<View style={[styles.container, {backgroundColor: '#EEEEEE'}]}>
