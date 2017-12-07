@@ -11,10 +11,6 @@ export default class DetailScreen extends React.Component {
     	this.state = {modalVisible: false};
   	}
 
-  	_schedulePress = function() {
-
-  	};
-
   	_sendTextPress = function(name) {
   		OpenAnything.Text('+18326460004', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
   	};
@@ -84,7 +80,7 @@ export default class DetailScreen extends React.Component {
 
 			    <View style={styles.buttonContainer}>
 				    <View style={styles.iconButton}>
-				    	<TouchableOpacity activeOpacity={0.25} onPress={this._schedulePress}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={() => navigation.navigate('Schedule', {name: navigation.state.params.name})}>
 				    		<Image source={require('../../assets/icons/calendar.png')} style={styles.icon}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>View</Text>
