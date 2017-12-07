@@ -6,6 +6,9 @@ import MemoriesScreen from "./src/MemoriesScreen/MemoriesScreen.js";
 import ProfileNavigator from "./src/ProfileScreen/ProfileNavigator.js";
 import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
 import MemoriesNavigator from "./src/MemoriesScreen/MemoriesNavigator.js";
+import Friends from "./data.js"
+
+console.log(Friends)
 
 
 const RootTabs = TabNavigator({
