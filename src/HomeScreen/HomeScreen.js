@@ -81,7 +81,8 @@ class HomeScreen extends React.Component {
   onSave = user => {
     user.key = this.state.currData.length + new Date().getUTCMilliseconds();
     user.fire = require('../../assets/fires/dead_fire.png');
-    user.lastConnectionType = 'Added Friend';
+    user.currFire = 'dead'
+    user.lastConnectionType = 'You: Added Friend';
     user.lastConnected = 'today';
     user.notificationCount = 1;
     newNotification = {key: 1, status: 'new', type: 'Added memory', date: "Nov 23", description: 'Became friends', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D'},

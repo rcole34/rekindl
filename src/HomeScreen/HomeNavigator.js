@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import HomeScreen from './HomeScreen.js';
 import DetailScreen from './DetailScreen.js';
 import AddFriendScreen from './AddFriendScreen.js';
+import ScheduleScreen from '../ScheduleScreen/ScheduleScreen.js';
 import AddFriendInfoScreen from './AddFriendInfoScreen.js';
 
 const RootNavigator = StackNavigator({
@@ -20,6 +21,12 @@ const RootNavigator = StackNavigator({
     screen: AddFriendScreen,
     navigationOptions: ({navigation}) => ({
       title: "Add Connection",
+    }),
+  },
+  Schedule: {
+    screen: ScheduleScreen,
+    navigationOptions: ({navigation}) => ({
+      title: navigation.state.params.name + "'s Schedule",
     }),
   },
   AddFriendInfo: {

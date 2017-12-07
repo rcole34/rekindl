@@ -45,7 +45,7 @@ class ProfileScreen extends React.Component {
           </View>
         </TouchableHighlight>
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-        onPress={() => navigation.navigate('Schedule', this.state.user)}> 
+        onPress={() => navigation.navigate('Schedule', {name: this.state.user.name, editable: true})}> 
           <View style={{flexDirection: 'column', alignItems:'center', justifyContent:'center', marginTop:20}}>
             <Image source={require('../../assets/icons/calendar.png')} style={{height:80, width:76, marginBottom:5}}/>
             <Text style={{fontSize:18, color:'#444'}}>Update Schedule</Text>
