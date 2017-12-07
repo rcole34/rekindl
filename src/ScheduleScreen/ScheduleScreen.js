@@ -93,9 +93,10 @@ export default class FriendScheduleScreen extends React.Component {
 	  				// <Button style={style.scheduleToggle} title={this.state.showMySchedule ? 'Hide shared free time' : 'Show shared free time'} onPress={() => this.toggleScheduleShow()} />
 	  				<View style={style.scheduleToggleContainer} >
 	  					<Switch style={style.scheduleToggle} value={this.state.showMySchedule} onValueChange={() => this.toggleScheduleShow()} />
-	  					<Text> Highlight Shared Free Time </Text>
+	  					<Text style={style.scheduleToggleText} > Highlight Shared Free Time </Text>
 	  				</View>
 	  			}
+	  			{this.editable && <Text style={style.freetimeHeader}> Mark Your Free Times </Text>}
 			    <FlatList
 			    	data={this.state.calendar}
 			    	style={style.calendarContainer}
@@ -152,7 +153,7 @@ const style = StyleSheet.create({
 		fontSize: 20,
 	},
 	calendarContainer:{
-		marginTop: 25,
+		marginTop: 15,
 		width: '90%',
 		height: '100%',
 	},
@@ -192,10 +193,14 @@ const style = StyleSheet.create({
 		height: 30,
 		width: '15%',
 	},
-	scheduleToggle: {
+	freetimeHeader: {
+		fontSize: 25,
+		color: '#222222',
+		marginTop: 25,
+		paddingLeft: '15%',
 	},
 	scheduleToggleText: {
-
+		marginLeft: 10,
 	},
 	scheduleToggleContainer: {
 		marginTop: 25,
