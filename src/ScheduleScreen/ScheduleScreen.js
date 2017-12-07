@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity, Switch } from 'react-native';
 
 // name accessed via {navigation.state.params.name}
 
@@ -26,7 +26,7 @@ export default class FriendScheduleScreen extends React.Component {
     		}
     	}
 
-    	this.state = {pressed: 0, calendar: this.data[0], friendcalendar: !this.editable ? this.frienddata[0] : undefined};
+    	this.state = {showMySchedule: false, pressed: 0, calendar: this.data[0], friendcalendar: !this.editable ? this.frienddata[0] : undefined};
 
   	}
 
@@ -45,15 +45,21 @@ export default class FriendScheduleScreen extends React.Component {
   	getBlockStyle(key) {
   		if (this.editable) {
   			return this.state.calendar[key].isFree ? style.freeBlock : style.busyBlock;
-  		} else {
-  			return this.state.friendcalendar[key].isFree ? style.friendFreeBlock : style.busyBlock;
+  		} else if (this.state.showMySchedule) {
+  			// return this.state.calendar[key].isFree && this.state.friendcalendar[key].isFree ? style.mutualFreeBlock : style.busyBlock;
 
-  			// if (this.state.calendar[key].isFree) {
-  			// 	return this.state.friendcalendar[key].isFree ? style.mutualFreeBlock : style.freeBlock;
-  			// } else {
-  			// 	return this.state.friendcalendar[key].isFree ? style.friendFreeBlock : style.busyBlock;
-  			// }
-  		}
+			if (this.state.calendar[key].isFree) {
+  				return this.state.friendcalendar[key].isFree ? style.mutualFreeBlock : style.busyBlock;
+  			} else {
+  				return this.state.friendcalendar[key].isFree ? style.friendFreeBlock : style.busyBlock;
+  			}
+  		} else {
+			return this.state.friendcalendar[key].isFree ? style.friendFreeBlock : style.busyBlock;
+		}
+  	}
+
+  	toggleScheduleShow = function() {
+  		this.setState({showMySchedule: !this.state.showMySchedule, calendar: this.state.calendar.slice()});
   	}
 
   	render() {
@@ -83,6 +89,13 @@ export default class FriendScheduleScreen extends React.Component {
 						<Text style={style.headerButtonText}>S</Text>
 					</TouchableOpacity>
 	  			</View>
+	  			{!this.editable && 
+	  				// <Button style={style.scheduleToggle} title={this.state.showMySchedule ? 'Hide shared free time' : 'Show shared free time'} onPress={() => this.toggleScheduleShow()} />
+	  				<View style={style.scheduleToggleContainer} >
+	  					<Switch style={style.scheduleToggle} value={this.state.showMySchedule} onValueChange={() => this.toggleScheduleShow()} />
+	  					<Text> Highlight Shared Free Time </Text>
+	  				</View>
+	  			}
 			    <FlatList
 			    	data={this.state.calendar}
 			    	style={style.calendarContainer}
@@ -156,14 +169,14 @@ const style = StyleSheet.create({
 	},
 	friendFreeBlock:{
 		height: 30,
-		backgroundColor:'lightsalmon',
+		backgroundColor:'#ffb699',
 		width: '85%',
 		borderColor: 'gray',
 		borderBottomWidth: 1,
 	},
 	mutualFreeBlock:{
 		height: 30,
-		backgroundColor:'purple',
+		backgroundColor:'#ff6d33',
 		width: '85%',
 		borderColor: 'gray',
 		borderBottomWidth: 1,
@@ -178,5 +191,16 @@ const style = StyleSheet.create({
 	calendarLabel: {
 		height: 30,
 		width: '15%',
+	},
+	scheduleToggle: {
+	},
+	scheduleToggleText: {
+
+	},
+	scheduleToggleContainer: {
+		marginTop: 25,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 	}
 });
