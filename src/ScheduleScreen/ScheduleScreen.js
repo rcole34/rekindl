@@ -1,31 +1,142 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 
 // name accessed via {navigation.state.params.name}
 
 export default class FriendScheduleScreen extends React.Component {
 	constructor(props) {
     	super(props);
-    	this.calendar = props.navigation.state.params.calendar;
+    	this.data = Array(7);
+
+    	for (var i = this.data.length - 1; i >= 0; i--) {
+    		this.data[i] = Array(24);
+    		for (var j = this.data[i].length - 1; j >= 0; j--) {
+    			time = j/2 + 9.00;
+    			this.data[i][j] = {key: j, time: (time % 12 || 12) + (time < 12 && time >= 9 ? "am" : "pm"), isFree: Math.random() >= 0.40};
+    		}
+    	}
+
+    	this.state = {pressed: 0, calendar: this.data[0]};
+  	}
+
+  	toggleTimeBlock = function(item) {
+  		var tempCal = this.state.calendar.slice();
+    	tempCal[item.key].isFree = !tempCal[item.key].isFree;    	
+    	this.data[this.state.pressed] = tempCal;
+    	this.setState({calendar: tempCal});
+  	}
+
+  	changeDay = function(pressedNum) {
+    	this.setState({pressed: pressedNum || 0, calendar: this.data[pressedNum]});
   	}
 
   	render() {
   		const navigation = this.props.navigation;
   		return (
-	  		<View>
-			    <Text> Schedule </Text>
+	  		<View style={style.mainContainer}>
+	  			<View style={style.headerButtonContainer} >
+	  				<TouchableOpacity style={this.state.pressed === 0 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(0)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>S</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={this.state.pressed === 1 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(1)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>M</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={this.state.pressed === 2 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(2)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>T</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={this.state.pressed === 3 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(3)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>W</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={this.state.pressed === 4 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(4)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>T</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={this.state.pressed === 5 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(5)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>F</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={this.state.pressed === 6 ? style.headerButtonSelected : style.headerButton} onPress={() => this.changeDay(6)} underlayColor='#fff'>
+						<Text style={style.headerButtonText}>S</Text>
+					</TouchableOpacity>
+	  			</View>
+			    <FlatList
+			    	data={this.state.calendar}
+			    	style={style.calendarContainer}
+			      	renderItem={({item}) =>
+			      		<View style={style.calendarRowContainer}>
+			      			<Text style={style.calendarLabel}> {item.key % 2 ? null : item.time } </Text>
+				      		<TouchableOpacity underlayColor={'#FFF'} onPress={() => this.toggleTimeBlock(item)} style={this.state.calendar[item.key].isFree ? style.freeBlock : style.busyBlock}>
+					    		<Text />
+					    	</TouchableOpacity>
+					    </View>
+				    }
+				/>
 			</View>
 		);
   	}
 
 }
 
-const styles = StyleSheet.create({
-	example: {
-		width: 175,
-		height: 175,
-		margin: 75,
-		marginLeft: 65,
+const style = StyleSheet.create({
+	headerButtonContainer: {
+		width: '100%',
+		height: '10%',
+		flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
 	},
-
+	mainContainer: {
+		flex: 1,
+		flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+	},
+	headerButton:{
+	    backgroundColor: '#CCCCCC',
+		width: '13%',
+		height: '13%',
+		marginLeft: 1,
+		marginRight: 1,
+	},
+	headerButtonSelected:{
+	    backgroundColor: '#777777',
+		width: '13%',
+		height: '13%',
+		marginLeft: 1,
+		marginRight: 1,
+	},
+	headerButtonText:{
+		color:'#fff',
+		textAlign:'center',
+		paddingLeft: 10,
+		paddingRight: 10,
+		paddingTop: 10,
+		paddingBottom: 10,
+		fontSize: 20,
+	},
+	calendarContainer:{
+		marginTop: 25,
+		width: '90%',
+		height: '100%',
+	},
+	calendarRowContainer:{
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+	},
+	freeBlock:{
+		height: 30,
+		backgroundColor:'lightblue',
+		width: '85%',
+		borderColor: 'gray',
+		borderBottomWidth: 1,
+	},
+	busyBlock:{
+		height: 30,
+		backgroundColor:'white',
+		width: '85%',
+		borderColor: 'gray',
+		borderBottomWidth: 1,
+	},
+	calendarLabel: {
+		height: 30,
+		width: '15%',
+	}
 });
