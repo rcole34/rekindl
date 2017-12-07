@@ -6,7 +6,7 @@ class ProfileScreen extends React.Component {
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
-        this.state = {user: {name: 'Michael West', photo: 'file:///Users/Ryan1/Desktop/rekindl/assets/profilePictures/mike.png', birthday: 'December 5, 1996'}}
+        this.state = {user: {name: 'Michael West', photo: require('../../assets/profilePictures/mike.png'), birthday: 'December 5, 1996'}}
     }
   static navigationOptions = {
     tabBarLabel: 'Profile',
@@ -19,7 +19,6 @@ class ProfileScreen extends React.Component {
   };
 
   onSave = user => {
-    console.log('On save called! with user', user);
     this.setState({user: user});
   };
 
@@ -29,7 +28,8 @@ class ProfileScreen extends React.Component {
     const navigation = this.props.navigation;
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection:'column' }}>
-        <Image source = {{uri: this.state.user.photo}} style = {{height:150, width:150, borderRadius:150/2}}/>
+        <Image source = {this.state.user.photo} style = {{height:150, width:150, borderRadius:150/2}}/>
+        
         <View style={{flexDirection:'row', alignItems: 'center'}}>
           <Text style = {{fontSize:48, color:'#444'}}>{this.state.user.name}</Text>
           <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'

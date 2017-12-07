@@ -5,6 +5,7 @@ import HomeScreen from './HomeScreen.js';
 import DetailScreen from './DetailScreen.js';
 import AddFriendScreen from './AddFriendScreen.js';
 import ScheduleScreen from '../ScheduleScreen/ScheduleScreen.js';
+import AddFriendInfoScreen from './AddFriendInfoScreen.js';
 
 const RootNavigator = StackNavigator({
   Home: {
@@ -29,6 +30,12 @@ const RootNavigator = StackNavigator({
     screen: ScheduleScreen,
     navigationOptions: ({navigation}) => ({
       title: navigation.state.params.name + "'s Schedule",
+    }),
+  },
+  AddFriendInfo: {
+    screen: AddFriendInfoScreen,
+    navigationOptions: ({navigation}) => ({
+      title: "Enter Information",
     }),
   },
 });

@@ -5,6 +5,7 @@ import HomeNavigator from "./src/HomeScreen/HomeNavigator.js";
 import MemoriesScreen from "./src/MemoriesScreen/MemoriesScreen.js";
 import ProfileNavigator from "./src/ProfileScreen/ProfileNavigator.js";
 import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
+import MemoriesNavigator from "./src/MemoriesScreen/MemoriesNavigator.js";
 
 
 const RootTabs = TabNavigator({
@@ -21,7 +22,16 @@ const RootTabs = TabNavigator({
     },
   },
   Memories: {
-    screen: MemoriesScreen,
+    screen: MemoriesNavigator,
+    navigationOptions: {
+      tabBarLabel: 'Memories',
+      tabBarIcon: ({ tintColor }) => {
+        return <Image
+          source={require('./assets/icons/memories.png')}
+          style={[{width: 26, height: 26}, {tintColor: tintColor}]}
+        />
+      },
+    },
   },
   Profile: {
     screen: ProfileNavigator,
@@ -37,6 +47,15 @@ const RootTabs = TabNavigator({
   },
   Settings: {
     screen: SettingsScreen,
+    navigationOptions: {
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({ tintColor }) => {
+        return <Image
+          source={require('./assets/icons/settings.png')}
+          style={[{width: 26, height: 26}, {tintColor: tintColor}]}
+        />
+      },
+    },
   },
 });
 
