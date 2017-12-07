@@ -9,15 +9,12 @@ import AddFriendInfoScreen from './AddFriendInfoScreen.js';
 const RootNavigator = StackNavigator({
   Home: {
     screen: HomeScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTitle: 'Home',
-    },
+    }),
   },
   Detail: {
     screen: DetailScreen,
-    navigationOptions: ({navigation}) => ({
-      title: navigation.state.params.name + "'s Profile",
-    }),
   },
   AddFriend: {
     screen: AddFriendScreen,

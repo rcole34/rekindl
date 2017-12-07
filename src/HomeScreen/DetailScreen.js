@@ -2,21 +2,108 @@ import React from 'react';
 import { Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as OpenAnything from 'react-native-openanything';
+import {AsyncStorage} from 'react-native'
 
 // name accessed via {navigation.state.params.name}
 
+
+
 export default class DetailScreen extends React.Component {
+
+	static navigationOptions = ({navigation}) => ({
+      title: navigation.state.params.name + "'s Profile",
+    })
+
+
 	constructor(props) {
     	super(props);
-    	this.state = {modalVisible: false};
+    	this.state = {modalVisible: false, isLoading: true};
+    	this._notificationPress = this._notificationPress.bind(this)
+  	}
+
+  	async componentWillMount() {
+  		let key = this.props.navigation.state.params.key
+	    AsyncStorage.getItem('friends').then((list) => {
+			if (list == null) return
+			let friendsList = JSON.parse(list).allData
+			var friend = 0
+			for (var i = 0; i < friendsList.length; i++) {
+				if (friendsList[i].key === key) {
+					friend = friendsList[i];
+					break;
+				}
+			}
+
+			notificationsCopy = friend.notifications
+			if (notificationsCopy ) {
+				notificationsCopy.sort(function(a, b) { return a < b })
+				for (i = 0; i < notificationsCopy.length; i++) {
+					if (notificationsCopy[i].status === 'new') {
+						setTimeout(() => {this.refs.notifSwiper.scrollBy(1) }, 300)
+					}
+				}
+			} else {
+				notificationsCopy = []
+			}
+			
+
+			this.setState({
+				name: friend.name,
+				photo: friend.photo,
+				fire: friend.fire,
+				currFire: friend.currFire,
+				lastConnected: friend.lastConnected,
+				lastConnectedType: friend.lastConnectedType,
+				notifications: notificationsCopy,
+				isLoading: false,
+			})
+	    })
   	}
 
   	_schedulePress = function() {
-
+  		
   	};
 
   	_sendTextPress = function(name) {
   		OpenAnything.Text('+18326460004', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
+  		setTimeout(() => {
+  			notificationsCopy = []
+  			for (var i = 0; i < this.state.notifications.length; i++) {
+  				notificationsCopy.push(this.state.notifications[i]);
+  			}
+
+			notificationsCopy.sort(function(a, b) { return a > b })
+			newNotification = {
+				key: notificationsCopy.length + 1, 
+				status: 'old', 
+				type: 'Sent text', 
+				date: "Dec 8", 
+				description: 'You texted ' + this.state.name, 
+				icon: require('../../assets/icons/send-text.png'), 
+				tintColor: '#B7695C'
+			}
+			notificationsCopy.push(newNotification)
+			notificationsCopy.sort(function(a, b) { return a < b })			
+
+
+	  		this.setState({
+				name: this.state.name,
+				photo: this.state.photo,
+				fire: this.state.fire,
+				currFire: this.state.currFire,
+				lastConnected: "today",
+				lastConnectedType: "You: Sent text",
+				notifications: notificationsCopy,
+				isLoading: false,
+			})
+
+			// SOMEHOW NEED TO UPDATE THE DB *******
+			item = {
+				key: this.props.navigation.state.params.key
+			}
+
+			this.props.navigation.state.params.update(item, "Sent text", newNotification)
+  		}, 500);
   	};
 
   	_highFivePress = function() {
@@ -26,12 +113,81 @@ export default class DetailScreen extends React.Component {
   	_sendHighFive = function() {
   		this._setModalVisible(false)
   		setTimeout(() => {
+  			notificationsCopy = []
+  			for (var i = 0; i < this.state.notifications.length; i++) {
+  				notificationsCopy.push(this.state.notifications[i]);
+  			}
+
+			notificationsCopy.sort(function(a, b) { return a > b })
+			newNotification = {
+				key: notificationsCopy.length + 1, 
+				status: 'old', 
+				type: 'High-fived', 
+				date: "Dec 8", 
+				description: 'You high-fived ' + this.state.name, 
+				icon: require('../../assets/icons/hand.png'), 
+				tintColor: '#CDBB79'
+			}
+			notificationsCopy.push(newNotification)
+			notificationsCopy.sort(function(a, b) { return a < b })
+
+			// UPDATE THE FIRE
+		    if (this.state.currFire == 'dead') {
+		      this.state.fire = require('../../assets/fires/tiny_fire.png')
+		      this.state.currFire = 'tiny'
+		    } else if (this.state.currFire == 'tiny') {
+		      this.state.fire = require('../../assets/fires/small_fire.png')
+		      this.state.currFire = 'small'
+		    } else if (this.state.currFire == 'small') {
+		      this.state.fire = require('../../assets/fires/medium_fire.png')
+		      this.state.currFire = 'medium'
+		    } else if (this.state.currFire == 'medium') {
+		      this.state.fire = require('../../assets/fires/large_fire.png')
+		      this.state.currFire = 'large'
+		    }		
+
+	  		this.setState({
+				name: this.state.name,
+				photo: this.state.photo,
+				fire: this.state.fire,
+				currFire: this.state.currFire,
+				lastConnected: "today",
+				lastConnectedType: 'You: High-fived',
+				notifications: notificationsCopy,
+				isLoading: false,
+			})
+
+
 			Alert.alert('Success','High five sent!');
+
+			// SOMEHOW NEED TO UPDATE THE DB *******
+
+			item = {
+				key: this.props.navigation.state.params.key
+			}
+
+			this.props.navigation.state.params.update(item, "High-fived", newNotification)
   		}, 500);
   	};
 
-  	_notificationPress = function() {
+  	_notificationPress = function(which) {
+  		notificationsCopy = this.state.notifications.slice()
 
+  		changed = false
+  		for (var i = 0; i < notificationsCopy.length; i++) {
+  			if (notificationsCopy[i].key === which) {
+  				notificationsCopy[i].status = 'old'
+  				changed = true
+  			}
+  		}
+
+  		if (!changed) {
+  			return;
+  		}
+
+  		// this.state.notifications = notificationsCopy
+  		this.setState({ notifications: notificationsCopy})
+  		this.props.navigation.state.params.notifications(this.props.navigation.state.params.key, which)
   	};
 
   	_setModalVisible = function(visible) {
@@ -41,38 +197,35 @@ export default class DetailScreen extends React.Component {
 	}
 
   	render() {
-  		const navigation = this.props.navigation;
+  		if (this.state.isLoading) {
+	      return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Loading...</Text></View>;
+	    }
+
   		return (
 	  		<View style={[styles.container, {backgroundColor: '#EEEEEE'}]}>
 			    {/* Name and thumbnail icon */}
 			    <View style={styles.title}>
-			    	<Image source={navigation.state.params.photo} style={styles.thumbnail}/>
-			    	<Text style={styles.name}>{navigation.state.params.name}</Text>
+			    	<Image source={this.state.photo} style={styles.thumbnail}/>
+			    	<Text style={styles.name}>{this.state.name}</Text>
 			    </View>
 			   
 
 				{/* Fire/Notifications swiper */}
-				<Swiper paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false} loop={false}>
+				<Swiper ref="notifSwiper" paginationStyle={{ bottom: 5}} width={300} style={styles.swiper} showsButtons={false} removeClippedSubviews={false} loop={false}>
 			        <View style={styles.slide}>
-			          <Image source={navigation.state.params.fire} style={styles.fireIcon}/>
+			          <Image source={this.state.fire} style={styles.fireIcon}/>
 			        </View>
 			        <ScrollView style={styles.slideScrollView}>
+			        	<Text style={{fontSize: 23, textAlign: 'center', textDecorationLine: 'underline', marginBottom: 5}}>Recent Activity</Text>
 			        	<FlatList
-					      data={[
-					      	{key: '1', icon: require('../../assets/icons/dead_fire.png'),  message: 'Your fire with Ella is out!', date: 'Dec 5', status: 'new'},
-					      	{key: '2', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D', message: 'Ella added a memory', date: 'Nov 3', status: 'checked'},
-					        {key: '3', icon: require('../../assets/icons/calendar.png'), tintColor: '#814374', message: 'You and Ella met up', date: 'Oct 25', status: 'checked'},
-					      	{key: '4', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D', message: 'Ella added a memory', date: 'Oct 24', status: 'checked'},
-					      	{key: '5', icon: require('../../assets/icons/hand.png'), tintColor: '#CDBB79', message: 'Ella high fived you!', date: 'Oct 17', status: 'checked'},
-					      	{key: '6', icon: require('../../assets/icons/hand.png'), tintColor: '#CDBB79', message: 'Ella high fived you!', date: 'Oct 3', status: 'checked'},
-					      ]}
+					      data={this.state.notifications}
 
 					      renderItem={({item}) => 
-				      		<TouchableHighlight  flex={3} underlayColor={'silver'} onPress={this._notificationPress}>
+				      		<TouchableHighlight  flex={3} underlayColor={'silver'} onPress={() => this._notificationPress(item.key)}>
 					    		<View style={styles.notification}>
 					    			<Image source={item.icon} style={[styles.notificationIcon, {tintColor: item.tintColor}]}/>
 					    			<View>
-										<Text style={{fontSize: 20, marginLeft: 10, fontWeight: item.status == 'new' ? '800' : 'normal', color: item.status == 'new' ? 'black' : 'black'}}>{item.message}</Text>
+										<Text style={{fontSize: 20, marginLeft: 10, fontWeight: item.status == 'new' ? '800' : 'normal', color: item.status == 'new' ? 'black' : 'black'}}>{item.description}</Text>
 						    			<Text style={{fontSize: 20, marginLeft: 10, fontWeight: item.status == 'new' ? '800' : 'normal', color: item.status == 'new' ? 'black' : 'black'}}>{item.date}</Text>
 					    			</View>
 					    		</View>	
@@ -83,7 +236,7 @@ export default class DetailScreen extends React.Component {
 			    </Swiper>
 
 			    <View>
-			    	<Text style={styles.captionText}>last connected {navigation.state.params.lastConnected}</Text>
+			    	<Text style={styles.captionText}>last connected {this.state.lastConnected}</Text>
 			    </View>
 
 			    <View style={styles.buttonContainer}>
@@ -104,7 +257,7 @@ export default class DetailScreen extends React.Component {
 				    </View>
 
 				    <View style={styles.iconButton}>
-				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendTextPress(navigation.state.params.name)}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendTextPress(this.state.name)}>
 				    		<Image source={require('../../assets/icons/send-text.png')} style={[styles.icon, {tintColor: '#B7695C'}]}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Send</Text>
@@ -129,7 +282,7 @@ export default class DetailScreen extends React.Component {
 						    	</TouchableOpacity>
 			         		</View>
 			         		<View style={{marginTop: 50, flexDirection: 'column', alignItems: 'center'}}>
-				         		<Text style={styles.modalText}>Give {navigation.state.params.name} a high five!</Text>
+				         		<Text style={styles.modalText}>Give {this.state.name} a high five!</Text>
 				         		<TouchableOpacity activeOpacity={0.25} onPress={() => this._sendHighFive()}>
 						    		<Image source={require('../../assets/icons/hand.png')} style={styles.modalIcon}/>
 						    	</TouchableOpacity>
@@ -262,6 +415,7 @@ const styles = StyleSheet.create({
 		height: 175,
 		margin: 75,
 		marginLeft: 65,
+		tintColor: '#CDBB79'
 	},
 
 });

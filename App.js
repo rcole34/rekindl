@@ -8,9 +8,6 @@ import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
 import MemoriesNavigator from "./src/MemoriesScreen/MemoriesNavigator.js";
 import Friends from "./data.js"
 
-console.log(Friends)
-
-
 const RootTabs = TabNavigator({
   Home: {
     screen: HomeNavigator,
@@ -62,4 +59,15 @@ const RootTabs = TabNavigator({
   },
 });
 
-export default RootTabs;
+export default class TabNav extends React.Component {
+  
+  render() {
+    return(
+      <RootTabs />
+    )
+  }
+}
+
+
+
+// export default RootTabs;
