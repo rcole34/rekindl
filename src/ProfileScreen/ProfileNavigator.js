@@ -16,7 +16,7 @@ const RootNavigator = StackNavigator({
   Schedule: {
     screen: ScheduleScreen,
     navigationOptions: ({navigation}) => ({
-      title: 'Schedule',
+      title: 'My Schedule',
     }),
   },
   EditProfile: {

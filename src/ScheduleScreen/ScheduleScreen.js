@@ -7,19 +7,31 @@ export default class FriendScheduleScreen extends React.Component {
 	constructor(props) {
     	super(props);
     	this.data = Array(7);
+    	this.editable = props.navigation.state.params.editable;
+    	if (!this.editable) {
+    		this.frienddata = Array(7)
+    	}
 
     	for (var i = this.data.length - 1; i >= 0; i--) {
     		this.data[i] = Array(24);
+    		if (!this.editable) {
+	    		this.frienddata[i] = Array(24)
+	    	}
     		for (var j = this.data[i].length - 1; j >= 0; j--) {
     			time = j/2 + 9.00;
     			this.data[i][j] = {key: j, time: (time % 12 || 12) + (time < 12 && time >= 9 ? "am" : "pm"), isFree: Math.random() >= 0.40};
+    			if (!this.editable) {
+    				this.frienddata[i][j] = {isFree: Math.random() >= 0.40};
+		    	}
     		}
     	}
 
-    	this.state = {pressed: 0, calendar: this.data[0]};
+    	this.state = {pressed: 0, calendar: this.data[0], friendcalendar: !this.editable ? this.frienddata[0] : undefined};
+
   	}
 
   	toggleTimeBlock = function(item) {
+  		if (!this.props.navigation.state.params.editable) return;
   		var tempCal = this.state.calendar.slice();
     	tempCal[item.key].isFree = !tempCal[item.key].isFree;    	
     	this.data[this.state.pressed] = tempCal;
@@ -27,7 +39,21 @@ export default class FriendScheduleScreen extends React.Component {
   	}
 
   	changeDay = function(pressedNum) {
-    	this.setState({pressed: pressedNum || 0, calendar: this.data[pressedNum]});
+    	this.setState({pressed: pressedNum || 0, calendar: this.data[pressedNum], friendcalendar: !this.editable ? this.frienddata[pressedNum] : undefined});
+  	}
+
+  	getBlockStyle(key) {
+  		if (this.editable) {
+  			return this.state.calendar[key].isFree ? style.freeBlock : style.busyBlock;
+  		} else {
+  			return this.state.friendcalendar[key].isFree ? style.friendFreeBlock : style.busyBlock;
+
+  			// if (this.state.calendar[key].isFree) {
+  			// 	return this.state.friendcalendar[key].isFree ? style.mutualFreeBlock : style.freeBlock;
+  			// } else {
+  			// 	return this.state.friendcalendar[key].isFree ? style.friendFreeBlock : style.busyBlock;
+  			// }
+  		}
   	}
 
   	render() {
@@ -63,7 +89,7 @@ export default class FriendScheduleScreen extends React.Component {
 			      	renderItem={({item}) =>
 			      		<View style={style.calendarRowContainer}>
 			      			<Text style={style.calendarLabel}> {item.key % 2 ? null : item.time } </Text>
-				      		<TouchableOpacity underlayColor={'#FFF'} onPress={() => this.toggleTimeBlock(item)} style={this.state.calendar[item.key].isFree ? style.freeBlock : style.busyBlock}>
+				      		<TouchableOpacity underlayColor={'#FFF'} activeOpacity={this.props.navigation.state.params.editable ? 0.5 : 1} onPress={() => this.toggleTimeBlock(item)} style={this.getBlockStyle(item.key)}>
 					    		<Text />
 					    	</TouchableOpacity>
 					    </View>
@@ -124,6 +150,20 @@ const style = StyleSheet.create({
 	freeBlock:{
 		height: 30,
 		backgroundColor:'lightblue',
+		width: '85%',
+		borderColor: 'gray',
+		borderBottomWidth: 1,
+	},
+	friendFreeBlock:{
+		height: 30,
+		backgroundColor:'lightsalmon',
+		width: '85%',
+		borderColor: 'gray',
+		borderBottomWidth: 1,
+	},
+	mutualFreeBlock:{
+		height: 30,
+		backgroundColor:'purple',
 		width: '85%',
 		borderColor: 'gray',
 		borderBottomWidth: 1,

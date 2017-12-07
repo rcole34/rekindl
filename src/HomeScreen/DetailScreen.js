@@ -84,7 +84,7 @@ export default class DetailScreen extends React.Component {
 
 			    <View style={styles.buttonContainer}>
 				    <View style={styles.iconButton}>
-				    	<TouchableOpacity activeOpacity={0.25} onPress={() => navigation.navigate('Schedule', {name: navigation.state.params.name})}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={() => navigation.navigate('Schedule', {name: navigation.state.params.name, editable: false})}>
 				    		<Image source={require('../../assets/icons/calendar.png')} style={styles.icon}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>View</Text>
