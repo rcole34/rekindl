@@ -16,12 +16,12 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {allData: [
-        {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"just now", lastConnectionType:"High-Fived", notificationCount:1},
+        {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 hour ago", lastConnectionType:"High-Fived", notificationCount:1},
         {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday", lastConnectionType:"Sent Text", notificationCount:0},
         {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago", lastConnectionType:"Added Memory", notificationCount:0},
         {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago", lastConnectionType:"High-Fived", notificationCount:0}
       ], currData: [
-        {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"just now", lastConnectionType:"High-Fived", notificationCount:1},
+        {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 hour ago", lastConnectionType:"High-Fived", notificationCount:1},
         {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday", lastConnectionType:"Sent Text", notificationCount:0},
         {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago", lastConnectionType:"Added Memory", notificationCount:0},
         {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago", lastConnectionType:"High-Fived", notificationCount:0}
@@ -51,7 +51,7 @@ _removeFriend = (item) => {
   }
 
   onSave = user => {
-    user.key = this.state.currData[this.state.currData.length - 1].key + 1;
+    user.key = this.state.currData.length + 1;
     user.fire = require('../../assets/fires/large_fire.png');
     user.lastConnectionType = 'Added Friend';
     user.lastConnected = 'just now';
@@ -60,6 +60,15 @@ _removeFriend = (item) => {
     const copyData = this.state.allData.slice();
     copyData.unshift(user);
     this.setState({currData: copyData});
+    setTimeout(() => {
+      dataCopy = this.state.currData;
+      for (var i = 0; i < this.state.currData.length; i++) {
+        if(this.state.currData[i].key === user.key) {
+          dataCopy[i].lastConnected = '1 minute ago';
+          this.setState({ currData : dataCopy });
+        }
+      };
+    }, 60000)
     // const backAction = NavigationActions.back({
     //     key: 'Home'
     // })
@@ -117,7 +126,7 @@ _removeFriend = (item) => {
                   <Text style={{color:'#FFF', fontSize:14,}}>{item.notificationCount}</Text>
                 </View>
                 <View style={{flexDirection: 'column', justifyContent: 'center', position:'absolute', left: 103, top:15}}>
-                  <Text style={{fontSize: 42, color:'#444', fontWeight:item.notificationCount==0?'normal':'bold'}}>{item.name}</Text>
+                  <Text numberOfLines={1} style={{width: this.state.width/1.8, fontSize: 36, color:'#444', fontWeight:item.notificationCount==0?'normal':'bold'}}>{item.name}</Text>
                   <Text style={{fontSize: 14, color:'#888'}}>{item.lastConnectionType} {item.lastConnected}</Text>
                 </View>
                 <Image source={item.fire} style={{position:'absolute', right:0, width: 95, height: 95}}/>
