@@ -11,6 +11,7 @@ const RootNavigator = StackNavigator({
     screen: MemoriesScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Memories',
+      headerLeft: null,
       headerRight: 
       <TouchableWithoutFeedback
         onPress={() => navigation.navigate('AddMemory')}>
@@ -31,7 +32,7 @@ const RootNavigator = StackNavigator({
   MemoryDetail: {
     screen: MemoryDetailScreen,
     navigationOptions: ({navigation}) => ({
-      title: "Change Me"
+      title: "Memory With " + navigation.state.params.friend
     }),
   },
 });
