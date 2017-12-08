@@ -3,6 +3,8 @@ import { Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, Scrol
 import Swiper from 'react-native-swiper';
 import * as OpenAnything from 'react-native-openanything';
 import {AsyncStorage} from 'react-native'
+import MemoriesScreen from "../MemoriesScreen/MemoriesScreen.js"
+import { NavigationActions } from 'react-navigation'
 
 // name accessed via {navigation.state.params.name}
 
@@ -250,7 +252,16 @@ export default class DetailScreen extends React.Component {
 				    </View>
 
 				    <View style={styles.iconButton}>
-				    	<TouchableOpacity activeOpacity={0.25} onPress={this._memoriesPress}>
+				    	<TouchableOpacity activeOpacity={0.25} onPress={() => {
+				    		const navigateAction = NavigationActions.navigate({
+							  routeName: 'Memories',
+							  params: {},
+							  action: NavigationActions.navigate({ routeName: 'Memories', params: {friendName: this.state.name, friendKey: this.props.navigation.state.params.key } })
+							})
+
+				    		navigation.dispatch(navigateAction)				    		
+				    		// navigation.navigate('Memories', {filterFriend: this.state.name , filterFriendKey: this.props.navigation.state.params.key})
+				    	}}>
 				    		<Image source={require('../../assets/icons/friends.png')} style={[styles.icon, {tintColor: '#51A39D'}]}/>
 				    	</TouchableOpacity>
 				    	<Text style={styles.buttonText}>Shared</Text>

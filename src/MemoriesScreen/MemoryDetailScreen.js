@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
+import { AsyncStorage, Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
 
 export default class MemoryDetailScreen extends React.Component {
 
@@ -25,8 +25,27 @@ export default class MemoryDetailScreen extends React.Component {
   }
 
   _removePhoto() {
-  	this.props.navigation.navigate('Memories');
-    
+    AsyncStorage.getItem('photos').then((list) => {
+
+      if (list == null) return
+      let photos = JSON.parse(list).photos
+
+
+      photosCopy = []
+
+      for (var i = 0; i < photos.length; i++) {
+        if (photos[i].key !==  this.props.navigation.state.params.photoKey) {
+          photosCopy.push(photos[i])
+        } 
+      }
+
+
+      store = {photos: photosCopy}
+
+      AsyncStorage.setItem('photos', JSON.stringify(store)).then(this.props.navigation.navigate('Memories'))
+    })
+
+  	
   }
 
   _removePhotoPressed(item) {

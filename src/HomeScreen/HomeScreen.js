@@ -34,7 +34,15 @@ class HomeScreen extends React.Component {
   async componentWillMount() {
     let isSetUp = await AsyncStorage.getItem('isSetUp')
     if (!isSetUp) {
-      await AsyncStorage.setItem('friends', JSON.stringify(friendListObject))
+      friendObject = {
+        allData: friendListObject.allData,
+        currData: friendListObject.allData,
+      }
+
+      photos = {photos: friendListObject.pictures}
+
+      await AsyncStorage.setItem('friends', JSON.stringify(friendObject))
+      await AsyncStorage.setItem('photos', JSON.stringify(photos))
       await AsyncStorage.setItem('isSetUp', 'done!')
     }
     AsyncStorage.getItem('friends').then((list) => {
@@ -80,7 +88,7 @@ class HomeScreen extends React.Component {
 
   onSave = user => {
     user.key = this.state.currData.length + new Date().getUTCMilliseconds();
-    user.fire = require('../../assets/fires/dead_fire.png');
+    user.fire = require('../../assets/fires/tiny_fire.png');
     user.currFire = 'dead'
     user.lastConnectionType = 'You: Added Friend';
     user.lastConnected = 'today';
@@ -98,6 +106,7 @@ class HomeScreen extends React.Component {
 
     AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
     this.setState({currData: copyData});
+    this.forceUpdate();
     // commented out time change for simplicity 
 
     // setTimeout(() => {
