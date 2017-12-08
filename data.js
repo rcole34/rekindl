@@ -83,6 +83,24 @@ ella = {
 	notificationCount:0
 }
 
+photos = [
+	{key: 0, friendKey: 1, file: require('./assets/memories/hiking.png')},
+	{key: 1, friendKey: 2, file: require('./assets/memories/friends2.png')},
+	{key: 2, friendKey: 3, file: require('./assets/memories/friends3.png')},
+	{key: 3, friendKey: 1, file: require('./assets/memories/friends4.png')},
+	{key: 4, friendKey: 2, file: require('./assets/memories/friends5.png')},
+	{key: 5, friendKey: 4, file: require('./assets/memories/friends6.png')},
+	{key: 6, friendKey: 4, file: require('./assets/memories/friends7.png')},
+	{key: 7, friendKey: 3, file: require('./assets/memories/friends8.png')},
+	{key: 8, friendKey: 1, file: require('./assets/memories/friends9.png')},
+	{key: 9, friendKey: 4, file: require('./assets/memories/friends10.png')},
+	{key: 10, friendKey: 2, file: require('./assets/memories/friends11.png')},
+	{key: 11, friendKey: 3, file: require('./assets/memories/friends12.png')},
+	{key: 12, friendKey: 2, file: require('./assets/memories/friends13.png')},
+	{key: 13, friendKey: 4, file: require('./assets/memories/friends14.png')},
+	{key: 14, friendKey: 1, file: require('./assets/memories/friends15.png')},
+]
+
 friends = {allData: [
 		claire,
 		john,
@@ -95,6 +113,7 @@ friends = {allData: [
 		nate,
 		ella
 	],
+	pictures: photos 
 }
 
 export default friends
