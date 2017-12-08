@@ -17,7 +17,7 @@ export default class AddMemoryScreen extends React.Component {
   state = {
     showButton: 'false',
     image: require('../../assets/icons/photo.png'),
-    friend: ''
+    friend: 'Claire R.'
   };
 
   render() {
@@ -31,7 +31,7 @@ export default class AddMemoryScreen extends React.Component {
             options={['Claire R.', 'John S.', 'Nate G.', 'Ella E.']}
             defaultValue= 'Claire R.'
             defaultIndex={0}
-            onSelect={(idx, value) => { this.state.friend = value; }}
+            onSelect={(idx, value) => { this.state.friend = value; this.setState(this.state); }}
             showsVerticalScrollIndicator={true}
             textStyle={{textAlign: 'center', width: 150, backgroundColor: 'white', borderColor: 'gray', borderWidth:1, fontSize: 28}}
             dropdownStyle={{width: 150}}

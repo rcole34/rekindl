@@ -25,14 +25,14 @@ class MemoriesScreen extends React.Component {
       {key: '14', photo: require('../../assets/memories/friends3.png'), friend: 'John S.'},
       {key: '15', photo: require('../../assets/memories/friends14.png'), friend: 'Ella E.'},
       {key: '16', photo: require('../../assets/memories/friends15.png'), friend: 'Claire R.'},
-    ], count: 16, friend: 'All Friends' };
+    ], count: 16, friend: 'All Friends', options: ['All Friends', 'Claire R.', 'John S.', 'Nate G.', 'Ella E.']};
   }
 
  _renderItem(item, navigation) {
     if(this.state.friend == 'All Friends' || item.friend == this.state.friend) {
       return(
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-          onPress={() => navigation.navigate('MemoryDetail', {friend: item.friend, photo: item.photo, item: item}) }>
+          onPress={() => navigation.navigate('MemoryDetail', {friend: item.friend, photo: item.photo}) }>
           <View style={{flex: 1, height: 105, width: 105, marginLeft: 10, flexDirection: 'row', justifyContent: 'center'}}>
               <Image source={item.photo} style={{height:105, width:105, marginLeft:0, position:'absolute', left: 10}}/>
           </View>
@@ -59,9 +59,9 @@ class MemoriesScreen extends React.Component {
           <Text style={{fontSize: 25, marginTop: 25, color:'#444' }}> Memories With: </Text>
 
           <ModalDropdown
-            options={['All Friends', 'Claire R.', 'John S.', 'Nate G.', 'Ella E.']}
+            options={ this.state.options }
             defaultValue= { this.state.friend }
-            defaultIndex={0}
+            defaultIndex={ this._defaultIndex() }
             onSelect={(idx, value) => {
               this.state.friend = value;
               this.setState(this.state);
@@ -76,7 +76,7 @@ class MemoriesScreen extends React.Component {
         <View style={{ flex: 6, justifyContent: 'flex-start'}}>
           <FlatList
             visible={this.state.memories.length!==0}
-            data={this.state.memories}
+            data={this._filterFriends()}
             numColumns='3'
             renderItem={({item}) => this._renderItem(item, {navigate})}
 
@@ -87,6 +87,26 @@ class MemoriesScreen extends React.Component {
 
       </View>
     )};
+
+  _filterFriends() {
+    if (this.state.friend == 'All Friends') {
+      return this.state.memories;
+    }
+    list = this.state.memories;
+    newlist = [];
+
+    for (var memory of list) {
+      if(memory.friend == this.state.friend) {
+        newlist.push(memory);
+      }
+    }
+    return newlist;
+  }
+
+  _defaultIndex() {
+    list = this.state.options;
+    return list.indexOf(this.state.friend);
+  }
 
   renderSeparator = () => {
     return (
