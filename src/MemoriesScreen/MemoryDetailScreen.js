@@ -14,12 +14,12 @@ export default class MemoryDetailScreen extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Image source = { this.photo } style={{width: 315, height: 315, marginTop: 60}}/>
-        <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+        <TouchableOpacity
             onPress={() => {this._removePhotoPressed()} } style={{ flex: 1, height:64, width:200, borderRadius:2, marginTop: 30 }}> 
         <View style={{alignItems: 'center', justifyContent:'center', backgroundColor:'#EE4948', height:64, width:200, borderRadius:2 }}>
           <Text style={{ color:'#FFF', fontSize: 25 }}>Delete</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
       </View>
     );
   }

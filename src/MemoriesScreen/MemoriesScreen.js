@@ -56,8 +56,8 @@ class MemoriesScreen extends React.Component {
           isLoading: false,
           memories: photos,
           count: photos.length, 
-          friend: this.props.navigation.state.params ? this.props.navigation.state.params.friendName : 'All Friends',
-          friendKey: this.props.navigation.state.params ? this.props.navigation.state.params.friendKey : -5, 
+          friend: this.props.navigation.state.params && this.props.navigation.state.params.friendName ? this.props.navigation.state.params.friendName : 'All Friends',
+          friendKey: this.props.navigation.state.params && this.props.navigation.state.params.friendKey ? this.props.navigation.state.params.friendKey : -5, 
           options: optionsList,
           optionsKeys: optionsKeys,
         })
