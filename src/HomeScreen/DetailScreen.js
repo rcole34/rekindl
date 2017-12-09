@@ -209,7 +209,7 @@ export default class DetailScreen extends React.Component {
 			    {/* Name and thumbnail icon */}
 			    <View style={styles.title}>
 			    	<Image source={this.state.photo} style={styles.thumbnail}/>
-			    	<Text style={styles.name}>{this.state.name}</Text>
+			    	<Text numberOfLines={1} style={styles.name}>{this.state.name}</Text>
 			    </View>
 			   
 
@@ -338,7 +338,8 @@ const styles = StyleSheet.create({
 		fontSize: 40,
 		color: 'dimgray',
 		lineHeight: 100,
-		marginLeft: 20
+		marginLeft: 20,
+		width: 275
 	},
 
 	swiper: {
