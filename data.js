@@ -23,6 +23,44 @@ claire = {
 	notificationCount:2
 }
 
+claire2 = {
+	key: 5,
+	name: 'Claire R.',
+	photo: require('./assets/profilePictures/claire.png'),
+	fire: require('./assets/fires/small_fire.png'),
+	currFire: 'small',
+	notifications: [
+		{key: 1, status: 'old', type: 'High-fived', date: "Nov 1", description: 'Claire R. high-fived you.', icon: require('./assets/icons/hand.png'), tintColor: '#CDBB79'},
+		{key: 2, status: 'old', type: 'Sent text', date: "Nov 10", description: 'Claire R. texted you.', icon: require('./assets/icons/send-text.png'), tintColor: '#B7695C'},
+		{key: 3, status: 'old', type: 'High-fived', date: "Nov 17", description: 'You high-fived Claire R.', icon: require('./assets/icons/hand.png'), tintColor: '#CDBB79'},
+		{key: 4, status: 'old', type: 'Met up', date: "Nov 27", description: 'You and Claire R. met up.', icon: require('./assets/icons/calendar.png'), tintColor: '#814374'},
+		{key: 5, status: 'new', type: 'Added memory', date: "Dec 5", description: 'Claire R. added a memory.', icon: require('./assets/icons/friends.png'), tintColor: '#51A39D'},
+		{key: 6, status: 'new', type: 'High-fived', date: "Dec 7", description: 'Claire R. high-fived you.', icon: require('./assets/icons/hand.png'), tintColor: '#CDBB79'},
+	],
+	lastConnected:"today", 
+	lastConnectionType:"High-fived", 
+	notificationCount:2
+}
+
+claire3 = {
+	key: 6,
+	name: 'Claire R.',
+	photo: require('./assets/profilePictures/claire.png'),
+	fire: require('./assets/fires/small_fire.png'),
+	currFire: 'small',
+	notifications: [
+		{key: 1, status: 'old', type: 'High-fived', date: "Nov 1", description: 'Claire R. high-fived you.', icon: require('./assets/icons/hand.png'), tintColor: '#CDBB79'},
+		{key: 2, status: 'old', type: 'Sent text', date: "Nov 10", description: 'Claire R. texted you.', icon: require('./assets/icons/send-text.png'), tintColor: '#B7695C'},
+		{key: 3, status: 'old', type: 'High-fived', date: "Nov 17", description: 'You high-fived Claire R.', icon: require('./assets/icons/hand.png'), tintColor: '#CDBB79'},
+		{key: 4, status: 'old', type: 'Met up', date: "Nov 27", description: 'You and Claire R. met up.', icon: require('./assets/icons/calendar.png'), tintColor: '#814374'},
+		{key: 5, status: 'new', type: 'Added memory', date: "Dec 5", description: 'Claire R. added a memory.', icon: require('./assets/icons/friends.png'), tintColor: '#51A39D'},
+		{key: 6, status: 'new', type: 'High-fived', date: "Dec 7", description: 'Claire R. high-fived you.', icon: require('./assets/icons/hand.png'), tintColor: '#CDBB79'},
+	],
+	lastConnected:"today", 
+	lastConnectionType:"High-fived", 
+	notificationCount:2
+}
+
 john = {
 	key: 2,
 	name: 'John S.',
@@ -105,13 +143,17 @@ friends = {allData: [
 		claire,
 		john,
 		nate,
-		ella
+		ella,
+		claire2,
+		claire3
 	],
 	currData: [
 		claire,
 		john,
 		nate,
-		ella
+		ella,
+		claire2,
+		claire3
 	],
 	pictures: photos 
 }
