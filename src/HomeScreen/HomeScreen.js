@@ -93,12 +93,16 @@ class HomeScreen extends React.Component {
     return(
     <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
       
-      <FlatList
-        data={this.state.sortedFriends}
-        extraData={this.state}
-        renderItem={({item}) => this._renderCategory(item, {navigate})}
+        <FlatList
+            data={this.state.sortedFriends}
+            extraData={this.state}
+            renderItem={({item}) => this._renderCategory(item, {navigate})}/>
 
-      />
+        <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' onPress={() => navigate('AddFriend', {onSave: this.onSave})} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
+            <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
+                <Text style={{color:'#FFF', fontSize:32, marginBottom:5}}>+</Text>
+            </View>
+        </TouchableHighlight>
       
     </View>
 
@@ -107,11 +111,12 @@ class HomeScreen extends React.Component {
 /*method to render the categories of friends on the home screen*/
 _renderCategory(item, navigation) {
     return(
-        <View style={{flex: 1, height: 160, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
+        <View style={{flex: 1, height: item.friends.length==0?50:160, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                 <Text style={{fontSize:16, fontWeight:'bold'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:30, width:30, marginLeft:10}}/>
             </View>
+            {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop: 35, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic'}}>No friends to display in this category</Text></View> : null}
             <FlatList
                 data={item.friends}
                 extraData={this.state}
