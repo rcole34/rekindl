@@ -56,19 +56,19 @@ class HomeScreen extends React.Component {
       var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"Roaring Flames", friends:[]}
 
       for (var i = 0; i < friendsList.allData.length; i++) {
-        if(friendsList.allData[i].currFire == 'dead') {
+        if(friendsList.allData[i].currFire === 'dead') {
           deadFriends.friends.push(friendsList.allData[i])
         }
-        else if(friendsList.allData[i].currFire == 'tiny') {
+        else if(friendsList.allData[i].currFire === 'tiny') {
           tinyFriends.friends.push(friendsList.allData[i])
         }
-        else if(friendsList.allData[i].currFire == 'small') {
+        else if(friendsList.allData[i].currFire === 'small') {
           smallFriends.friends.push(friendsList.allData[i])
         }
-        else if(friendsList.allData[i].currFire == 'medium') {
+        else if(friendsList.allData[i].currFire === 'medium') {
           mediumFriends.friends.push(friendsList.allData[i])
         }
-        else if(friendsList.allData[i].currFire == 'large') {
+        else if(friendsList.allData[i].currFire === 'large') {
           largeFriends.friends.push(friendsList.allData[i])
         }
       };
