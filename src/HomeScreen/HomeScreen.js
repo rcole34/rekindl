@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import { Alert, Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout'
 import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
@@ -129,8 +129,12 @@ _renderCategory(item, navigation) {
 _renderList(item, navigation) {
     return(
         <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
-            <Image source={item.photo} style={{height:60, width:60, borderRadius:60/2}}/>
-            <Text>{item.name}</Text>
+            <TouchableOpacity activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends});}}>
+                <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
+                    <Image source={item.photo} style={{height:60, width:60, borderRadius:60/2}}/>
+                    <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }

@@ -67,7 +67,7 @@ export default class DetailScreen extends React.Component {
   	}
 
   	_sendTextPress = function(name) {
-  		OpenAnything.Text('+18326460004', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
+  		OpenAnything.Text('+16502791863', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
   		setTimeout(() => {
   			notificationsCopy = []
   			for (var i = 0; i < this.state.notifications.length; i++) {
