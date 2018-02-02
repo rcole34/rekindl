@@ -3,16 +3,36 @@ import { View, Text, Image, TouchableHighlight } from 'react-native';
 
 
 class ProfileScreen extends React.Component {
+
+  
+
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
         this.state = {user: {name: 'Michael West', photo: require('../../assets/profilePictures/mike.png'), birthday: 'December 5, 1996'}}
     }
+
+
+    async logInFB() {
+  const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('575341286140281', {
+      permissions: ['public_profile'],
+    });
+  if (type === 'success') {
+    // Get the user's name using Facebook's Graph API
+    const response = await fetch(
+      `https://graph.facebook.com/me?access_token=${token}`);
+    window.alert(
+      `Hi ${(await response.json()).name}!`,
+    );
+    }
+  }
+
+
   static navigationOptions = {
     tabBarLabel: 'Profile',
     tabBarIcon: ({ tintColor }) => {
       return <Image
-        source={require('../../assets/icons/profile.png')}
+        source={this.state.photo}
         style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     },
@@ -41,7 +61,7 @@ class ProfileScreen extends React.Component {
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'>
           <View style={{flexDirection:'row', alignItems:'center', marginTop:20}}>
             <Image source={require('../../assets/icons/facebook.png')} style={{height:20, width:20, marginRight:15}}/>
-            <Text style={{fontSize:18, color:'#555', textDecorationLine:'underline'}}>Connect Account</Text>
+            <Text onPress={this.logInFB.bind(this)} style={{fontSize:18, color:'#555', textDecorationLine:'underline'}}>Connect Account</Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
