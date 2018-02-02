@@ -32,7 +32,7 @@ class ProfileScreen extends React.Component {
     tabBarLabel: 'Profile',
     tabBarIcon: ({ tintColor }) => {
       return <Image
-        source={this.state.photo}
+        source={require('../../assets/profilePictures/mike.png')}
         style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     },
