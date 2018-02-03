@@ -13,7 +13,7 @@ import { NavigationActions } from 'react-navigation'
 export default class DetailScreen extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-      title: navigation.state.params.currFriend.name + "'s Profile",
+      title: "View Connections",
     })
 
 
@@ -44,22 +44,34 @@ export default class DetailScreen extends React.Component {
 
   	}
 
+  	_sendTextPress = function(name) {
+  		OpenAnything.Text('+16502791863', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
+  	}
+
+
 
   	render() {
   		var pages = []
 
   		for(var i = 0; i < this.state.currGroup.friends.length; i++) {
+  			index = i
   			pages.push(
-				<View style={{width:'90%', height:'90%', borderRadius:10, backgroundColor:'#999', flexDirection:'column', justifyContent:'center'}}>
-			    	<Image source={this.state.currGroup.friends[i].photo} style={{height:100, width:100}}/>
-			        <Text>{this.state.currGroup.friends[i].name}</Text>
+				<View key={i} style={{width:'90%', height:'90%', borderRadius:10, backgroundColor:'#999', flexDirection:'column', alignItems:'center'}}>
+			    	<Image source={this.state.currGroup.friends[i].fire} style={{position: 'absolute', right:'5%', top:'0%', height:'18%', width:'18%'}}/>
+			    	<Image source={this.state.currGroup.friends[i].photo} style={{height:200, width:200, marginBottom:'5%', marginTop:'15%'}}/>
+			        <Text style={{fontSize:24}}>{this.state.currGroup.friends[i].name}</Text>
+			        <Text style={{fontStyle:"italic", marginTop:'10%'}}>{this.state.currGroup.friends[i].status?this.state.currGroup.friends[i].status:"No recent status"}</Text>
+			        <TouchableOpacity activeOpacity={0.25} style={{position:'absolute', bottom:'8%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[index].name)}}>
+			        	<Image source={require('../../assets/icons/send-text.png')} style={{height:50, width:50, tintColor:'#007AFF'}}/>
+			        </TouchableOpacity>
+			        <Text style={{position:'absolute', bottom:'3%'}}>Last connected {this.state.currGroup.friends[i].lastConnected}</Text>
 			   	</View>
 			)
 		}
 
   		return (
 	  		<View style={{flex: 1}}>
-				<Swiper ref="cardSwiper" width='95%' height='95%' index={this.state.index}>
+				<Swiper ref="cardSwiper" loop={false} bounces={true} index={this.state.index} style={{right:'5%', left:'5%', top:'2%', bottom:'5%'}}>
 					{pages}  
 			    </Swiper>
 			</View>
