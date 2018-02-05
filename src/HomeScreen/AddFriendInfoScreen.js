@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { TextInput, Picker, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation'
 
@@ -7,7 +7,7 @@ import { NavigationActions } from 'react-navigation'
 class AddFriendInfoScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}};
+    this.state = {newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
     
   }
 
@@ -61,6 +61,15 @@ render() {
                     }}
                     returnKeyType='done'
                 />
+            </View>
+            <View> 
+            <Text style={{marginTop: 80, fontSize:18}}> How often do you want to reach out to this friend? </Text>
+                <Picker 
+                selectedValue={this.state.newFriend.category}>               
+                <Picker.Item label = "Once a week" value = "weekFriend" />
+               <Picker.Item label = "Once every two weeks" value = "biweekFriend" />
+               <Picker.Item label = "Once a month" value = "monthFriend" />
+            </Picker>
             </View>
             <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
