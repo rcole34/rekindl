@@ -1,15 +1,69 @@
 import React from 'react';
-import { TextInput, Picker, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { Animated, StatusBar, TextInput, Picker, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation'
 
 
-class AddFriendInfoScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
-    
+class FloatingLabelInput extends React.Component {
+  state = {
+    isFocused: false,
+  };
+
+  componentWillMount() {
+    this._animatedIsFocused = new Animated.Value(this.props.value === '' ? 0 : 1);
   }
+
+  handleFocus = () => this.setState({ isFocused: true });
+  handleBlur = () => this.setState({ isFocused: false });
+
+  componentDidUpdate() {
+    Animated.timing(this._animatedIsFocused, {
+      toValue: (this.state.isFocused || this.props.value !== '') ? 1 : 0,
+      duration: 200,
+    }).start();
+  }
+
+  render() {
+    const { label, ...props } = this.props;
+    const labelStyle = {
+      position: 'absolute',
+      left: 0,
+      top: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [18, 0],
+      }),
+      fontSize: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [20, 14],
+      }),
+      color: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['#aaa', '#000'],
+      }),
+    };
+    return (
+      <View style={{ paddingTop: 18 }}>
+        <Animated.Text style={labelStyle}>
+          {label}
+        </Animated.Text>
+        <TextInput
+          {...props}
+          style={{ height: 26, fontSize: 20, color: '#000', borderBottomWidth: 1, borderBottomColor: '#555' }}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          blurOnSubmit
+        />
+      </View>
+    );
+  }
+}
+
+class AddFriendInfoScreen extends React.Component {
+    constructor(props) {
+    super(props);
+    this.state = {value: '', newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
+  }
+
 
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -23,54 +77,50 @@ class AddFriendInfoScreen extends React.Component {
     }
   };
   
-render() {
+  
+
+  handleTextChange = (newText) => this.setState({ value: newText });
+
+  render() {
     const navigation = this.props.navigation;
-    return(
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', flexDirection:'column', marginTop:'20%' }}>
-            <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
+    return (
+      <View style={{ flex: 1, padding: 40, backgroundColor: '#f5fcff' }}>
+      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
                 <Image source = {this.state.newFriend.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
                     <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.7)'}}>
-                        <Text>set profile picture</Text>
+                        <Text>set photo</Text>
                     </View>
                 </Image>
             </TouchableHighlight>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{fontSize:28}}>Name: </Text>
-                <TextInput
-                    style={{textAlign:'center', borderColor: 'gray', borderWidth:1, height: 48, fontSize:32}}
-                    autoCapitalize='words'
-                    placeholder="Enter friend's name"
-                    value={this.state.newFriend.name}
-                    onChangeText={(text) => {
+        <StatusBar hidden />
+        <FloatingLabelInput
+          label="Name of Your Friend"
+          value={this.state.newFriend.name}
+          onChangeText={(text) => {
                         const newFriend = Object.assign({}, this.state.newFriend, { name: text }); 
                         this.setState({ newFriend });
                     }}
                     returnKeyType='done'
-                />
-            </View>
-            <View style={{flexDirection:'row', marginTop:30, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{fontSize:18}}>Phone: </Text>
-                <TextInput
-                    style={{textAlign:'center', borderColor: 'gray', borderWidth:1, height: 32, fontSize:24}}
-                    placeholder="Enter phone number"
-                    value={this.state.newFriend.phone}
+        /> 
+        <Text>{`\n`}</Text>
+       <FloatingLabelInput
+            style="marginTop: 100"
+          label="Phone Number"
+          value={this.state.newFriend.phone}
                     keyboardType='phone-pad'
                     onChangeText={(text) => {
                         const newFriend = Object.assign({}, this.state.newFriend, { phone: text }); 
                         this.setState({ newFriend });
                     }}
                     returnKeyType='done'
-                />
-            </View>
-            <View> 
-            <Text style={{marginTop: 80, fontSize:18}}> How often do you want to reach out to this friend? </Text>
+        /> 
+        <Text style={{marginTop: 40, fontSize:18}}>How often do you want to reach out to this friend? </Text>
                 <Picker 
                 selectedValue={this.state.newFriend.category}>               
                 <Picker.Item label = "Once a week" value = "weekFriend" />
                <Picker.Item label = "Once every two weeks" value = "biweekFriend" />
                <Picker.Item label = "Once a month" value = "monthFriend" />
             </Picker>
-            </View>
             <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
@@ -83,10 +133,9 @@ render() {
                     <Text style={{color:'#FFF', fontSize:18}}>Add</Text>
                 </View>
             </TouchableHighlight>
-          </View>
-);
+      </View>
+    );
+  }
 }
-}
-
 
 export default AddFriendInfoScreen;
