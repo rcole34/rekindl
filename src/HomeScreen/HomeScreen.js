@@ -49,11 +49,11 @@ class HomeScreen extends React.Component {
       if (list == null) return
       let friendsList = JSON.parse(list)
       
-      var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"Going Cold", friends:[]}
-      var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"Flickering Out", friends:[]}
-      var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"Staying Alive", friends:[]}
-      var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"Burning Strong", friends:[]}
-      var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"Roaring Flames", friends:[]}
+      var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
+      var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
+      var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
+      var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"toasty", friends:[]}
+      var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
 
       for (var i = 0; i < friendsList.allData.length; i++) {
         if(friendsList.allData[i].currFire === 'dead') {
@@ -91,7 +91,7 @@ class HomeScreen extends React.Component {
 
     const { navigate } = this.props.navigation;
     return(
-    <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+    <View style={{ backgroundColor:'#222', flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
       
         <FlatList
             data={this.state.sortedFriends}
@@ -111,13 +111,14 @@ class HomeScreen extends React.Component {
 /*method to render the categories of friends on the home screen*/
 _renderCategory(item, navigation) {
     return(
-        <View style={{flex: 1, height: item.friends.length==0?50:160, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{fontSize:16, fontWeight:'bold'}}>{item.message}</Text>
-                <Image source={item.fire} style={{height:30, width:30, marginLeft:10}}/>
+        <View style={{backgroundColor:item.key%2==0?'#222':'#333', flex: 1, height: item.friends.length==0?50:190, marginTop: item.friends.length==0?40:0, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:-20}}>
+                <Text style={{fontSize:24, color:'white'}}>{item.message}</Text>
+                <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
             </View>
-            {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop: 35, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic'}}>No friends to display in this category</Text></View> : null}
+            {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop: 10, marginBottom: 10, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic', color:'white'}}>No friends to display in this category</Text></View> : null}
             <FlatList
+                style={{top:-35}}
                 data={item.friends}
                 extraData={this.state}
                 renderItem={({item}) => this._renderList(item, navigation)}
@@ -131,8 +132,8 @@ _renderList(item, navigation) {
         <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
             <TouchableOpacity activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends});}}>
                 <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
-                    <Image source={item.photo} style={{height:60, width:60, borderRadius:60/2}}/>
-                    <Text>{item.name}</Text>
+                    <Image source={item.photo} style={{height:80, width:80, borderRadius:80/2}}/>
+                    <Text style={{color:'white'}}>{item.name}</Text>
                 </View>
             </TouchableOpacity>
         </View>

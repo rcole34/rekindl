@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import DetailScreen from './src/HomeScreen/DetailScreen.js';
 import HomeScreen from './src/HomeScreen/HomeScreen.js'
 import AddFriendScreen from './src/HomeScreen/AddFriendScreen.js';
+import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
 // import ScheduleScreen from './ScheduleScreen/ScheduleScreen.js';
 import AddFriendInfoScreen from './src/HomeScreen/AddFriendInfoScreen.js';
 import ProfileScreen from "./src/ProfileScreen/ProfileScreen.js";
@@ -13,7 +14,7 @@ const RootNavigator = StackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: ({navigation}) => ({
-      headerTitle: 'Home',
+      headerTitle: 'Rekindl',
       headerLeft: null,
       headerRight: 
       <TouchableWithoutFeedback
@@ -43,6 +44,12 @@ const RootNavigator = StackNavigator({
     screen: EditProfileScreen,
     navigationOptions: ({navigation}) => ({
       title: 'Edit Profile',
+    }),
+  },
+  Settings: {
+    screen: SettingsScreen,
+    navigationOptions: ({navigation}) => ({
+      title: 'Settings',
     }),
   },
   // Schedule: {
