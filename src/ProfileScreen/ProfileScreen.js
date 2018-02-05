@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
 
 
 class ProfileScreen extends React.Component {
@@ -70,6 +70,17 @@ class ProfileScreen extends React.Component {
             <Text  style={{fontSize:18, color:'#555', textDecorationLine:'underline'}}>Connect Account</Text>
           </View>
         </TouchableOpacity>
+        <TextInput
+                style={{textAlign:'center', color:'#666', height: 64, fontSize:24}}
+                autoCapitalize='words'
+                placeholder="Enter a status"
+                value={this.state.user.status}
+                onChangeText={(text) => {
+                    const user = Object.assign({}, this.state.user, { status: text }); 
+                    this.setState({ user });
+                }}
+                returnKeyType='done'
+            />
       </View>
     );
   }
