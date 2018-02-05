@@ -9,21 +9,29 @@ class ProfileScreen extends React.Component {
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
-        this.state = {user: {name: 'Michael West', photo: require('../../assets/profilePictures/mike.png'), birthday: 'December 5, 1996', status: ''}}
+        this.state = {user: {name: 'Michael West', photo: require('../../assets/profilePictures/mike.png'),  loggedOut: true, birthday: 'December 5, 1996', status: ''}}
     }
 
 
-    async logInFB() {
+      async logInFB() {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('575341286140281', {
       permissions: ['public_profile'],
     });
   if (type === 'success') {
     // Get the user's name using Facebook's Graph API
     const response = await fetch(
-      `https://graph.facebook.com/me?access_token=${token}`);
-    window.alert(
-      `Hi ${(await response.json()).name}!`,
-    );
+      `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,birthday,picture.type(large)`);
+    const data = (await response.json())
+    const username = data.name
+    const userphoto = data.picture
+    const birthday = data.birthday
+    //this.state.user.photo = {uri: userphoto.data.url}
+    //this.state.user.name = username
+    const user = Object.assign({}, this.state.user, { name: username, photo: {uri: userphoto.data.url}, birthday: birthday, loggedOut: false}); 
+                    this.setState({ user });
+    console.log(birthday)
+    
+
     }
   }
 
@@ -57,16 +65,9 @@ class ProfileScreen extends React.Component {
         </View>
         <Text style = {{fontSize:24, color:'#666'}}>Birthday: {this.state.user.birthday}</Text>
         <TouchableOpacity activeOpacity={0.25} onPress={this.logInFB.bind(this)}>
-          <View style={{flexDirection:'row', alignItems:'center', marginTop:20}}>
+          <View style={this.state.user.loggedOut ? {flexDirection:'row', alignItems:'center', marginTop:20} : {display:'none'}}> 
             <Image source={require('../../assets/icons/facebook.png')} style={{height:20, width:20, marginRight:15}}/>
             <Text  style={{fontSize:18, color:'#555', textDecorationLine:'underline'}}>Connect Account</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.25}
-        onPress={() => navigation.navigate('Schedule', {name: this.state.user.name, editable: true})}> 
-          <View style={{flexDirection: 'column', alignItems:'center', justifyContent:'center', marginTop:20}}>
-            <Image source={require('../../assets/icons/calendar.png')} style={{height:80, width:76, marginBottom:5}}/>
-            <Text style={{fontSize:18, color:'#444'}}>Update Schedule</Text>
           </View>
         </TouchableOpacity>
       </View>
