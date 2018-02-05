@@ -116,10 +116,12 @@ class AddFriendInfoScreen extends React.Component {
         /> 
         <Text style={{marginTop: 40, fontSize:18}}>How often do you want to reach out to this friend? </Text>
                 <Picker 
-                selectedValue={this.state.newFriend.category}>               
-                <Picker.Item label = "Once a week" value = "weekFriend" />
-               <Picker.Item label = "Once every two weeks" value = "biweekFriend" />
-               <Picker.Item label = "Once a month" value = "monthFriend" />
+                selectedValue={this.state.category}
+                onValueChange={(itemValue, itemIndex) => this.setState({category: itemValue})}>               
+                <Picker.Item label = 'Once a week' value = 'weekFriend' />
+               <Picker.Item label = 'Once every two weeks' value = 'biweekFriend'  />
+               <Picker.Item label = 'Once a month' value = 'monthFriend' />
+               <Picker.Item label = 'Once every two months' value = 'bimonthFriend' />
             </Picker>
             <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
