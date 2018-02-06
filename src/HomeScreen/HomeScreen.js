@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { StatusBar, Alert, Dimensions, View, Text, Button, FlatList, StyleSheet, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import Swipeout from 'react-native-swipeout'
 import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
@@ -7,6 +7,14 @@ import friendListObject from '../../data.js'
 //var SearchBar = require('react-native-search-bar');
 
 class HomeScreen extends React.Component {  
+    static navigationOptions = ({ navigation }) => ({
+        headerRight: 
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: () => {}})}>
+                    <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#fff', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
+            </TouchableWithoutFeedback>
+        
+    })
+
   constructor(props) {
     super(props);
 
@@ -92,17 +100,13 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return(
     <View style={{ backgroundColor:'#222', flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
-      
+        <StatusBar
+            barStyle="light-content"/>
         <FlatList
             data={this.state.sortedFriends}
             extraData={this.state}
             renderItem={({item}) => this._renderCategory(item, {navigate})}/>
 
-        <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' onPress={() => navigate('AddFriend', {onSave: this.onSave})} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
-            <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
-                <Text style={{color:'#FFF', fontSize:32, marginBottom:5}}>+</Text>
-            </View>
-        </TouchableHighlight>
       
     </View>
 
@@ -115,6 +119,9 @@ _renderCategory(item, navigation) {
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:-20}}>
                 <Text style={{fontSize:24, color:'white'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
+                {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends})}}>
+                    <Text style={{color:"white", textDecorationLine:'underline'}}>View All</Text>
+                </TouchableOpacity>}
             </View>
             {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop: 10, marginBottom: 10, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic', color:'white'}}>No friends to display in this category</Text></View> : null}
             <FlatList

@@ -10,46 +10,88 @@ import AddFriendInfoScreen from './src/HomeScreen/AddFriendInfoScreen.js';
 import ProfileScreen from "./src/ProfileScreen/ProfileScreen.js";
 import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
 
+class LogoTitle extends React.Component {
+  render() {
+    return (
+      <Image
+        source={require('./assets/icons/white-with-logo.png')}
+        style={{ width: 100, height: 27 }}/>
+    );
+  }
+}
+
 const RootNavigator = StackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: ({navigation}) => ({
-      headerTitle: 'Rekindl',
-      headerLeft: null,
-      headerRight: 
-      <TouchableWithoutFeedback
+      headerTitle: <LogoTitle/>,
+      headerLeft: <TouchableWithoutFeedback
         onPress={() => navigation.navigate('Profile')}>
           <View>
-            <Image source={require('./assets/icons/profile.png')} style={{tintColor: '#007AFF', height: 30, width: 30, marginRight: 20, marginBottom: 5}}/>
+            <Image source={require('./assets/icons/profile-filled.png')} style={{tintColor: '#fff', height: 30, width: 30, marginLeft: 15, marginBottom: 5}}/>
           </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>,
+      
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
     }),
   },
   Detail: {
     screen: DetailScreen,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
   },
   AddFriend: {
     screen: AddFriendScreen,
     navigationOptions: ({navigation}) => ({
-      title: "Add Connection",
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
     }),
   },
   Profile: {
     screen: ProfileScreen,
     navigationOptions: ({navigation}) => ({
-      title: 'Profile',
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
     }),
   },
   EditProfile: {
     screen: EditProfileScreen,
     navigationOptions: ({navigation}) => ({
-      title: 'Edit Profile',
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
     }),
   },
   Settings: {
     screen: SettingsScreen,
     navigationOptions: ({navigation}) => ({
-      title: 'Settings',
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
     }),
   },
   // Schedule: {
@@ -61,7 +103,12 @@ const RootNavigator = StackNavigator({
   AddFriendInfo: {
     screen: AddFriendInfoScreen,
     navigationOptions: ({navigation}) => ({
-      title: "Enter Information",
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
     }),
   },
 });

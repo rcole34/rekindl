@@ -70,7 +70,7 @@ export default class DetailScreen extends React.Component {
 		}
 
   		return (
-	  		<View style={{flex: 1}}>
+	  		<View style={{flex: 1, backgroundColor:'#222'}}>
 				<Swiper ref="cardSwiper" loop={false} bounces={true} index={this.state.index} style={{right:'5%', left:'5%', top:'2%', bottom:'5%'}}>
 					{pages}  
 			    </Swiper>
