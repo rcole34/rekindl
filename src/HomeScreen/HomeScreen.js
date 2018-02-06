@@ -7,13 +7,7 @@ import friendListObject from '../../data.js'
 //var SearchBar = require('react-native-search-bar');
 
 class HomeScreen extends React.Component {  
-    static navigationOptions = ({ navigation }) => ({
-        headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: () => {}})}>
-                    <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#fff', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
-            </TouchableWithoutFeedback>
-        
-    })
+    
 
   constructor(props) {
     super(props);
