@@ -114,7 +114,7 @@ _renderCategory(item, navigation) {
                 <Text style={{fontSize:24, color:'white'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
                 {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends})}}>
-                    <Text style={{color:"white", textDecorationLine:'underline'}}>View All</Text>
+                    <Text style={{color:"white"}}>View All</Text>
                 </TouchableOpacity>}
             </View>
             {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop: 10, marginBottom: 10, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic', color:'white'}}>No friends to display in this category</Text></View> : null}
