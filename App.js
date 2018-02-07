@@ -31,10 +31,7 @@ const RootNavigator = StackNavigator({
             <Image source={require('./assets/icons/profile-filled.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginLeft: 15, marginBottom: 5}}/>
           </View>
       </TouchableWithoutFeedback>,
-      headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: () => {}})}>
-                    <Image source={require('./assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
-            </TouchableWithoutFeedback>,
+      
       headerStyle: {
         backgroundColor: '#222',
       },

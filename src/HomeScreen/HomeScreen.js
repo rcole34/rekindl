@@ -29,9 +29,17 @@ class HomeScreen extends React.Component {
     // return 
 
     this.state = {isLoading: true}
+    
     // this._removeFriend = this._removeFriend.bind(this)
     // this._removeFriendPressed = this._removeFriendPressed.bind(this)    
   }
+
+  static navigationOptions = ({navigation}) => ({
+        headerRight: 
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave})}>
+                    <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
+            </TouchableWithoutFeedback>,
+    })
 
   async componentWillMount() {
     let isSetUp = await AsyncStorage.getItem('isSetUp')
@@ -81,6 +89,10 @@ class HomeScreen extends React.Component {
       })
     })
   }
+
+    componentDidMount() {
+        this.props.navigation.setParams({ onSave: this.onSave });
+    }
 
 /* render method for new prototype*/
   render() {
@@ -171,17 +183,20 @@ _renderList(item, navigation) {
 
 /*Method used in old prototype to save a new friend*/
   onSave = user => {
+    console.log('here')
     user.key = this.state.currData.length + new Date().getUTCMilliseconds();
     user.fire = require('../../assets/fires/tiny_fire.png');
     user.currFire = 'tiny'
-    user.lastConnectionType = 'You: Added Friend';
     user.lastConnected = 'today';
-    user.notificationCount = 1;
-    newNotification = {key: 1, status: 'new', type: 'Added memory', date: "Dec 8", description: 'Became friends', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D'},
-    user.notifications = [newNotification]
-    delete user.phone;
+    user.bgFire = require('../../assets/fires/fading.png')
+    user.status = null
+    user.statusAge = null
+    user.number = user.phone.toString()
+    delete user.phone
+    const copyGroups = this.state.sortedFriends.slice();
     const copyData = this.state.allData.slice();
-    copyData.unshift(user);
+    copyData.push(user)
+    copyGroups[1].friends.push(user);
 
     let newFriendsList = {
       allData: copyData,
@@ -189,24 +204,8 @@ _renderList(item, navigation) {
     }
 
     AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-    this.setState({currData: copyData});
+    this.setState({sortedFriends: copyGroups});
     this.forceUpdate();
-    // commented out time change for simplicity 
-
-    // setTimeout(() => {
-    //   dataCopy = this.state.currData;
-    //   for (var i = 0; i < this.state.currData.length; i++) {
-    //     if(this.state.currData[i].key === user.key) {
-    //       dataCopy[i].lastConnected = '1 minute ago';
-    //       this.setState({ currData : dataCopy });
-    //     }
-    //   };
-    // }, 60000)
-    // const backAction = NavigationActions.back({
-    //     key: 'Home'
-    // })
-    // this.props.navigation.dispatch(backAction)
-    
     
   };
 
