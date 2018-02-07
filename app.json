@@ -3,21 +3,21 @@
     "sdkVersion": "22.0.0",
     "orientation": "portrait",
     "ios": {
-      "bundleIdentifier": "edu.stanford.cs147.rekindl",
+      "bundleIdentifier": "edu.stanford.cs194h.rekindl",
       "buildNumber": "1.0",
       "splash": {
-        "icon": "assets/icons/logo-pink-bg.png",
-        "backgroundColor": "#BB6BD9"
+        "icon": "./assets/icons/white-with-logo.png",
+        "backgroundColor": "#222222"
       }
     },
-    "slug": "rekindl",
+    "slug": "rekindl194h",
     "name": "rekindl",
     "description": "Reignite faded friendships.",
     "version": "1.0",
-    "icon": "assets/icons/logo-pink-bg.png",
+    "icon": "./assets/icons/logo-black-bg.png",
     "loading": {
-        "icon": "assets/icons/logo-pink-bg.png",
-        "backgroundColor": "#BB6BD9",
+        "icon": "./assets/icons/white-with-logo.png",
+        "backgroundColor": "#222222",
         "hideExponentText": true
     },
 

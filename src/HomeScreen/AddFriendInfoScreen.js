@@ -84,7 +84,7 @@ class AddFriendInfoScreen extends React.Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <View style={{ flex: 1, padding: 40, backgroundColor: '#f5fcff' }}>
+      <View style={{ flex: 1, padding: 40, backgroundColor: '#333' }}>
       <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
                 <Image source = {this.state.newFriend.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
                     <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.7)'}}>
@@ -114,14 +114,14 @@ class AddFriendInfoScreen extends React.Component {
                     }}
                     returnKeyType='done'
         /> 
-        <Text style={{marginTop: 40, fontSize:18}}>How often do you want to reach out to this friend? </Text>
-                <Picker 
+        <Text style={{marginTop: 40, color:'white', fontSize:18}}>How often do you want to reach out to this friend? </Text>
+                <Picker
                 selectedValue={this.state.category}
                 onValueChange={(itemValue, itemIndex) => this.setState({category: itemValue})}>               
-                <Picker.Item label = 'Once a week' value = 'weekFriend' />
-               <Picker.Item label = 'Once every two weeks' value = 'biweekFriend'  />
-               <Picker.Item label = 'Once a month' value = 'monthFriend' />
-               <Picker.Item label = 'Once every two months' value = 'bimonthFriend' />
+                <Picker.Item color='white' label = 'Once a week' value = 'weekFriend' />
+               <Picker.Item color='white' label = 'Once every two weeks' value = 'biweekFriend'  />
+               <Picker.Item color='white' label = 'Once a month' value = 'monthFriend' />
+               <Picker.Item color='white' label = 'Once every two months' value = 'bimonthFriend' />
             </Picker>
             <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
@@ -132,7 +132,7 @@ class AddFriendInfoScreen extends React.Component {
 
                 }}>
                 <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
-                    <Text style={{color:'#FFF', fontSize:18}}>Add</Text>
+                    <Text style={{color:'white', fontSize:18}}>Add</Text>
                 </View>
             </TouchableHighlight>
       </View>

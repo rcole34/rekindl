@@ -7,13 +7,7 @@ import friendListObject from '../../data.js'
 //var SearchBar = require('react-native-search-bar');
 
 class HomeScreen extends React.Component {  
-    static navigationOptions = ({ navigation }) => ({
-        headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: () => {}})}>
-                    <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#fff', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
-            </TouchableWithoutFeedback>
-        
-    })
+    
 
   constructor(props) {
     super(props);
@@ -35,9 +29,17 @@ class HomeScreen extends React.Component {
     // return 
 
     this.state = {isLoading: true}
+    
     // this._removeFriend = this._removeFriend.bind(this)
     // this._removeFriendPressed = this._removeFriendPressed.bind(this)    
   }
+
+  static navigationOptions = ({navigation}) => ({
+        headerRight: 
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave})}>
+                    <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
+            </TouchableWithoutFeedback>,
+    })
 
   async componentWillMount() {
     let isSetUp = await AsyncStorage.getItem('isSetUp')
@@ -47,10 +49,7 @@ class HomeScreen extends React.Component {
         currData: friendListObject.allData,
       }
 
-      photos = {photos: friendListObject.pictures}
-
       await AsyncStorage.setItem('friends', JSON.stringify(friendObject))
-      await AsyncStorage.setItem('photos', JSON.stringify(photos))
       await AsyncStorage.setItem('isSetUp', 'done!')
     }
     AsyncStorage.getItem('friends').then((list) => {
@@ -91,6 +90,10 @@ class HomeScreen extends React.Component {
     })
   }
 
+    componentDidMount() {
+        this.props.navigation.setParams({ onSave: this.onSave });
+    }
+
 /* render method for new prototype*/
   render() {
     if (this.state.isLoading) {
@@ -117,10 +120,10 @@ _renderCategory(item, navigation) {
     return(
         <View style={{backgroundColor:item.key%2==0?'#222':'#333', flex: 1, height: item.friends.length==0?50:190, marginTop: item.friends.length==0?40:0, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:-20}}>
-                <Text style={{fontSize:24, color:'white'}}>{item.message}</Text>
+                <Text style={{fontSize:24, color:'white', fontWeight:'200'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
                 {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends})}}>
-                    <Text style={{color:"white", textDecorationLine:'underline'}}>View All</Text>
+                    <Text style={{color:"white"}}>View All</Text>
                 </TouchableOpacity>}
             </View>
             {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop: 10, marginBottom: 10, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic', color:'white'}}>No friends to display in this category</Text></View> : null}
@@ -180,17 +183,20 @@ _renderList(item, navigation) {
 
 /*Method used in old prototype to save a new friend*/
   onSave = user => {
+    console.log('here')
     user.key = this.state.currData.length + new Date().getUTCMilliseconds();
     user.fire = require('../../assets/fires/tiny_fire.png');
     user.currFire = 'tiny'
-    user.lastConnectionType = 'You: Added Friend';
     user.lastConnected = 'today';
-    user.notificationCount = 1;
-    newNotification = {key: 1, status: 'new', type: 'Added memory', date: "Dec 8", description: 'Became friends', icon: require('../../assets/icons/friends.png'), tintColor: '#51A39D'},
-    user.notifications = [newNotification]
-    delete user.phone;
+    user.bgFire = require('../../assets/fires/fading.png')
+    user.status = null
+    user.statusAge = null
+    user.number = user.phone.toString()
+    delete user.phone
+    const copyGroups = this.state.sortedFriends.slice();
     const copyData = this.state.allData.slice();
-    copyData.unshift(user);
+    copyData.push(user)
+    copyGroups[1].friends.push(user);
 
     let newFriendsList = {
       allData: copyData,
@@ -198,24 +204,8 @@ _renderList(item, navigation) {
     }
 
     AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-    this.setState({currData: copyData});
+    this.setState({sortedFriends: copyGroups});
     this.forceUpdate();
-    // commented out time change for simplicity 
-
-    // setTimeout(() => {
-    //   dataCopy = this.state.currData;
-    //   for (var i = 0; i < this.state.currData.length; i++) {
-    //     if(this.state.currData[i].key === user.key) {
-    //       dataCopy[i].lastConnected = '1 minute ago';
-    //       this.setState({ currData : dataCopy });
-    //     }
-    //   };
-    // }, 60000)
-    // const backAction = NavigationActions.back({
-    //     key: 'Home'
-    // })
-    // this.props.navigation.dispatch(backAction)
-    
     
   };
 
