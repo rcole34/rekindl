@@ -9,6 +9,17 @@ import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
 import AddFriendInfoScreen from './src/HomeScreen/AddFriendInfoScreen.js';
 import ProfileScreen from "./src/ProfileScreen/ProfileScreen.js";
 import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
+import * as firebase from 'firebase';
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCgrNCNxDVCYPa7IBq3d0zQFCWTaNNsQxg",
+  authDomain: "rekindl-27d5f.firebaseapp.com",
+  databaseURL: "https://rekindl-27d5f.firebaseio.com",
+  storageBucket: "rekindl-27d5f.appspot.com"
+};
+firebase.initializeApp(firebaseConfig);
+
 
 class LogoTitle extends React.Component {
   render() {
