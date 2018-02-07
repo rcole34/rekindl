@@ -119,7 +119,7 @@ setEditorStyle() {
             editActive: true
           });
         }}>
-        <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
+        <Image source={require('../../assets/icons/edit.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
         </TouchableHighlight>
         </View>
         <TextInput
