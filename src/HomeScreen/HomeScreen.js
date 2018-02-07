@@ -41,10 +41,7 @@ class HomeScreen extends React.Component {
         currData: friendListObject.allData,
       }
 
-      photos = {photos: friendListObject.pictures}
-
       await AsyncStorage.setItem('friends', JSON.stringify(friendObject))
-      await AsyncStorage.setItem('photos', JSON.stringify(photos))
       await AsyncStorage.setItem('isSetUp', 'done!')
     }
     AsyncStorage.getItem('friends').then((list) => {

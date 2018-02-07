@@ -59,8 +59,8 @@ export default class DetailScreen extends React.Component {
   			pages.push(
 				<View key={i} style={{width:'90%', height:'95%', borderRadius:10, backgroundColor:'#222', flexDirection:'column', alignItems:'center'}}>
 			    	<Image source={this.state.currGroup.friends[i].photo} style={{width:this.state.width*0.9, height:this.state.height*0.9*0.467}}/>
-			        <LinearGradient colors={['transparent', '#222']} style={{position:'absolute', width:this.state.width*0.9, height:this.state.height*0.9*0.03, top:this.state.height*0.9*0.437}}/>
-			        <Image source={this.state.currGroup.friends[i].bgFire} style={{position:'absolute', top:this.state.width*0.75, width:this.state.width*0.9, height:this.state.height*0.9*0.447, opacity:0.2}}/>
+			        <LinearGradient colors={['transparent', 'rgba(34,34,34,0.7)']} style={{position:'absolute', width:this.state.width*0.9, height:this.state.height*0.9*0.03, top:this.state.height*0.9*0.437}}/>
+			        <Image source={this.state.currGroup.friends[i].bgFire} style={{position:'absolute', top:this.state.height*0.9*0.467, width:this.state.width*0.9, height:this.state.height*0.9*0.447, opacity:0.2}}/>
 			        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop:'3%'}}>
 			        	<Text style={{backgroundColor:'transparent', fontWeight:'400', color:'white', fontSize:32}}>{this.state.currGroup.friends[i].name}</Text>
 			        	<Image source={this.state.currGroup.friends[i].fire} style={{marginLeft:'1%', height:60, width:60, bottom:10}}/>
