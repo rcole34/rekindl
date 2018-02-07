@@ -18,7 +18,7 @@
     "loading": {
         "icon": "./assets/icons/white-with-logo.png",
         "backgroundColor": "#222222",
-        "hideExponentText": true
+        
     },
 
   }

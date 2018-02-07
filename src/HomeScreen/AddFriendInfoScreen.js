@@ -38,7 +38,7 @@ class FloatingLabelInput extends React.Component {
       }),
       color: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: ['#aaa', '#000'],
+        outputRange: ['#aaa', '#fff'],
       }),
     };
     return (
@@ -48,7 +48,7 @@ class FloatingLabelInput extends React.Component {
         </Animated.Text>
         <TextInput
           {...props}
-          style={{ height: 26, fontSize: 20, color: '#000', borderBottomWidth: 1, borderBottomColor: '#555' }}
+          style={{ height: 26, fontSize: 20, color: '#fff', borderBottomWidth: 1, borderBottomColor: '#555' }}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           blurOnSubmit
@@ -61,7 +61,7 @@ class FloatingLabelInput extends React.Component {
 class AddFriendInfoScreen extends React.Component {
     constructor(props) {
     super(props);
-    this.state = {value: '', newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
+    this.state = {chosePhoto: false, value: '', newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
   }
 
 
@@ -72,6 +72,7 @@ class AddFriendInfoScreen extends React.Component {
     });
 
     if (!result.cancelled) {
+        this.setState({chosePhoto: true})
         const newFriend = Object.assign({}, this.state.newFriend, { photo: {uri: result.uri} }); 
         this.setState({ newFriend });
     }
@@ -126,9 +127,9 @@ class AddFriendInfoScreen extends React.Component {
             <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
-                    navigation.state.params.onSave(this.state.newFriend);
+                    navigation.state.params.onSave(this.state.newFriend, this.state.chosePhoto);
                     navigation.goBack()
-                    navigation.state.params.goBack()
+                    /*navigation.state.params.goBack()*/
 
                 }}>
                 <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>

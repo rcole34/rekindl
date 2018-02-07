@@ -36,13 +36,13 @@ class HomeScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave})}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriendInfo', {onSave: navigation.state.params.onSave})}>
                     <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
             </TouchableWithoutFeedback>,
     })
 
   async componentWillMount() {
-    let isSetUp = await AsyncStorage.getItem('isSetUp')
+    let isSetUp = await AsyncStorage.getItem('isSetUpDone')
     if (!isSetUp) {
       friendObject = {
         allData: friendListObject.allData,
@@ -50,12 +50,14 @@ class HomeScreen extends React.Component {
       }
 
       await AsyncStorage.setItem('friends', JSON.stringify(friendObject))
-      await AsyncStorage.setItem('isSetUp', 'done!')
+      await AsyncStorage.setItem('isSetUpDone', 'done!')
     }
     AsyncStorage.getItem('friends').then((list) => {
-      if (list == null) return
-      let friendsList = JSON.parse(list)
-      
+        if (list == null) return
+        let friendsList = JSON.parse(list)
+        let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
+        let fires = [require('../../assets/fires/dead_fire.png'), require('../../assets/fires/tiny_fire.png'), require('../../assets/fires/small_fire.png'), require('../../assets/fires/medium_fire.png'), require('../../assets/fires/large_fire.png')]
+        let bgFires = [require('../../assets/fires/vanishing.png'), require('../../assets/fires/fading.png'), require('../../assets/fires/calm.jpg'), require('../../assets/fires/toasty.png'), require('../../assets/fires/roaring.png')]
       var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
       var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
       var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
@@ -63,19 +65,32 @@ class HomeScreen extends React.Component {
       var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
 
       for (var i = 0; i < friendsList.allData.length; i++) {
+        if(!friendsList.allData[i].photo) {
+            friendsList.allData[i].photo = defaultPhoto
+        }
         if(friendsList.allData[i].currFire === 'dead') {
+            friendsList.allData[i].bgFire = bgFires[0]
+            friendsList.allData[i].fire = fires[0]
           deadFriends.friends.push(friendsList.allData[i])
         }
         else if(friendsList.allData[i].currFire === 'tiny') {
+            friendsList.allData[i].bgFire = bgFires[1]
+            friendsList.allData[i].fire = fires[1]
           tinyFriends.friends.push(friendsList.allData[i])
         }
         else if(friendsList.allData[i].currFire === 'small') {
+            friendsList.allData[i].bgFire = bgFires[2]
+            friendsList.allData[i].fire = fires[2]
           smallFriends.friends.push(friendsList.allData[i])
         }
         else if(friendsList.allData[i].currFire === 'medium') {
+            friendsList.allData[i].bgFire = bgFires[3]
+            friendsList.allData[i].fire = fires[3]
           mediumFriends.friends.push(friendsList.allData[i])
         }
         else if(friendsList.allData[i].currFire === 'large') {
+            friendsList.allData[i].bgFire = bgFires[4]
+            friendsList.allData[i].fire = fires[4]
           largeFriends.friends.push(friendsList.allData[i])
         }
       };
@@ -118,7 +133,7 @@ class HomeScreen extends React.Component {
 /*method to render the categories of friends on the home screen*/
 _renderCategory(item, navigation) {
     return(
-        <View style={{backgroundColor:item.key%2==0?'#222':'#333', flex: 1, height: item.friends.length==0?50:190, marginTop: item.friends.length==0?40:0, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
+        <View style={{backgroundColor:item.key%2==0?'#222':'#333', flex: 1, height: item.friends.length==0?50:200, marginTop: item.friends.length==0?40:0, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:-20}}>
                 <Text style={{fontSize:24, color:'white', fontWeight:'200'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
@@ -132,7 +147,8 @@ _renderCategory(item, navigation) {
                 data={item.friends}
                 extraData={this.state}
                 renderItem={({item}) => this._renderList(item, navigation)}
-                horizontal={true}/>
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}/>
         </View>
     );
 }
@@ -182,21 +198,27 @@ _renderList(item, navigation) {
   // }
 
 /*Method used in old prototype to save a new friend*/
-  onSave = user => {
-    console.log('here')
+  onSave = (user, chosePhoto) => {
     user.key = this.state.currData.length + new Date().getUTCMilliseconds();
-    user.fire = require('../../assets/fires/tiny_fire.png');
+    
     user.currFire = 'tiny'
     user.lastConnected = 'today';
-    user.bgFire = require('../../assets/fires/fading.png')
     user.status = null
     user.statusAge = null
     user.number = user.phone.toString()
+    if(!chosePhoto) {
+        user.photo = null
+    }
     delete user.phone
     const copyGroups = this.state.sortedFriends.slice();
     const copyData = this.state.allData.slice();
-    copyData.push(user)
-    copyGroups[1].friends.push(user);
+    copyData.unshift(user)
+    user.fire = require('../../assets/fires/tiny_fire.png');
+    user.bgFire = require('../../assets/fires/fading.png')
+    if(!chosePhoto) {
+        user.photo = require('../../assets/profilePictures/default-profile.png')
+    }
+    copyGroups[1].friends.unshift(user);
 
     let newFriendsList = {
       allData: copyData,

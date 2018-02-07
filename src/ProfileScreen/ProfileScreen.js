@@ -45,7 +45,7 @@ class ProfileScreen extends React.Component {
     //this.state.user.name = username
     const user = Object.assign({}, this.state.user, { name: username, photo: {uri: userphoto.data.url}, birthday: birthday, loggedOut: false}); 
                     this.setState({ user });
-    console.log(birthday)
+    //console.log(birthday)
     
 
     }
@@ -68,6 +68,8 @@ class ProfileScreen extends React.Component {
 setStatusStyle() {
   distStr = this.state.editActive ? 'none' : 'flex';
   return {
+    marginTop:'5%',
+    width: 275,
     flexDirection: 'row',
     alignItems: 'center',
     display: distStr
@@ -77,9 +79,9 @@ setStatusStyle() {
 setEditorStyle() {
   distStr = !this.state.editActive ? 'none' : 'flex';
   return {
-    textAlign:'center',
+    marginTop:'5%',
     color:'white',
-    height: 64,
+    width: 300,
     fontSize:20,
     display: distStr
   }
@@ -94,7 +96,7 @@ setEditorStyle() {
       resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
       scrollEnabled={false}>
-        <Image source = {this.state.user.photo} style = {{height:150, width:150, borderRadius:150/2}}/>
+        <Image source = {this.state.user.photo} style = {{marginTop:'5%', height:150, width:150, borderRadius:150/2}}/>
         
         <View style={{flexDirection:'row', alignItems: 'center'}}>
           <Text style = {{fontSize:48, color:'white'}}>{this.state.user.name}</Text>
@@ -103,7 +105,7 @@ setEditorStyle() {
             <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
           </TouchableHighlight>
         </View>
-        <Text style = {{fontSize:24, color:'white'}}>Birthday: {this.state.user.birthday}</Text>
+        {/*<Text style = {{fontSize:24, color:'white'}}>Birthday: {this.state.user.birthday}</Text>*/}
         <TouchableOpacity activeOpacity={0.25} onPress={this.logInFB.bind(this)}>
           <View style={this.state.user.loggedOut ? {flexDirection:'row', alignItems:'center', marginTop:20} : {display:'none'}}> 
             <Image source={require('../../assets/icons/facebook.png')} style={{height:20, width:20, marginRight:15}}/>
@@ -123,8 +125,11 @@ setEditorStyle() {
         </TouchableHighlight>
         </View>
         <TextInput
+                autogrow={true}
+                multiline={true}
                 style={this.setEditorStyle()}
                 placeholder="Enter a status"
+                placeholderTextColor="#aaa"
                 onSubmitEditing={(event) => {
                     firebase.database().ref('users/test/status').set(event.nativeEvent.text);
                 }}
