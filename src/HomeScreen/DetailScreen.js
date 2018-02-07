@@ -60,7 +60,7 @@ export default class DetailScreen extends React.Component {
 				<View key={i} style={{width:'90%', height:'95%', borderRadius:10, backgroundColor:'#222', flexDirection:'column', alignItems:'center'}}>
 			    	<Image source={this.state.currGroup.friends[i].photo} style={{width:this.state.width*0.9, height:this.state.height*0.9*0.467}}/>
 			        <LinearGradient colors={['transparent', 'rgba(34,34,34,0.7)']} style={{position:'absolute', width:this.state.width*0.9, height:this.state.height*0.9*0.03, top:this.state.height*0.9*0.437}}/>
-			        <Image source={this.state.currGroup.friends[i].bgFire} style={{position:'absolute', top:this.state.height*0.9*0.467, width:this.state.width*0.9, height:this.state.height*0.9*0.447, opacity:0.2}}/>
+			        <Image source={this.state.currGroup.friends[i].bgFire} style={{position:'absolute', top:this.state.height*0.9*0.467, width:this.state.width*0.9, height:this.state.height*0.9*0.44, opacity:0.2}}/>
 			        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop:'3%'}}>
 			        	<Text style={{backgroundColor:'transparent', fontWeight:'400', color:'white', fontSize:32}}>{this.state.currGroup.friends[i].name}</Text>
 			        	<Image source={this.state.currGroup.friends[i].fire} style={{marginLeft:'1%', height:60, width:60, bottom:10}}/>
@@ -87,7 +87,19 @@ export default class DetailScreen extends React.Component {
 
   		return (
 	  		<View style={{flex: 1, backgroundColor:'#222'}}>
-				<Swiper ref="cardSwiper" loop={false} bounces={true} index={this.state.index} style={{right:'5%', left:'5%', top:'2%', bottom:'3%'}}>
+				<Swiper ref="cardSwiper"
+						loop={false} 
+						bounces={true} 
+						index={this.state.index} 
+						style={{right:'5%', left:'5%', top:'2%', bottom:'3%'}} 
+						dot={
+							<View style={{backgroundColor:'white', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />
+						}
+						activeDot={
+							<View style={{alignItems:'center', justifyContent:'center', backgroundColor: 'white', width: 14, height: 14, borderRadius: 7, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}}>
+								<View style={{backgroundColor: '#222', width: 6, height: 6, borderRadius: 3}} />
+							</View>
+						}>
 					{pages}  
 			    </Swiper>
 			</View>
