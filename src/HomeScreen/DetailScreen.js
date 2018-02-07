@@ -1,20 +1,17 @@
 import React from 'react';
-import { Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
+import { Dimensions, Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as OpenAnything from 'react-native-openanything';
 import {AsyncStorage} from 'react-native'
 import MemoriesScreen from "../MemoriesScreen/MemoriesScreen.js"
 import { NavigationActions } from 'react-navigation'
+import { LinearGradient } from 'expo'
 
 // name accessed via {navigation.state.params.name}
 
 
 
 export default class DetailScreen extends React.Component {
-
-	static navigationOptions = ({navigation}) => ({
-      title: "View Connections",
-    })
 
 
 	constructor(props) {
@@ -40,12 +37,16 @@ export default class DetailScreen extends React.Component {
     			break
     		}
     	};
-    	this.state = {currGroup: currGroup, currFriend: currFriend, index: index};
+    	this.state = {currGroup: currGroup, currFriend: currFriend, index: index, width: Dimensions.get('window').width, height: Dimensions.get('window').height};
 
   	}
 
-  	_sendTextPress = function(name) {
-  		OpenAnything.Text('+16502791863', 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
+  	_sendTextPress = function(name, number) {
+  		OpenAnything.Text(number, 'Hey, ' + name + ' it\'s been a while since we talked! Want to meet up this week?');
+  	}
+
+  	_callPress = function(number) {
+  		OpenAnything.Call(number)
   	}
 
 
@@ -56,22 +57,37 @@ export default class DetailScreen extends React.Component {
   		for(var i = 0; i < this.state.currGroup.friends.length; i++) {
   			index = i
   			pages.push(
-				<View key={i} style={{width:'90%', height:'90%', borderRadius:10, backgroundColor:'#999', flexDirection:'column', alignItems:'center'}}>
-			    	<Image source={this.state.currGroup.friends[i].fire} style={{position: 'absolute', right:'5%', top:'0%', height:'18%', width:'18%'}}/>
-			    	<Image source={this.state.currGroup.friends[i].photo} style={{height:200, width:200, marginBottom:'5%', marginTop:'15%'}}/>
-			        <Text style={{fontSize:24}}>{this.state.currGroup.friends[i].name}</Text>
-			        <Text style={{fontStyle:"italic", marginTop:'10%'}}>{this.state.currGroup.friends[i].status?this.state.currGroup.friends[i].status:"No recent status"}</Text>
-			        <TouchableOpacity activeOpacity={0.25} style={{position:'absolute', bottom:'8%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[index].name)}}>
-			        	<Image source={require('../../assets/icons/send-text.png')} style={{height:50, width:50, tintColor:'#007AFF'}}/>
-			        </TouchableOpacity>
-			        <Text style={{position:'absolute', bottom:'3%'}}>Last connected {this.state.currGroup.friends[i].lastConnected}</Text>
+				<View key={i} style={{width:'90%', height:'95%', borderRadius:10, backgroundColor:'#222', flexDirection:'column', alignItems:'center'}}>
+			    	<Image source={this.state.currGroup.friends[i].photo} style={{width:this.state.width*0.9, height:this.state.height*0.9*0.467}}/>
+			        <LinearGradient colors={['transparent', '#222']} style={{position:'absolute', width:this.state.width*0.9, height:this.state.height*0.9*0.03, top:this.state.height*0.9*0.437}}/>
+			        <Image source={this.state.currGroup.friends[i].bgFire} style={{position:'absolute', top:this.state.width*0.75, width:this.state.width*0.9, height:this.state.height*0.9*0.447, opacity:0.2}}/>
+			        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop:'3%'}}>
+			        	<Text style={{backgroundColor:'transparent', fontWeight:'400', color:'white', fontSize:32}}>{this.state.currGroup.friends[i].name}</Text>
+			        	<Image source={this.state.currGroup.friends[i].fire} style={{marginLeft:'1%', height:60, width:60, bottom:10}}/>
+			       	</View>
+			        {this.state.currGroup.friends[i].status?
+			        	<View style={{alignItems:'center'}}>
+			        		<Text style={{backgroundColor:'transparent',color:'white', fontSize:18, marginTop:'5%'}}>{this.state.currGroup.friends[i].status}</Text>
+			        		<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginLeft:'50%', marginTop:'4%'}}>Posted {this.state.currGroup.friends[i].statusAge}</Text>
+			        	</View>
+			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'8%'}}>No recent status</Text>
+			        }
+			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'10%'}}>
+			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[index].name, this.state.currGroup.friends[index].number)}}>
+			        		<Image source={require('../../assets/icons/send-text.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
+			        	</TouchableOpacity>
+			        	<TouchableOpacity activeOpacity={0.25} style={{left:'50%'}} onPress={() => {this._callPress(this.state.currGroup.friends[index].number)}}>
+			        		<Image source={require('../../assets/icons/phone-outline.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
+			        	</TouchableOpacity>
+			        </View>
+			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this.state.currGroup.friends[i].lastConnected}</Text>
 			   	</View>
 			)
 		}
 
   		return (
 	  		<View style={{flex: 1, backgroundColor:'#222'}}>
-				<Swiper ref="cardSwiper" loop={false} bounces={true} index={this.state.index} style={{right:'5%', left:'5%', top:'2%', bottom:'5%'}}>
+				<Swiper ref="cardSwiper" loop={false} bounces={true} index={this.state.index} style={{right:'5%', left:'5%', top:'2%', bottom:'3%'}}>
 					{pages}  
 			    </Swiper>
 			</View>
