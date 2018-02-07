@@ -53,25 +53,25 @@ class ProfileScreen extends React.Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection:'column' }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#333', flexDirection:'column' }}>
         <Image source = {this.state.user.photo} style = {{height:150, width:150, borderRadius:150/2}}/>
         
         <View style={{flexDirection:'row', alignItems: 'center'}}>
-          <Text style = {{fontSize:48, color:'#444'}}>{this.state.user.name}</Text>
+          <Text style = {{fontSize:48, color:'white'}}>{this.state.user.name}</Text>
           <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
           onPress={() => navigation.navigate('Settings', {})}>
-            <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'#555', marginLeft:10}}/>
+            <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
           </TouchableHighlight>
         </View>
-        <Text style = {{fontSize:24, color:'#666'}}>Birthday: {this.state.user.birthday}</Text>
+        <Text style = {{fontSize:24, color:'white'}}>Birthday: {this.state.user.birthday}</Text>
         <TouchableOpacity activeOpacity={0.25} onPress={this.logInFB.bind(this)}>
           <View style={this.state.user.loggedOut ? {flexDirection:'row', alignItems:'center', marginTop:20} : {display:'none'}}> 
             <Image source={require('../../assets/icons/facebook.png')} style={{height:20, width:20, marginRight:15}}/>
-            <Text  style={{fontSize:18, color:'#555', textDecorationLine:'underline'}}>Connect Account</Text>
+            <Text  style={{fontSize:18, color:'white', textDecorationLine:'underline'}}>Connect Account</Text>
           </View>
         </TouchableOpacity>
         <TextInput
-                style={{textAlign:'center', color:'#666', height: 64, fontSize:24}}
+                style={{textAlign:'center', color:'white', height: 64, fontSize:24}}
                 autoCapitalize='words'
                 placeholder="Enter a status"
                 value={this.state.user.status}
