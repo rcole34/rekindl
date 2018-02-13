@@ -33,7 +33,7 @@ class MemoriesScreen extends React.Component {
 
 
   async componentWillMount() {
-        console.log(this.props.navigation.state.params)
+        //console.log(this.props.navigation.state.params)
 
 
     AsyncStorage.getItem('friends').then((list) => {

@@ -4,115 +4,129 @@ import Swipeout from 'react-native-swipeout'
 import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
 import friendListObject from '../../data.js'
-//var SearchBar = require('react-native-search-bar');
+import firebase from '../../firebase.js'
 
 class HomeScreen extends React.Component {  
     
 
   constructor(props) {
     super(props);
-
-    // UNCOMMENT THIS STUFF TO RESET THE DATABASE, THEN RECOMMENT AFTER RUNNING
-
-    // this.state = {allData: [
-    //     {key: 1, name: 'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 hour ago", lastConnectionType:"High-Fived", notificationCount:1},
-    //     {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday", lastConnectionType:"Sent Text", notificationCount:0},
-    //     {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago", lastConnectionType:"Added Memory", notificationCount:0},
-    //     {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago", lastConnectionType:"High-Fived", notificationCount:0}
-    //   ], currData: [
-    //     {key: 1, name:'Claire R.', photo: require('../../assets/profilePictures/claire.png'), fire: require('../../assets/fires/small_fire.png'), lastConnected:"1 hour ago", lastConnectionType:"High-Fived", notificationCount:1},
-    //     {key: 2, name:'John S.', photo: require('../../assets/profilePictures/john.png'), fire: require('../../assets/fires/large_fire.png'), lastConnected:"yesterday", lastConnectionType:"Sent Text", notificationCount:0},
-    //     {key: 3, name:'Nate G.', photo: require('../../assets/profilePictures/nate.png'), fire: require('../../assets/fires/medium_fire.png'), lastConnected:"4 days ago", lastConnectionType:"Added Memory", notificationCount:0},
-    //     {key: 4, name:'Ella E.', photo: require('../../assets/profilePictures/ella.png'), fire: require('../../assets/fires/dead_fire.png'), lastConnected:"2 weeks ago", lastConnectionType:"High-Fived", notificationCount:0}
-    //   ], width : Dimensions.get('window').width};
-    // AsyncStorage.clear()
-    // return 
-
     this.state = {isLoading: true}
-    
-    // this._removeFriend = this._removeFriend.bind(this)
-    // this._removeFriendPressed = this._removeFriendPressed.bind(this)    
+    //this.props.navigation.navigate('SignIn', {})
   }
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriendInfo', {onSave: navigation.state.params.onSave})}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriendInfo', {onSave: navigation.state.params.onSave, uid: navigation.state.params.uid, value: navigation.state.params.value, newFriend:navigation.state.params.newFriend, chosePhoto: navigation.state.params.chosePhoto})}>
                     <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
             </TouchableWithoutFeedback>,
     })
 
   async componentWillMount() {
-    let isSetUp = await AsyncStorage.getItem('isSetUpDone')
-    if (!isSetUp) {
-      friendObject = {
-        allData: friendListObject.allData,
-        currData: friendListObject.allData,
-      }
+    var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
+    var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
+    var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
+    var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"toasty", friends:[]}
+    var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {            
+            firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
+                list = snapshot.val()
+                let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos'))
+                if (list == null) {
+                    this.setState({
+                        friendPhotos: friendPhotos,
+                        sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
+                        isLoading: false,
+                        width: Dimensions.get('window').width,
+                        height: Dimensions.get('window').width
+                    })
+                    return
+                }
+                deadFriends.friends = []
+                tinyFriends.friends = []
+                smallFriends.friends = []
+                mediumFriends.friends = []
+                largeFriends.friends = []
+                let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
+                let fires = [require('../../assets/fires/dead_fire.png'), require('../../assets/fires/tiny_fire.png'), require('../../assets/fires/small_fire.png'), require('../../assets/fires/medium_fire.png'), require('../../assets/fires/large_fire.png')]
+                let bgFires = [require('../../assets/fires/vanishing.png'), require('../../assets/fires/fading.png'), require('../../assets/fires/calm.jpg'), require('../../assets/fires/toasty.png'), require('../../assets/fires/roaring.png')]
+        
+                
 
-      await AsyncStorage.setItem('friends', JSON.stringify(friendObject))
-      await AsyncStorage.setItem('isSetUpDone', 'done!')
-    }
-    AsyncStorage.getItem('friends').then((list) => {
-        if (list == null) return
-        let friendsList = JSON.parse(list)
-        let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
-        let fires = [require('../../assets/fires/dead_fire.png'), require('../../assets/fires/tiny_fire.png'), require('../../assets/fires/small_fire.png'), require('../../assets/fires/medium_fire.png'), require('../../assets/fires/large_fire.png')]
-        let bgFires = [require('../../assets/fires/vanishing.png'), require('../../assets/fires/fading.png'), require('../../assets/fires/calm.jpg'), require('../../assets/fires/toasty.png'), require('../../assets/fires/roaring.png')]
-      var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
-      var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
-      var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
-      var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"toasty", friends:[]}
-      var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
+                for (var key in list) {
+                    friend = list[key]
 
-      for (var i = 0; i < friendsList.allData.length; i++) {
-        if(!friendsList.allData[i].photo) {
-            friendsList.allData[i].photo = defaultPhoto
+                    if(friendPhotos && friendPhotos[key]) {
+                        friend.photo = friendPhotos[key]
+                    }
+                    else {
+                        friend.photo = defaultPhoto
+                    }
+                    if(friend.currFire === 'dead') {
+                        friend.bgFire = bgFires[0]
+                        friend.fire = fires[0]
+                        deadFriends.friends.push(friend)
+                    }
+                    else if(friend.currFire === 'tiny') {
+                        friend.bgFire = bgFires[1]
+                        friend.fire = fires[1]
+                        tinyFriends.friends.push(friend)
+                    }
+                    else if(friend.currFire === 'small') {
+                        friend.bgFire = bgFires[2]
+                        friend.fire = fires[2]
+                        smallFriends.friends.push(friend)
+                    }
+                    else if(friend.currFire === 'medium') {
+                        friend.bgFire = bgFires[3]
+                        friend.fire = fires[3]
+                        mediumFriends.friends.push(friend)
+                    }
+                    else if(friend.currFire === 'large') {
+                        friend.bgFire = bgFires[4]
+                        friend.fire = fires[4]
+                        largeFriends.friends.push(friend)
+                    }
+                };
+                this.setState({
+                    friendPhotos: friendPhotos,
+                    sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
+                    isLoading: false,
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').width
+                })
+                
+            }.bind(this))
+
+        } else {
+            this.setState({
+                friendPhotos: {},
+                sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
+                isLoading: false,
+                width: Dimensions.get('window').width,
+                height: Dimensions.get('window').width
+            })
+            firebase.auth().signInWithEmailAndPassword('rcole34@stanford.edu', 'test123')
+            //go to sign in page and remove back button
+            //this.props.navigation.navigate()
         }
-        if(friendsList.allData[i].currFire === 'dead') {
-            friendsList.allData[i].bgFire = bgFires[0]
-            friendsList.allData[i].fire = fires[0]
-          deadFriends.friends.push(friendsList.allData[i])
-        }
-        else if(friendsList.allData[i].currFire === 'tiny') {
-            friendsList.allData[i].bgFire = bgFires[1]
-            friendsList.allData[i].fire = fires[1]
-          tinyFriends.friends.push(friendsList.allData[i])
-        }
-        else if(friendsList.allData[i].currFire === 'small') {
-            friendsList.allData[i].bgFire = bgFires[2]
-            friendsList.allData[i].fire = fires[2]
-          smallFriends.friends.push(friendsList.allData[i])
-        }
-        else if(friendsList.allData[i].currFire === 'medium') {
-            friendsList.allData[i].bgFire = bgFires[3]
-            friendsList.allData[i].fire = fires[3]
-          mediumFriends.friends.push(friendsList.allData[i])
-        }
-        else if(friendsList.allData[i].currFire === 'large') {
-            friendsList.allData[i].bgFire = bgFires[4]
-            friendsList.allData[i].fire = fires[4]
-          largeFriends.friends.push(friendsList.allData[i])
-        }
-      };
-      this.setState({
-        allData: friendsList.allData,
-        currData: friendsList.currData,
-        sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
-        isLoading: false,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').width
-      })
-    })
+    }.bind(this))
+    
   }
 
     componentDidMount() {
         this.props.navigation.setParams({ onSave: this.onSave });
+        this.props.navigation.setParams({ value: '', newFriend: {firstName:'', lastName:'', category: 'weekFriend', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}, chosePhoto: false} );
     }
+
+
 
 /* render method for new prototype*/
   render() {
     if (this.state.isLoading) {
-      return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Loading...</Text></View>;
+      return <View style={{flex: 1, backgroundColor:'#333', justifyContent: 'center', alignItems: 'center'}}><Text style={{color:'white'}}>Loading...</Text></View>;
     }
 
     const { navigate } = this.props.navigation;
@@ -137,7 +151,7 @@ _renderCategory(item, navigation) {
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:-20}}>
                 <Text style={{fontSize:24, color:'white', fontWeight:'200'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
-                {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends})}}>
+                {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends, rekindl: this.rekindl})}}>
                     <Text style={{color:"white"}}>View All</Text>
                 </TouchableOpacity>}
             </View>
@@ -156,284 +170,48 @@ _renderCategory(item, navigation) {
 _renderList(item, navigation) {
     return(
         <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
-            <TouchableOpacity activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends});}}>
+            <TouchableOpacity activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends, rekindl: this.rekindl});}}>
                 <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
                     <Image source={item.photo} style={{height:80, width:80, borderRadius:80/2}}/>
-                    <Text style={{color:'white'}}>{item.name}</Text>
+                    <Text style={{color:'white'}}>{item.firstName} {item.lastName[0]}.</Text>
                 </View>
             </TouchableOpacity>
         </View>
     );
 }
 
-
-  /* Method used in old prototype to remove friend*/
-  // _removeFriend(item) {
-
-  //   //console.log(item)
-  //   for (var i = 0; i < this.state.allData.length; i++) {
-  //     if(this.state.allData[i].key === item.key) {
-  //       this.state.allData.splice(i,1);
-  //     }
-  //   };
-  //   let newFriendsList = {
-  //     allData: this.state.allData,
-  //     currData: this.state.allData
-  //   }
-
-  //   AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-  //   this.setState({currData : this.state.allData});
-    
-  // }
+rekindl = (user) => {
+    var currUser = firebase.auth().currentUser;
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now()})    
+  };
 
 
-/* Method used in the old prototype to confirm removal of a friend*/
-  // _removeFriendPressed(item) {
-  //   Alert.alert('Delete ' + item.name + '?', 
-  //     'This will delete all your memories with this friend.', 
-  //     [
-  //       {text: 'Delete', onPress: () => this._removeFriend(item)},
-  //       {text: 'Cancel'}
-  //     ])
-  // }
 
-/*Method used in old prototype to save a new friend*/
   onSave = (user, chosePhoto) => {
-    user.key = this.state.currData.length + new Date().getUTCMilliseconds();
+    var currUser = firebase.auth().currentUser;
+
+    user.key = this.state.sortedFriends[1].friends.length + Date.now();
     
     user.currFire = 'tiny'
-    user.lastConnected = 'today';
+    user.lastConnected = Date.now();
     user.status = null
     user.statusAge = null
     user.number = user.phone.toString()
     if(!chosePhoto) {
-        user.photo = null
-    }
-    delete user.phone
-    const copyGroups = this.state.sortedFriends.slice();
-    const copyData = this.state.allData.slice();
-    copyData.unshift(user)
-    user.fire = require('../../assets/fires/tiny_fire.png');
-    user.bgFire = require('../../assets/fires/fading.png')
-    if(!chosePhoto) {
         user.photo = require('../../assets/profilePictures/default-profile.png')
     }
-    copyGroups[1].friends.unshift(user);
+    delete user.phone
+    let friendPhotos = this.state.friendPhotos
+    friendPhotos[user.number] = user.photo
 
-    let newFriendsList = {
-      allData: copyData,
-      currData: copyData
-    }
+    AsyncStorage.setItem('friendPhotos', JSON.stringify(friendPhotos))
 
-    AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-    this.setState({sortedFriends: copyGroups});
-    this.forceUpdate();
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: user.currFire, number: user.number, lastConnected: user.lastConnected})
     
   };
 
 
-/* method used in old prototype to update order of friend list and update fire size when there was a connection*/
-  // updateOrder = (item, action, newNotification) => {
-  //   dataCopy = [];
 
-  //   for (var i = 0; i < this.state.currData.length; i++) {
-  //     if(this.state.currData[i].key === item.key) {
-  //       dataCopy.push(this.state.currData[i])
-  //     }
-  //   };
-
-  //   for (var i = 0; i < this.state.currData.length; i++) {
-  //     if(this.state.currData[i].key !== item.key) {
-  //       dataCopy.push(this.state.currData[i])
-  //     }
-  //   };
-
-  //   dataCopy[0].lastConnected = 'today'
-  //   dataCopy[0].lastConnectionType = 'You: ' + action
-
-
-  //   notificationsCopy = dataCopy[0].notifications.slice()
-  //   notificationsCopy.push(newNotification)
-  //   dataCopy[0].notifications = notificationsCopy
-
-  //   // UPDATE THE FIRE
-  //   if (dataCopy[0].currFire == 'dead') {
-  //     dataCopy[0].fire = require('../../assets/fires/tiny_fire.png')
-  //     dataCopy[0].currFire = 'tiny'
-  //   } else if (dataCopy[0].currFire == 'tiny') {
-  //     dataCopy[0].fire = require('../../assets/fires/small_fire.png')
-  //     dataCopy[0].currFire = 'small'
-  //   } else if (dataCopy[0].currFire == 'small') {
-  //     dataCopy[0].fire = require('../../assets/fires/medium_fire.png')
-  //     dataCopy[0].currFire = 'medium'
-  //   } else if (dataCopy[0].currFire == 'medium') {
-  //     dataCopy[0].fire = require('../../assets/fires/large_fire.png')
-  //     dataCopy[0].currFire = 'large'
-  //   }
-
-  //   this.setState({allData: dataCopy, currData: dataCopy})
-
-    
-  //   let newFriendsList = {
-  //     allData: dataCopy,
-  //     currData: dataCopy
-  //   }
-  //   AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-  // }
-
-
-/* Method used in old prototype to update notification count when a user clicked on a friend who had notifications*/
-  // updateNotifications = (userKey, notificationKey) => {
-  //   dataCopy = [];
-
-  //   for (var i = 0; i < this.state.currData.length; i++) {
-  //     if (this.state.currData[i].key === userKey) {
-  //       notificationsCopy = this.state.currData[i].notifications.slice()
-  //       for (var j = 0; j < notificationsCopy.length; j++) {
-  //         if (notificationsCopy[j].key === notificationKey) {
-  //           notificationsCopy[j].status = 'old'
-  //         }
-  //       }
-
-  //       this.state.currData[i].notifications = notificationsCopy
-  //     }
-
-  //     dataCopy.push(this.state.currData[i])
-  //   };
-
-  //   this.setState({allData: dataCopy, currData: dataCopy})
-
-    
-  //   let newFriendsList = {
-  //     allData: dataCopy,
-  //     currData: dataCopy
-  //   }
-  //   AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-  // }
-
-/* Method never actually used but designed to filter shown friends if a search bar were implemented*/
-  // function filterData(text) {
-  //   var newData = [];
-  //   for (var i = 0; i < allData.length; i++) {
-  //     if(allData[i].key.toLowerCase.includes(text.toLowerCase()))
-  //       newData.push(allData[i]);
-  //   };
-  //   currData = newData;
-  // }
-
-
-  /*idk how this was different than the method a few lines up lol*/
-  // _removeNotifications(key) {
-  //   dataCopy = this.state.currData;
-  //   for (var i = 0; i < this.state.currData.length; i++) {
-  //     if(this.state.currData[i].key === key) {
-  //       dataCopy[i].notificationCount = 0;
-  //       this.setState({ currData : dataCopy });
-  //       this.setState({ allData : dataCopy });
-  //     }
-  //   };
-
-  //   let newFriendsList = {
-  //     allData: dataCopy,
-  //     currData: dataCopy
-  //   }
-  //   AsyncStorage.setItem('friends', JSON.stringify(newFriendsList))
-  // }
-
-/* Controlled rendering of items in list view in old prototype*/
-  // _renderItem(item, navigation) {
-  //   let swipeBtns = [{
-  //     text: 'High Five',
-  //     backgroundColor: '#CDBB79',
-  //     underlayColor: 'rgba(0, 0, 0, 0.6)',
-  //     onPress: () => {
-  //       // UPDATE DATABASE and ORDER
-
-  //       newNotification = {
-  //         key: item.notifications.length + 1, 
-  //         status: 'old', 
-  //         type: 'High-fived', 
-  //         date: "Dec 8", 
-  //         description: 'You high-fived ' + item.name, 
-  //         icon: require('../../assets/icons/hand.png'), 
-  //         tintColor: '#CDBB79'
-  //       }
-
-  //       this.updateOrder(item, 'High-fived', newNotification)
-        
-  //       Alert.alert('Success','High five sent!');
-  //     }
-  //   },
-  //   {
-  //     text: 'Remove',
-  //     backgroundColor: 'crimson',
-  //     underlayColor: 'rgba(0, 0, 0, 0.6)',
-  //     onPress: () => {this._removeFriendPressed(item)}
-  //   }];
-  //   return(
-  //         <Swipeout right={swipeBtns} backgroundColor= 'transparent' autoClose={true}>
-  //           <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-  //           onPress={() => {
-  //             this._removeNotifications(item.key);
-  //             // navigation.navigate('Detail', {name: item.name, photo: item.photo, fire: item.fire, lastConnected: item.lastConnected});
-  //             navigation.navigate('Detail', {notifications: this.updateNotifications, update: this.updateOrder, key: item.key, name: item.name});
-  //           }}> 
-  //             <View style={{flex: 1, height: 100, width:this.state.width, flexDirection: 'row', justifyContent: 'center'}}>
-  //               <Image source={item.photo} style={{height:83, width:83, borderRadius:83/2, marginRight:10, marginTop:10, position:'absolute', left:10}}/>
-  //               <View style={{display:item.notificationCount==0?'none':'flex', alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:26, width:26, borderRadius:26/2, position:'absolute', top:7, left:7}}>
-  //                 <Text style={{color:'#FFF', fontSize:14,}}>{item.notificationCount}</Text>
-  //               </View>
-  //               <View style={{flexDirection: 'column', justifyContent: 'center', position:'absolute', left: 103, top:15}}>
-  //                 <Text numberOfLines={1} style={{width: this.state.width/1.8, fontSize: 36, color:'#444', fontWeight:item.notificationCount==0?'normal':'bold'}}>{item.name}</Text>
-  //                 <Text style={{fontSize: 14, color:'#888'}}>{item.lastConnectionType} {item.lastConnected}</Text>
-  //               </View>
-  //               <Image source={item.fire} style={{position:'absolute', right:0, width: 95, height: 95}}/>
-  //             </View>
-  //           </TouchableHighlight>
-  //         </Swipeout>);
-  // }
-
-/*render method for old prototype*/
-  // render() {
-  //   if (this.state.isLoading) {
-  //     return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Loading...</Text></View>;
-  //   }
-
-  //   const { navigate } = this.props.navigation;
-  //   return(
-  //   <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
-      
-  //     <FlatList
-  //       visible={this.state.currData.length!==0}
-  //       data={this.state.currData}
-  //       extraData={this.state}
-  //       renderItem={({item}) => this._renderItem(item, {navigate})}
-
-  //       ItemSeparatorComponent={this.renderSeparator}
-  //     />
-  //     <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
-  //           onPress={() => navigate('AddFriend', {onSave: this.onSave})} style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}> 
-  //       <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
-  //         <Text style={{color:'#FFF', fontSize:32, marginBottom:5}}>+</Text>
-  //       </View>
-  //     </TouchableHighlight>
-  //   </View>
-
-  // )};
-
-  renderSeparator = () => {
-      return (
-        <View
-          style={{
-            height: 1,
-            width: '90%',
-            backgroundColor: '#999',
-            marginLeft: '5%',
-            marginRight: '5%'
-          }}
-        />
-      );
-    };
-  }
+}
 
 export default HomeScreen;

@@ -92,7 +92,7 @@ setEditorStyle() {
     const navigation = this.props.navigation;
     return (
       <KeyboardAwareScrollView
-      style={{ flex: 1, flexDirection:'column', backgroundColor: '#222' }}
+      style={{ flex: 1, flexDirection:'column', backgroundColor: '#333' }}
       resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
       scrollEnabled={false}>

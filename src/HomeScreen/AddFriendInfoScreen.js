@@ -1,10 +1,14 @@
 import React from 'react';
-import { Animated, StatusBar, TextInput, Picker, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { TouchableWithoutFeedback, Animated, StatusBar, TextInput, Picker, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation'
 
 
 class FloatingLabelInput extends React.Component {
+
+  
+
+
   state = {
     isFocused: false,
   };
@@ -61,8 +65,20 @@ class FloatingLabelInput extends React.Component {
 class AddFriendInfoScreen extends React.Component {
     constructor(props) {
     super(props);
-    this.state = {chosePhoto: false, value: '', newFriend:{name:'', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
+    this.state = {chosePhoto: false, value: '', newFriend:{firstName:'', lastName: '', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
   }
+
+  static navigationOptions = ({navigation}) => ({
+        headerRight: 
+            <TouchableWithoutFeedback onPress={() => {
+                    navigation.state.params.onSave(navigation.state.params.newFriend, navigation.state.params.chosePhoto);
+                    navigation.goBack()
+                    /*navigation.state.params.goBack()*/
+
+                }}>
+                    <View><Text style={{color: '#f1f1f1', marginRight: 15, marginBottom: 5, fontSize:18}}>Add</Text></View>
+            </TouchableWithoutFeedback>,
+    })
 
 
   _pickImage = async () => {
@@ -72,70 +88,85 @@ class AddFriendInfoScreen extends React.Component {
     });
 
     if (!result.cancelled) {
-        this.setState({chosePhoto: true})
-        const newFriend = Object.assign({}, this.state.newFriend, { photo: {uri: result.uri} }); 
-        this.setState({ newFriend });
+        this.props.navigation.setParams({chosePhoto: true})
+        const newFriend = Object.assign({}, this.props.navigation.newFriend, { photo: {uri: result.uri} }); 
+        this.props.navigation.setParams({ newFriend });
     }
   };
   
   
 
-  handleTextChange = (newText) => this.setState({ value: newText });
+  handleTextChange = (newText) => this.props.navigation.setParams({ value: newText });
 
   render() {
     const navigation = this.props.navigation;
     return (
       <View style={{ flex: 1, padding: 40, backgroundColor: '#333' }}>
       <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
-                <Image source = {this.state.newFriend.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
+                <Image source = {navigation.state.params.newFriend.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
                     <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.7)'}}>
                         <Text>set photo</Text>
                     </View>
                 </Image>
             </TouchableHighlight>
-        <StatusBar hidden />
+        
+        
+        
         <FloatingLabelInput
-          label="Name of Your Friend"
-          value={this.state.newFriend.name}
+          label="First Name"
+          value={navigation.state.params.firstName}
           onChangeText={(text) => {
-                        const newFriend = Object.assign({}, this.state.newFriend, { name: text }); 
-                        this.setState({ newFriend });
+                        const newFriend = Object.assign({}, navigation.state.params.newFriend, { firstName: text }); 
+                        navigation.setParams({ newFriend });
                     }}
-                    returnKeyType='done'
-        /> 
+                    returnKeyType='done'/> 
+        
+        <Text>{`\n`}</Text>
+        <FloatingLabelInput
+          label="Last Name"
+          value={navigation.state.params.lastName}
+          onChangeText={(text) => {
+                        const newFriend = Object.assign({}, navigation.state.params.newFriend, { lastName: text }); 
+                        navigation.setParams({ newFriend });
+                    }}
+                    returnKeyType='done'/> 
+        
         <Text>{`\n`}</Text>
        <FloatingLabelInput
             style="marginTop: 100"
           label="Phone Number"
-          value={this.state.newFriend.phone}
+          value={navigation.state.params.newFriend.phone}
                     keyboardType='phone-pad'
                     onChangeText={(text) => {
-                        const newFriend = Object.assign({}, this.state.newFriend, { phone: text }); 
-                        this.setState({ newFriend });
+                        const newFriend = Object.assign({}, navigation.state.params.newFriend, { phone: text }); 
+                        navigation.setParams({ newFriend });
                     }}
                     returnKeyType='done'
         /> 
         <Text style={{marginTop: 40, color:'white', fontSize:18}}>How often do you want to reach out to this friend? </Text>
                 <Picker
-                selectedValue={this.state.category}
-                onValueChange={(itemValue, itemIndex) => this.setState({category: itemValue})}>               
+                selectedValue={navigation.state.params.newFriend.category}
+                onValueChange={(itemValue, itemIndex) => {
+                        const newFriend = Object.assign({}, navigation.state.params.newFriend, { category: itemValue }); 
+                        navigation.setParams({ newFriend });
+                    }}>               
                 <Picker.Item color='white' label = 'Once a week' value = 'weekFriend' />
                <Picker.Item color='white' label = 'Once every two weeks' value = 'biweekFriend'  />
                <Picker.Item color='white' label = 'Once a month' value = 'monthFriend' />
                <Picker.Item color='white' label = 'Once every two months' value = 'bimonthFriend' />
             </Picker>
-            <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+            {/*<TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
                     navigation.state.params.onSave(this.state.newFriend, this.state.chosePhoto);
                     navigation.goBack()
-                    /*navigation.state.params.goBack()*/
+                    /*navigation.state.params.goBack()*
 
                 }}>
                 <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
                     <Text style={{color:'white', fontSize:18}}>Add</Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableHighlight>*/}
       </View>
     );
   }

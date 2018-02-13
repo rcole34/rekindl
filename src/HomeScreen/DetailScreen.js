@@ -49,20 +49,31 @@ export default class DetailScreen extends React.Component {
   		OpenAnything.Call(number)
   	}
 
+  	_rekindlPressed = function(friend) {
+  		Alert.alert(
+  			'Report Activity',
+  			'Have you recently connected with ' + friend.name + ' and wish to rekindle this fire?',
+  			[
+  				{text: 'No'},
+  				{text: 'Yes', onPress: () => {this.props.navigation.state.params.rekindl(friend); this.props.navigation.goBack()}}
+  			]
+  		)
+  	}
+
 
 
   	render() {
   		var pages = []
 
   		for(var i = 0; i < this.state.currGroup.friends.length; i++) {
-  			index = i
+  			((i) => {
   			pages.push(
 				<View key={i} style={{width:'90%', height:'95%', borderRadius:10, backgroundColor:'#222', flexDirection:'column', alignItems:'center'}}>
 			    	<Image source={this.state.currGroup.friends[i].photo} style={{width:this.state.width*0.9, height:this.state.height*0.9*0.467}}/>
 			        <LinearGradient colors={['transparent', 'rgba(34,34,34,0.7)']} style={{position:'absolute', width:this.state.width*0.9, height:this.state.height*0.9*0.03, top:this.state.height*0.9*0.437}}/>
 			        <Image source={this.state.currGroup.friends[i].bgFire} style={{position:'absolute', top:this.state.height*0.9*0.467, width:this.state.width*0.9, height:this.state.height*0.9*0.44, opacity:0.2}}/>
 			        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop:'3%'}}>
-			        	<Text style={{backgroundColor:'transparent', fontWeight:'400', color:'white', fontSize:32}}>{this.state.currGroup.friends[i].name}</Text>
+			        	<Text style={{backgroundColor:'transparent', fontWeight:'400', color:'white', fontSize:32}}>{this.state.currGroup.friends[i].firstName} {this.state.currGroup.friends[i].lastName}</Text>
 			        	<Image source={this.state.currGroup.friends[i].fire} style={{marginLeft:'1%', height:60, width:60, bottom:10}}/>
 			       	</View>
 			        {this.state.currGroup.friends[i].status?
@@ -72,17 +83,21 @@ export default class DetailScreen extends React.Component {
 			        	</View>
 			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'8%'}}>No recent status</Text>
 			        }
-			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'10%'}}>
-			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[index].name, this.state.currGroup.friends[index].number)}}>
+			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'15%'}}>
+			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[i].name, this.state.currGroup.friends[i].number)}}>
 			        		<Image source={require('../../assets/icons/send-text.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
-			        	<TouchableOpacity activeOpacity={0.25} style={{left:'50%'}} onPress={() => {this._callPress(this.state.currGroup.friends[index].number)}}>
+			        	<TouchableOpacity activeOpacity={0.25} style={{left:'50%'}} onPress={() => {this._callPress(this.state.currGroup.friends[i].number)}}>
 			        		<Image source={require('../../assets/icons/phone-outline.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
 			        </View>
+			        <TouchableOpacity style={{position:'absolute', bottom:'10%'}} activeOpacity={0.25} onPress={() => {this._rekindlPressed(this.state.currGroup.friends[i])}}>
+			        	<Text style={{backgroundColor:'transparent', color:'white'}}>Report Activity</Text>
+			        </TouchableOpacity>
 			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this.state.currGroup.friends[i].lastConnected}</Text>
 			   	</View>
 			)
+			})(i)
 		}
 
   		return (
@@ -97,7 +112,7 @@ export default class DetailScreen extends React.Component {
 						}
 						activeDot={
 							<View style={{alignItems:'center', justifyContent:'center', backgroundColor: 'white', width: 14, height: 14, borderRadius: 7, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}}>
-								<View style={{backgroundColor: '#222', width: 6, height: 6, borderRadius: 3}} />
+								<View style={{backgroundColor: '#333', width: 6, height: 6, borderRadius: 3}} />
 							</View>
 						}>
 					{pages}  

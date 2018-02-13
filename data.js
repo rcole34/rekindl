@@ -6,7 +6,8 @@
 
 claire = {
 	key: 1,
-	name: 'Claire R.',
+	firstName: 'Claire',
+	lastName: 'Rose',
 	photo: require('./assets/profilePictures/claire.png'),
 	currFire: 'small',
 	lastConnected:"today", 
@@ -17,7 +18,8 @@ claire = {
 
 alisha = {
 	key: 5,
-	name: 'Alisha L.',
+	firstName: 'Alisha',
+	lastName: 'Long',
 	photo: require('./assets/profilePictures/alisha.png'),
 	currFire: 'small',
 	lastConnected:"today", 
@@ -28,7 +30,8 @@ alisha = {
 
 raj = {
 	key: 6,
-	name: 'Raj T.',
+	firstName: 'Raj',
+	lastName: 'Tambil',
 	photo: require('./assets/profilePictures/raj.png'),
 	currFire: 'small',
 	lastConnected:"today", 
@@ -39,7 +42,8 @@ raj = {
 
 john = {
 	key: 2,
-	name: 'John S.',
+	firstName: 'John',
+	lastName: 'Smith',
 	photo: require('./assets/profilePictures/john.png'),
 	currFire: 'large',
 	lastConnected:"yesterday", 
@@ -50,7 +54,8 @@ john = {
 
 nate = {
 	key: 3,
-	name: 'Nate G.',
+	firstName: 'Nate',
+	lastName: 'Green',
 	photo: require('./assets/profilePictures/nate.png'),
 	currFire: 'medium',
 	lastConnected:"4 days ago", 
@@ -61,7 +66,8 @@ nate = {
 
 ella = {
 	key: 4,
-	name: 'Ella E.',
+	firstName: 'Ella',
+	lastName: 'Eldridge',
 	photo: require('./assets/profilePictures/ella.png'),
 	currFire: 'dead',
 	lastConnected:"2 weeks ago", 
@@ -72,7 +78,8 @@ ella = {
 
 chris = {
 	key: 7,
-	name: 'Chris C.',
+	firstName: 'Chris',
+	lastName: 'Cender',
 	photo: require('./assets/profilePictures/chris.png'),
 	currFire: 'dead',
 	lastConnected:"3 weeks ago", 
@@ -101,5 +108,6 @@ friends = {allData: [
 		chris
 	]
 }
+
 
 export default friends

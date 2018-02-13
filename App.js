@@ -9,16 +9,19 @@ import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
 import AddFriendInfoScreen from './src/HomeScreen/AddFriendInfoScreen.js';
 import ProfileScreen from "./src/ProfileScreen/ProfileScreen.js";
 import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
-import * as firebase from 'firebase';
+import PhoneAuthScreen from "./src/Registration/PhoneAuth.js";
+import SignInScreen from "./src/Registration/SignInScreen.js";
+import SignUpScreen from "./src/Registration/SignUpScreen.js";
+import * as firebase from './firebase.js';
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCgrNCNxDVCYPa7IBq3d0zQFCWTaNNsQxg",
-  authDomain: "rekindl-27d5f.firebaseapp.com",
-  databaseURL: "https://rekindl-27d5f.firebaseio.com",
-  storageBucket: "rekindl-27d5f.appspot.com"
-};
-firebase.initializeApp(firebaseConfig);
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCgrNCNxDVCYPa7IBq3d0zQFCWTaNNsQxg",
+//   authDomain: "rekindl-27d5f.firebaseapp.com",
+//   databaseURL: "https://rekindl-27d5f.firebaseio.com",
+//   storageBucket: "rekindl-27d5f.appspot.com"
+// };
+// firebase.initializeApp(firebaseConfig);
 
 
 class LogoTitle extends React.Component {
@@ -61,10 +64,43 @@ const RootNavigator = StackNavigator({
       headerBackTitle: ' '
     }),
   },
+  SignIn: {
+    screen: SignInScreen,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
+  },
+  SignUp: {
+    screen: SignUpScreen,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
+  },
+  PhoneAuth: {
+    screen: PhoneAuthScreen,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
+  },
   AddFriend: {
     screen: AddFriendScreen,
     navigationOptions: ({navigation}) => ({
-      title: <LogoTitle/>,
+      headerTitle: <LogoTitle/>,
       headerStyle: {
         backgroundColor: '#222',
       },
