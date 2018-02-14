@@ -100,10 +100,10 @@ setEditorStyle() {
         
         <View style={{flexDirection:'row', alignItems: 'center'}}>
           <Text style = {{fontSize:48, color:'white'}}>{this.state.user.name}</Text>
-          <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+          <TouchableOpacity activeOpacity={0.25}
           onPress={() => navigation.navigate('Settings', {})}>
             <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
         {/*<Text style = {{fontSize:24, color:'white'}}>Birthday: {this.state.user.birthday}</Text>*/}
         <TouchableOpacity activeOpacity={0.25} onPress={this.logInFB.bind(this)}>
