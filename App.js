@@ -14,6 +14,7 @@ import SignInScreen from "./src/Registration/SignInScreen.js";
 import SignUpScreen from "./src/Registration/SignUpScreen.js";
 import * as firebase from './firebase.js';
 
+console.disableYellowBox = true;
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCgrNCNxDVCYPa7IBq3d0zQFCWTaNNsQxg",

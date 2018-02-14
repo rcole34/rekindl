@@ -65,13 +65,13 @@ class FloatingLabelInput extends React.Component {
 class AddFriendInfoScreen extends React.Component {
     constructor(props) {
     super(props);
-    this.state = {chosePhoto: false, value: '', newFriend:{firstName:'', lastName: '', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
+    this.state = {value: '', newFriend:{firstName:'', lastName: '', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
   }
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
             <TouchableWithoutFeedback onPress={() => {
-                    navigation.state.params.onSave(navigation.state.params.newFriend, navigation.state.params.chosePhoto);
+                    navigation.state.params.onSave(navigation.state.params.newFriend);
                     navigation.goBack()
                     /*navigation.state.params.goBack()*/
 
@@ -88,8 +88,7 @@ class AddFriendInfoScreen extends React.Component {
     });
 
     if (!result.cancelled) {
-        this.props.navigation.setParams({chosePhoto: true})
-        const newFriend = Object.assign({}, this.props.navigation.newFriend, { photo: {uri: result.uri} }); 
+        const newFriend = Object.assign({}, this.props.navigation.state.params.newFriend, {photo: {uri: result.uri} }); 
         this.props.navigation.setParams({ newFriend });
     }
   };
@@ -114,7 +113,7 @@ class AddFriendInfoScreen extends React.Component {
         
         <FloatingLabelInput
           label="First Name"
-          value={navigation.state.params.firstName}
+          value={navigation.state.params.newFriend.firstName}
           onChangeText={(text) => {
                         const newFriend = Object.assign({}, navigation.state.params.newFriend, { firstName: text }); 
                         navigation.setParams({ newFriend });
@@ -124,7 +123,7 @@ class AddFriendInfoScreen extends React.Component {
         <Text>{`\n`}</Text>
         <FloatingLabelInput
           label="Last Name"
-          value={navigation.state.params.lastName}
+          value={navigation.state.params.newFriend.lastName}
           onChangeText={(text) => {
                         const newFriend = Object.assign({}, navigation.state.params.newFriend, { lastName: text }); 
                         navigation.setParams({ newFriend });
@@ -158,7 +157,7 @@ class AddFriendInfoScreen extends React.Component {
             {/*<TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
-                    navigation.state.params.onSave(this.state.newFriend, this.state.chosePhoto);
+                    navigation.state.params.onSave(this.state.newFriend);
                     navigation.goBack()
                     /*navigation.state.params.goBack()*
 

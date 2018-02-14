@@ -17,7 +17,7 @@ class HomeScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriendInfo', {onSave: navigation.state.params.onSave, uid: navigation.state.params.uid, value: navigation.state.params.value, newFriend:navigation.state.params.newFriend, chosePhoto: navigation.state.params.chosePhoto})}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave, uid: navigation.state.params.uid, value: navigation.state.params.value, newFriend:navigation.state.params.newFriend})}>
                     <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
             </TouchableWithoutFeedback>,
     })
@@ -33,7 +33,7 @@ class HomeScreen extends React.Component {
         if (user) {            
             firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
                 list = snapshot.val()
-                let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos'))
+                let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
                 if (list == null) {
                     this.setState({
                         friendPhotos: friendPhotos,
@@ -118,7 +118,7 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         this.props.navigation.setParams({ onSave: this.onSave });
-        this.props.navigation.setParams({ value: '', newFriend: {firstName:'', lastName:'', category: 'weekFriend', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}, chosePhoto: false} );
+        this.props.navigation.setParams({ value: '', newFriend: {firstName:'', lastName:'', category: 'weekFriend', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}} );
     }
 
 
@@ -187,7 +187,7 @@ rekindl = (user) => {
 
 
 
-  onSave = (user, chosePhoto) => {
+  onSave = (user) => {
     var currUser = firebase.auth().currentUser;
 
     user.key = this.state.sortedFriends[1].friends.length + Date.now();
@@ -197,12 +197,11 @@ rekindl = (user) => {
     user.status = null
     user.statusAge = null
     user.number = user.phone.toString()
-    if(!chosePhoto) {
-        user.photo = require('../../assets/profilePictures/default-profile.png')
-    }
     delete user.phone
     let friendPhotos = this.state.friendPhotos
-    friendPhotos[user.number] = user.photo
+    if(friendPhotos){
+        friendPhotos[user.number] = user.photo
+    }
 
     AsyncStorage.setItem('friendPhotos', JSON.stringify(friendPhotos))
 

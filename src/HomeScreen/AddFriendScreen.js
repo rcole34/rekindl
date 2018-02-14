@@ -1,49 +1,137 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, Button, StatusBar, AppRegistry, TouchableWithoutFeedback, Alert, Dimensions, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import Swipeout from 'react-native-swipeout'
+import { NavigationActions } from 'react-navigation'
+import {AsyncStorage} from 'react-native'
+import React, { Component } from 'react';
+import { SearchBar } from 'react-native-elements'
 
+import "@expo/vector-icons";
+
+var data = {friends:[]}
+
+var hasFetched = false
+
+var contacts = []
 
 
 class AddFriendScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    
+    this.state = {isLoading: true}
+    async function showFirstContactAsync() {
+  // Ask for permission to query contacts.
+  const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+  if (permission.status !== 'granted') {
+    // Permission was denied...
+    return;
   }
+  var that = this;
+
+  contacts = await Expo.Contacts.getContactsAsync({
+    fields: [
+      Expo.Contacts.PHONE_NUMBERS,
+      Expo.Contacts.EMAILS,
+      Expo.Contacts.IMAGE,
+    ],
+    pageSize: 1000,
+    pageOffset: 0,
+  });
+
+       //`Phone numbers: ${JSON.stringify(contacts.data[3].phoneNumbers)}\n`
+
+  for (var i = 0; i < contacts.total; i++) {
+    if(contacts.data[i] != null && contacts.data[i].phoneNumbers[0] != null){
+      var friend = {name: '', phoneNumber: '', image: ''}
+      friend.name = contacts.data[i].name
+      friend.phone = contacts.data[i].phoneNumbers[0].digits
+      if(contacts.data[i].imageAvailable){
+        friend.image = contacts.data[i].image
+        console.log(friend.image)
+      } else {
+        friend.image = require('../../assets/profilePictures/default-profile.png')
+      }
+      data.friends.push(friend)
+    }
+  }
+
+  data.friends.sort(function(a, b){
+ var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase();
+ if (nameA < nameB) //sort string ascending
+  return -1;
+ if (nameA > nameB)
+  return 1;
+ return 0; //default return value (no sorting)
+});
+
+
+
+
+}
+  if(!hasFetched){
+    showFirstContactAsync();
+    hasFetched = true
+  } 
+
+  }
+
 
   _enterManually = function() {
 
   }
-  
-render() {
-    const navigation = this.props.navigation;
-    return(
-  <View style={{flex:1, flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:'#333'}}>
-  	<Text style={{fontSize:36, color:'white', position:'absolute', top:'10%'}}>New Connection</Text>
-  	<Text style={{fontSize:24, color:'white', position:'absolute', top:'25%'}}>Add from</Text>
-  	<View style={{flexDirection:'row', justifyContent:'flex-start', position:'absolute', top:'35%'}}>
-  		<TouchableHighlight style={{margin:30}}>
-  			<View style={{flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-  				<Image source={require('../../assets/icons/facebook.png')} style={{height:80, width:80, marginBottom:5}}/>
-  				<Text style={{color:'white'}}>Facebook</Text>
-  			</View>
-  		</TouchableHighlight>
-  		<TouchableHighlight style={{margin:30}}>
-  			<View style={{flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-  				<Image source={require('../../assets/icons/contacts.png')} style={{height:80, width:80, marginBottom:5}}/>
-  				<Text style={{color:'white'}}>Contacts</Text>
-  			</View>
-  		</TouchableHighlight>
-  	</View>
-  	
-	<Text style={{fontSize:24, color:'white', position:'absolute', top:'60%'}}>or</Text>
-	<TouchableOpacity activeOpacity={0.25} style={{position:'absolute', top:'70%'}} onPress={() => navigation.navigate('AddFriendInfo',{onSave: navigation.state.params.onSave, goBack: () => {navigation.goBack()}})}>
-    <Text style={{fontSize:28, textDecorationLine:'underline', color:'white'}}>Enter Manually</Text>
-  </TouchableOpacity>
 
-  </View>
-);
+
+/* render method for new prototype*/
+  render() {
+        const { navigate } = this.props.navigation;
+        console.log(this.props.navigation)
+
+    return(
+      <View style={styles.container}>
+      <SearchBar
+      noIcon = 'true'
+      placeholder='Search' 
+      containerStyle = {{top: -25}}/>
+
+
+
+        <FlatList
+            //onEndReached={(info: {distanceFromEnd: 1}) => this.getContacts()}
+            data={data.friends}
+            extraData={this.state}
+            renderItem={({item}) => this._renderItem(item, {navigate})}/>
+      </View>
+      );
+  }
+
+
+_renderItem(item, navigation){
+    return(
+        <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
+       <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: {uri: item.image.uri} }});}}>
+                <View style={{flex: 1, height: 80, flexDirection: 'row', marginLeft:10, marginRight:10}}>
+                    <Image source={item.image} style={{height:50, width:50, borderRadius:50/2}}/>
+                    <Text style={{color:'white', marginLeft: 15, paddingTop: 10}}>{item.name} {"\n"}{item.phone}</Text> 
+                </View> 
+      </TouchableOpacity>
+        </View>
+    );
 }
+
 }
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   backgroundColor: '#333',
+   paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+})
 
 
 export default AddFriendScreen;
+  
