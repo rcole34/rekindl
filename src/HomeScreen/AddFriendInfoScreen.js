@@ -72,8 +72,7 @@ class AddFriendInfoScreen extends React.Component {
         headerRight: 
             <TouchableWithoutFeedback onPress={() => {
                     navigation.state.params.onSave(navigation.state.params.newFriend);
-                    navigation.goBack()
-                    /*navigation.state.params.goBack()*/
+                    navigation.navigate('Home');
 
                 }}>
                     <View><Text style={{color: '#f1f1f1', marginRight: 15, marginBottom: 5, fontSize:18}}>Add</Text></View>
@@ -103,7 +102,7 @@ class AddFriendInfoScreen extends React.Component {
       <View style={{ flex: 1, padding: 40, backgroundColor: '#333' }}>
       <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
                 <Image source = {navigation.state.params.newFriend.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
-                    <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.7)'}}>
+                    <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.4)'}}>
                         <Text>set photo</Text>
                     </View>
                 </Image>

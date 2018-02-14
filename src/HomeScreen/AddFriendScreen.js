@@ -45,8 +45,7 @@ class AddFriendScreen extends React.Component {
       friend.name = contacts.data[i].name
       friend.phone = contacts.data[i].phoneNumbers[0].digits
       if(contacts.data[i].imageAvailable){
-        friend.image = contacts.data[i].image
-        console.log(friend.image)
+        friend.image = {uri: contacts.data[i].image.uri}
       } else {
         friend.image = require('../../assets/profilePictures/default-profile.png')
       }
@@ -106,14 +105,14 @@ class AddFriendScreen extends React.Component {
 
 _renderItem(item, navigation){
     return(
+      <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image }});}}>
         <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
-       <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: {uri: item.image.uri} }});}}>
                 <View style={{flex: 1, height: 80, flexDirection: 'row', marginLeft:10, marginRight:10}}>
                     <Image source={item.image} style={{height:50, width:50, borderRadius:50/2}}/>
                     <Text style={{color:'white', marginLeft: 15, paddingTop: 10}}>{item.name} {"\n"}{item.phone}</Text> 
                 </View> 
-      </TouchableOpacity>
         </View>
+      </TouchableOpacity>
     );
 }
 
