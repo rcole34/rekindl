@@ -25,6 +25,17 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Form from 'react-native-form';
 import CountryPicker from 'react-native-country-picker-modal';
 
+const api = new Frisbee({
+  baseURI: 'http://localhost:3000',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
+
+const MAX_LENGTH_CODE = 6;
+const MAX_LENGTH_NUMBER = 20;
+
 // if you want to customize the country picker
 const countryPickerCustomStyles = {};
 
@@ -94,106 +105,35 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class SignInScreen extends Component {
+export default class example extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      enterCode: false,
-      spinner: false,
-      country: {
-        cca2: 'US',
-        callingCode: '1'
-      }
+        success:true,
+      
     };
   }
 
-  _onChangeText = (val) => {
-    if (!this.state.enterCode) return;
-    if (val.length === MAX_LENGTH_CODE)
-    this._verifyCode();
-  }
 
-  _tryAgain = () => {
-    this.refs.form.refs.textInput.setNativeProps({ text: '' })
-    this.refs.form.refs.textInput.focus();
-    this.setState({ enterCode: false });
-  }
 
-  _getSubmitAction = () => {
-    this.state.enterCode ? this._verifyCode() : this._getCode();
-  }
+  _signIn = () => {
+    let values = this.refs.form.getValues()
+    firebase.auth().signInWithEmailAndPassword(values.email, values.password).catch(function(error) {
+        Alert.alert('Oops!', error.message)
 
-  _changeCountry = (country) => {
-    this.setState({ country });
-    this.refs.form.refs.textInput.focus();
-  }
-
-  _renderFooter = () => {
-
-    if (this.state.enterCode)
-      return (
-        <View>
-          <Text style={styles.wrongNumberText} onPress={this._tryAgain}>
-            Enter the wrong number or need a new code?
-          </Text>
-        </View>
-      );
-
-    return (
-      <View>
-        <Text style={styles.disclaimerText}>By tapping "Send confirmation code" above, we will send you an SMS to confirm your phone number. Message &amp; data rates may apply.</Text>
-      </View>
-    );
-
-  }
-
-  _renderCountryPicker = () => {
-
-    if (this.state.enterCode)
-      return (
-        <View />
-      );
-
-    return (
-      <CountryPicker
-        ref={'countryPicker'}
-        closeable
-        style={styles.countryPicker}
-        onChange={this._changeCountry}
-        cca2={this.state.country.cca2}
-        styles={countryPickerCustomStyles}
-        translation='eng'/>
-    );
-
-  }
-
-  _renderCallingCode = () => {
-
-    if (this.state.enterCode)
-      return (
-        <View />
-      );
-
-    return (
-      <View style={styles.callingCodeView}>
-        <Text style={styles.callingCodeText}>+{this.state.country.callingCode}</Text>
-      </View>
-    );
-
+    })
+    firebase.auth().onAuthStateChanged(user => {
+        if(user) {
+            this.props.navigation.navigate('Home', {})
+        }
+    })
   }
 
   render() {
 
-    let headerText = `What's your ${this.state.enterCode ? 'verification code' : 'phone number'}?` //'
-    let buttonText = this.state.enterCode ? 'Verify confirmation code' : 'Send confirmation code';
-    let textStyle = this.state.enterCode ? {
-      height: 50,
-      textAlign: 'center',
-      fontSize: 40,
-      fontWeight: 'bold',
-      fontFamily: 'Courier'
-    } : {};
+    let headerText = 'Sign in to rekindl your friendships'
+    let buttonText = 'Sign In';
 
     return (
 
@@ -205,35 +145,45 @@ export default class SignInScreen extends Component {
 
           <View style={{ flexDirection: 'row' }}>
 
-            {this._renderCountryPicker()}
-            {this._renderCallingCode()}
 
             <TextInput
-              ref={'textInput'}
-              name={this.state.enterCode ? 'code' : 'phoneNumber' }
+              ref={'textInputEM'}
+              name={'email' }
               type={'TextInput'}
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
               onChangeText={this._onChangeText}
-              placeholder={this.state.enterCode ? '_ _ _ _ _ _' : 'Phone Number'}
-              keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-              style={[ styles.textInput, textStyle ]}
-              returnKeyType='go'
+              placeholder={'Email'}
+              style={styles.textInput }
+              returnKeyType='next'
               autoFocus
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={'#f1f1f1'}
+              selectionColor={'#f1f1f1'}/>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop:20 }}>
+
+            <TextInput
+              ref={'textInputPW'}
+              name={'password' }
+              type={'TextInput'}
+              underlineColorAndroid={'transparent'}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={this._onChangeText}
+              placeholder={'Password'}
+              style={styles.textInput }
+              returnKeyType='done'
+              placeholderTextColor={'#f1f1f1'}
               selectionColor={'#f1f1f1'}
-              maxLength={this.state.enterCode ? 6 : 20}
-              onSubmitEditing={this._getSubmitAction} />
+              secureTextEntry={true}/>
 
           </View>
 
-
-          <TouchableOpacity style={styles.button} onPress={this._getSubmitAction}>
+          <TouchableOpacity style={styles.button} onPress={this._signIn}>
             <Text style={styles.buttonText}>{ buttonText }</Text>
           </TouchableOpacity>
 
-          {this._renderFooter()}
 
         </Form>
 
@@ -247,3 +197,4 @@ export default class SignInScreen extends Component {
     );
   }
 }
+

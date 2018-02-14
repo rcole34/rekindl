@@ -12,7 +12,6 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {isLoading: true}
-    //this.props.navigation.navigate('SignIn', {})
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -108,9 +107,8 @@ class HomeScreen extends React.Component {
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').width
             })
-            firebase.auth().signInWithEmailAndPassword('rcole34@stanford.edu', 'test123')
             //go to sign in page and remove back button
-            //this.props.navigation.navigate()
+            this.props.navigation.navigate('Registration',{})
         }
     }.bind(this))
     
@@ -182,7 +180,7 @@ _renderList(item, navigation) {
 
 rekindl = (user) => {
     var currUser = firebase.auth().currentUser;
-    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now()})    
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now(), category: user.category})    
   };
 
 
@@ -205,7 +203,7 @@ rekindl = (user) => {
 
     AsyncStorage.setItem('friendPhotos', JSON.stringify(friendPhotos))
 
-    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: user.currFire, number: user.number, lastConnected: user.lastConnected})
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: user.currFire, number: user.number, lastConnected: user.lastConnected, category: user.category})
     
   };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, FlatList, TouchableHighlight, Dimensions } from 'react-native';
+import { Alert, View, Text, Image, FlatList, TouchableHighlight, Dimensions } from 'react-native';
 import firebase from '../../firebase.js'
 
 class SettingsScreen extends React.Component {
@@ -31,7 +31,11 @@ class SettingsScreen extends React.Component {
     }
 
     _signOut = function() {
-        console.log('sign out')
+        firebase.auth().signOut().then(function() {
+            //this.props.navigation.navigate('Registration',{})
+        }).catch(function(error) {
+            Alert.alert('Oops!', error.message)
+        });
     }
 
     _deleteAccount = function() {

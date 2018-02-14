@@ -9,7 +9,7 @@ import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
 import AddFriendInfoScreen from './src/HomeScreen/AddFriendInfoScreen.js';
 import ProfileScreen from "./src/ProfileScreen/ProfileScreen.js";
 import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
-import PhoneAuthScreen from "./src/Registration/PhoneAuth.js";
+import RegScreen from "./src/Registration/RegScreen.js";
 import SignInScreen from "./src/Registration/SignInScreen.js";
 import SignUpScreen from "./src/Registration/SignUpScreen.js";
 import * as firebase from './firebase.js';
@@ -87,13 +87,14 @@ const RootNavigator = StackNavigator({
       headerBackTitle: ' '
     }),
   },
-  PhoneAuth: {
-    screen: PhoneAuthScreen,
+  Registration: {
+    screen: RegScreen,
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
         backgroundColor: '#222',
       },
+      headerLeft: null,
       headerTintColor: '#fff',
       headerBackTitle: ' '
     }),
