@@ -17,9 +17,13 @@ import {
   TouchableOpacity,
   View,
   Platform,
-  Alert
+  Alert,
+  TouchableHighlight,
+  Image,
+  AsyncStorage
 } from 'react-native';
 
+import { ImagePicker } from 'expo';
 import Frisbee from 'frisbee';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Form from 'react-native-form';
@@ -110,204 +114,71 @@ export default class example extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      enterCode: false,
-      spinner: false,
-      country: {
-        cca2: 'US',
-        callingCode: '1'
-      }
+        success:true,
+        photo: require('../../assets/profilePictures/default-profile.png')
     };
   }
 
-  _getCode = () => {
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
 
-    this.setState({ spinner: true });
+    if (!result.cancelled) {
+        this.setState({photo: { uri: result.uri }});
+    }
+  };
 
-    setTimeout(async () => {
 
-      try {
 
-        // const res = await api.post('/v1/verifications', {
-        //   body: {
-        //     ...this.refs.form.getValues(),
-        //     ...this.state.country
-        //   }
-        // });
-
-        // if (res.err) throw res.err;
-        // console.log(this.refs.form.getValues())
-        // console.log(this.state.country.callingCodeText)
-
-        var applicationVerifier = new firebase.auth.RecaptchaVerifier(
-            '');
-
-        let document = {getElementById: () => {return this.refs.recaptcha-container}}
-
-        var provider = new firebase.auth.PhoneAuthProvider();
-        const verificationId = provider.verifyPhoneNumber("+" + this.state.country.callingCodeText + this.refs.form.getValues().phoneNumber, 12)
-            this.setState({
-                spinner: false,
-                enterCode: true,
-                verification: verificationId
+  _signUp = () => {
+    let values = this.refs.form.getValues()
+    errMess = ''
+    if(values.password !== values.password2) {
+      errMess += 'Passwords do not match. '
+    }
+    if(values.password.length < 5) {
+      errMess += 'Password must be longer than 5 characters. '
+    }
+    if(values.firstName === '') {
+      errMess += 'First name is required. '
+    }
+    if(values.phone.length != 10) {
+      errMess += 'Phone number must consist of 10 digits and no spaces. '
+    }
+    if(errMess !== '') {
+      Alert.alert('Oops!', errMess)
+      return
+    }
+    firebase.auth().createUserWithEmailAndPassword(values.email, values.password).catch(function(error) {
+      Alert.alert('Oops!', error.message)
+    });
+    firebase.auth().onAuthStateChanged(async user => {
+        if(user) {
+          let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
+            user.updateProfile({
+              displayName: values.firstName + ' ' + values.lastName,
+              phoneNumber: values.phone
+            }).catch(function(error) {
+              Alert.alert('Oops!', error.message)
+              return
             });
-            // var verificationCode = window.prompt('Please enter the verification ' +
-            //     'code that was sent to your mobile device.');
-            // return firebase.auth.PhoneAuthProvider.credential(verificationId,
-            //     verificationCode);
-            // })
-            // .then(function(phoneCredential) {
-            //     return firebase.auth().signInWithCredential(phoneCredential);
-            // });
-
-
-        // this.setState({
-        //   spinner: false,
-        //   enterCode: true,
-        //   verification: res.body
-        // });
-        this.refs.form.refs.textInput.setNativeProps({ text: '' });
-
-        setTimeout(() => {
-          Alert.alert('Sent!', "We've sent you a verification code", [{
-            text: 'OK',
-            onPress: () => this.refs.form.refs.textInput.focus()
-          }]);
-        }, 100);
-
-      } catch (err) {
-        // <https://github.com/niftylettuce/react-native-loading-spinner-overlay/issues/30#issuecomment-276845098>
-        this.setState({ spinner: false });
-        setTimeout(() => {
-          Alert.alert('Oops!', err.message);
-        }, 100);
-      }
-
-    }, 100);
-
-  }
-
-  _verifyCode = () => {
-
-    this.setState({ spinner: true });
-
-    setTimeout(async () => {
-
-      try {
-
-        const res = await api.put('/v1/verifications', {
-          body: {
-            ...this.refs.form.getValues(),
-            ...this.state.country
-          }
-        });
-
-        if (res.err) throw res.err;
-
-        this.refs.form.refs.textInput.blur();
-        // <https://github.com/niftylettuce/react-native-loading-spinner-overlay/issues/30#issuecomment-276845098>
-        this.setState({ spinner: false });
-        setTimeout(() => {
-          Alert.alert('Success!', 'You have successfully verified your phone number');
-        }, 100);
-
-      } catch (err) {
-        // <https://github.com/niftylettuce/react-native-loading-spinner-overlay/issues/30#issuecomment-276845098>
-        this.setState({ spinner: false });
-        setTimeout(() => {
-          Alert.alert('Oops!', err.message);
-        }, 100);
-      }
-
-    }, 100);
-
-  }
-
-  _onChangeText = (val) => {
-    if (!this.state.enterCode) return;
-    if (val.length === MAX_LENGTH_CODE)
-    this._verifyCode();
-  }
-
-  _tryAgain = () => {
-    this.refs.form.refs.textInput.setNativeProps({ text: '' })
-    this.refs.form.refs.textInput.focus();
-    this.setState({ enterCode: false });
-  }
-
-  _getSubmitAction = () => {
-    this.state.enterCode ? this._verifyCode() : this._getCode();
-  }
-
-  _changeCountry = (country) => {
-    this.setState({ country });
-    this.refs.form.refs.textInput.focus();
-  }
-
-  _renderFooter = () => {
-
-    if (this.state.enterCode)
-      return (
-        <View>
-          <Text style={styles.wrongNumberText} onPress={this._tryAgain}>
-            Enter the wrong number or need a new code?
-          </Text>
-        </View>
-      );
-
-    return (
-      <View>
-        <Text style={styles.disclaimerText}>By tapping "Send confirmation code" above, we will send you an SMS to confirm your phone number. Message &amp; data rates may apply.</Text>
-      </View>
-    );
-
-  }
-
-  _renderCountryPicker = () => {
-
-    if (this.state.enterCode)
-      return (
-        <View />
-      );
-
-    return (
-      <CountryPicker
-        ref={'countryPicker'}
-        closeable
-        style={styles.countryPicker}
-        onChange={this._changeCountry}
-        cca2={this.state.country.cca2}
-        styles={countryPickerCustomStyles}
-        translation='eng'/>
-    );
-
-  }
-
-  _renderCallingCode = () => {
-
-    if (this.state.enterCode)
-      return (
-        <View />
-      );
-
-    return (
-      <View style={styles.callingCodeView}>
-        <Text style={styles.callingCodeText}>+{this.state.country.callingCode}</Text>
-      </View>
-    );
-
+            if(userPhotos){
+                userPhotos[user.uid] = this.state.photo
+            }
+            
+            AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
+            firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true})
+            this.props.navigation.navigate('Home', {})
+        }
+    })
   }
 
   render() {
 
-    let headerText = `What's your ${this.state.enterCode ? 'verification code' : 'phone number'}?` //'
-    let buttonText = this.state.enterCode ? 'Verify confirmation code' : 'Send confirmation code';
-    let textStyle = this.state.enterCode ? {
-      height: 50,
-      textAlign: 'center',
-      fontSize: 40,
-      fontWeight: 'bold',
-      fontFamily: 'Courier'
-    } : {};
+    let headerText = 'Sign up to start rekindling'
+    let buttonText = 'Create Account';
 
     return (
 
@@ -315,40 +186,120 @@ export default class example extends Component {
 
         <Text style={styles.header}>{headerText}</Text>
 
+        <View style={{alignItems:'center', justifyContent:'center'}}><TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{alignItems:'center', justifyContent:'center', height:100, width:100, borderRadius:100/2, marginBottom:10}} onPress = {() => {this._pickImage()}}>
+                <Image source = {this.state.photo} style = {{alignItems: 'center', justifyContent: 'center', height:100, width:100, borderRadius:100/2}}>
+                    <View style={{alignItems: 'center', justifyContent: 'center', height:100, width:100, borderRadius:100/2, backgroundColor:'rgba(150,150,150,0.4)'}}>
+                        <Text>set photo</Text>
+                    </View>
+                </Image>
+            </TouchableHighlight></View>
+
         <Form ref={'form'} style={styles.form}>
 
-          <View style={{ flexDirection: 'row' }}>
-
-            {this._renderCountryPicker()}
-            {this._renderCallingCode()}
-
+          
+        <View style={{ flexDirection: 'row' }}>
             <TextInput
-              ref={'textInput'}
-              name={this.state.enterCode ? 'code' : 'phoneNumber' }
+              ref={'textInputFN'}
+              name={'firstName' }
+              type={'TextInput'}
+              underlineColorAndroid={'transparent'}
+              autoCapitalize={'words'}
+              autoCorrect={false}
+              placeholder={'*First Name'}
+              style={styles.textInput }
+              returnKeyType='next'
+              autoFocus
+              placeholderTextColor={'#999'}
+              selectionColor={'#f1f1f1'}/>
+
+              <TextInput
+              ref={'textInputLN'}
+              name={'lastName' }
+              type={'TextInput'}
+              underlineColorAndroid={'transparent'}
+              autoCapitalize={'words'}
+              autoCorrect={false}
+              placeholder={'Last Name'}
+              style={styles.textInput }
+              returnKeyType='next'
+              placeholderTextColor={'#999'}
+              selectionColor={'#f1f1f1'}/>
+        </View>
+
+
+        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <TextInput
+              ref={'textInputPN'}
+              name={'phone' }
               type={'TextInput'}
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
-              onChangeText={this._onChangeText}
-              placeholder={this.state.enterCode ? '_ _ _ _ _ _' : 'Phone Number'}
-              keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-              style={[ styles.textInput, textStyle ]}
-              returnKeyType='go'
-              autoFocus
-              placeholderTextColor={'#f1f1f1'}
+              placeholder={'*Phone Number (10 digits)'}
+              style={styles.textInput }
+              returnKeyType='next'
+              keyboardType='phone-pad'
+              placeholderTextColor={'#999'}
+              selectionColor={'#f1f1f1'}/>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+
+
+            <TextInput
+              ref={'textInputEM'}
+              name={'email' }
+              type={'TextInput'}
+              underlineColorAndroid={'transparent'}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              placeholder={'*Email'}
+              style={styles.textInput }
+              returnKeyType='next'
+              placeholderTextColor={'#999'}
+              selectionColor={'#f1f1f1'}/>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginTop:20 }}>
+
+            <TextInput
+              ref={'textInputPW'}
+              name={'password' }
+              type={'TextInput'}
+              underlineColorAndroid={'transparent'}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              placeholder={'*Password'}
+              style={styles.textInput }
+              returnKeyType='next'
+              placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
-              maxLength={this.state.enterCode ? 6 : 20}
-              onSubmitEditing={this._getSubmitAction} />
+              secureTextEntry={true}/>
 
           </View>
 
-          <View ref={'recaptcha-container'}/>
+          <View style={{ flexDirection: 'row', marginTop:20 }}>
 
-          <TouchableOpacity style={styles.button} onPress={this._getSubmitAction}>
+            <TextInput
+              ref={'textInputPW2'}
+              name={'password2' }
+              type={'TextInput'}
+              underlineColorAndroid={'transparent'}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              placeholder={'*Confirm Password'}
+              style={styles.textInput }
+              returnKeyType='done'
+              placeholderTextColor={'#999'}
+              selectionColor={'#f1f1f1'}
+              secureTextEntry={true}/>
+
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={this._signUp}>
             <Text style={styles.buttonText}>{ buttonText }</Text>
           </TouchableOpacity>
 
-          {this._renderFooter()}
 
         </Form>
 
@@ -363,4 +314,3 @@ export default class example extends Component {
   }
 }
 
-AppRegistry.registerComponent('example', () => example);

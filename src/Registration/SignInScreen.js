@@ -153,12 +153,11 @@ export default class example extends Component {
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
-              onChangeText={this._onChangeText}
               placeholder={'Email'}
               style={styles.textInput }
               returnKeyType='next'
               autoFocus
-              placeholderTextColor={'#f1f1f1'}
+              placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}/>
         </View>
         <View style={{ flexDirection: 'row', marginTop:20 }}>
@@ -170,11 +169,10 @@ export default class example extends Component {
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
-              onChangeText={this._onChangeText}
               placeholder={'Password'}
               style={styles.textInput }
               returnKeyType='done'
-              placeholderTextColor={'#f1f1f1'}
+              placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
               secureTextEntry={true}/>
 

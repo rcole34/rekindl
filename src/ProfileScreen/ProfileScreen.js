@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as firebase from 'firebase'; 
 
@@ -11,23 +11,41 @@ class ProfileScreen extends React.Component {
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
-        this.state = {user: {name: '', photo: require('../../assets/profilePictures/mike.png'),  loggedOut: false, birthday: '', status: ''}, editActive: false}
+        this.state = {user: {firstName: '', lastName:'', photo: require('../../assets/profilePictures/default-profile.png'),  loggedOut: false, birthday: '', status: ''}, editActive: false}
     }
 
-  setupListener() {
-    firebase.database().ref('users/test').on('value', (snapshot) => {
-      this.state.user.name = snapshot.val().name;
-      this.state.user.birthday = snapshot.val().birthday;
-      this.state.user.status = snapshot.val().status;
-      this.setState({
-        user: this.state.user,
-        editActive: false
-      });
-    });
+  async componentWillMount() {
+    let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            this.state.user.uid = user.uid
+            firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+                this.state.user.firstName = snapshot.val().firstName;
+                this.state.user.lastName = snapshot.val().lastName;
+                //this.state.user.birthday = snapshot.val().birthday;
+                this.state.user.status = snapshot.val().status;
+                if(userPhotos && userPhotos[user.uid]) {
+                    this.state.user.photo = userPhotos[user.uid]
+                }
+                this.setState({
+                    user: this.state.user,
+                    editActive: false
+                });
+                
+            })
+            // if(userPhotos && userPhotos[user.uid]) {
+            //     this.state.user.photo = userPhotos[user.uid]
+            // }
+            // this.setState({
+            //     user: this.state.user,
+            //     editActive: false
+            // });
+        }
+    }.bind(this));
   }
 
-  componentDidMount() {this.setupListener();}
-  componentWilUnmount() {firebase.database().ref('users/test').off('value');}
+  //componentDidMount() {this.setupListener();}
+  componentWilUnmount() {firebase.database().ref('users').child(this.state.user.uid).off('value');}
 
       async logInFB() {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('575341286140281', {
@@ -99,7 +117,7 @@ setEditorStyle() {
         <Image source = {this.state.user.photo} style = {{marginTop:'5%', height:150, width:150, borderRadius:150/2}}/>
         
         <View style={{flexDirection:'row', alignItems: 'center'}}>
-          <Text style = {{fontSize:48, color:'white'}}>{this.state.user.name}</Text>
+          <Text style = {{fontSize:48, color:'white'}}>{this.state.user.firstName} {this.state.user.lastName}</Text>
           <TouchableOpacity activeOpacity={0.25}
           onPress={() => navigation.navigate('Settings', {})}>
             <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
