@@ -31,6 +31,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
+    width:250,
+  },
+  button2: {
+    marginTop: 20,
+    height: 50,
+    backgroundColor: '#666',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    width:250,
   },
   buttonText: {
     color: '#fff',
@@ -66,13 +76,13 @@ export default class example extends Component {
 
         <Text style={styles.header}>{headerText}</Text>
 
-          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('SignUp', {})}>
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('SignUp', {})}>
             <Text style={styles.buttonText}>{ button1Text }</Text>
-          </TouchableOpacity>
+          </TouchableOpacity></View>
 
-          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('SignIn', {})}>
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('SignIn', {})}>
             <Text style={styles.buttonText}>{ button2Text }</Text>
-          </TouchableOpacity>
+          </TouchableOpacity></View>
 
       </View>
 

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     color: '#f1f1f1'
   },
   button: {
-    marginTop: 20,
+    marginTop: 50,
     height: 50,
     backgroundColor: brandColor,
     alignItems: 'center',
@@ -84,7 +84,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Helvetica',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginLeft:20,
+    marginRight:20
   },
   wrongNumberText: {
     margin: 10,
@@ -227,7 +229,7 @@ export default class example extends Component {
         </View>
 
 
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <View style={{ flexDirection: 'row', marginTop: 30 }}>
             <TextInput
               ref={'textInputPN'}
               name={'phone' }
@@ -243,7 +245,7 @@ export default class example extends Component {
               selectionColor={'#f1f1f1'}/>
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <View style={{ flexDirection: 'row', marginTop: 30 }}>
 
 
             <TextInput
@@ -260,7 +262,7 @@ export default class example extends Component {
               selectionColor={'#f1f1f1'}/>
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop:20 }}>
+        <View style={{ flexDirection: 'row', marginTop:30 }}>
 
             <TextInput
               ref={'textInputPW'}
@@ -278,7 +280,7 @@ export default class example extends Component {
 
           </View>
 
-          <View style={{ flexDirection: 'row', marginTop:20 }}>
+          <View style={{ flexDirection: 'row', marginTop:30 }}>
 
             <TextInput
               ref={'textInputPW2'}
@@ -296,9 +298,10 @@ export default class example extends Component {
 
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={this._signUp}>
+          
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={this._signUp}>
             <Text style={styles.buttonText}>{ buttonText }</Text>
-          </TouchableOpacity>
+          </TouchableOpacity></View>
 
 
         </Form>
