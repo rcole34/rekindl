@@ -37,6 +37,9 @@ class ProfileScreen extends React.Component {
                 if(userPhotos && userPhotos[user.uid]) {
                     this.state.user.photo = userPhotos[user.uid]
                 }
+                else {
+                    this.state.user.photo = require('../../assets/profilePictures/default-profile.png')
+                }
                 this.setState({
                     user: this.state.user,
                     editActive: false
