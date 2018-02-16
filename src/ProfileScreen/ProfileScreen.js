@@ -125,6 +125,7 @@ resetModal() {
 
 setStatus(text) {
   firebase.database().ref('users').child(this.state.user.uid).child('status').set(text);
+  firebase.database().ref('users').child(this.state.user.uid).child('statusPosted').set(Date.now());
   this.resetModal();
 }
 
