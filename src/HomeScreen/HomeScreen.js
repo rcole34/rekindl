@@ -30,6 +30,7 @@ class HomeScreen extends React.Component {
     
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {            
+            //console.log(user)
             firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
                 list = snapshot.val()
                 let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
@@ -43,6 +44,19 @@ class HomeScreen extends React.Component {
                     })
                     return
                 }
+
+                //get statuses of users, organized by phone number
+                userPhones = {}
+                await firebase.database().ref('users').once('value', async function(snapshot) {
+                    users = snapshot.val()
+                    for(uid in users) {
+                        user = users[uid]
+                        userPhones[user.phone] = {status: user.status, statusPosted: user.statusPosted}
+                    }
+                })
+                console.log(userPhones)
+
+
                 deadFriends.friends = []
                 tinyFriends.friends = []
                 smallFriends.friends = []
@@ -56,6 +70,7 @@ class HomeScreen extends React.Component {
 
                 for (var key in list) {
                     friend = list[key]
+                    //set fire to appropriate size
                     if(friend.lastConnected != 'never') {
                         var fireTime = 7
                         switch(friend.category) {
@@ -89,12 +104,21 @@ class HomeScreen extends React.Component {
                         }
                     }
 
+                    //set friend photos
                     if(friendPhotos && friendPhotos[key]) {
                         friend.photo = friendPhotos[key]
                     }
                     else {
                         friend.photo = defaultPhoto
                     }
+
+                    //connect friends to their status
+                    if(userPhones[friend.number]) {
+                        friend.status = userPhones[friend.number].status
+                        friend.statusPosted = userPhones[friend.number].statusPosted
+                    }
+
+                    //sort into categories
                     if(friend.currFire === 'dead') {
                         friend.bgFire = bgFires[0]
                         friend.fire = fires[0]

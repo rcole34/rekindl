@@ -96,7 +96,7 @@ export default class DetailScreen extends React.Component {
 			        {this.state.currGroup.friends[i].status?
 			        	<View style={{alignItems:'center'}}>
 			        		<Text style={{backgroundColor:'transparent',color:'white', fontSize:18, marginTop:'5%'}}>{this.state.currGroup.friends[i].status}</Text>
-			        		<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginLeft:'50%', marginTop:'4%'}}>Posted {this.state.currGroup.friends[i].statusAge}</Text>
+			        		<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginLeft:'50%', marginTop:'4%'}}>Posted {this._getLastConnectedTime(this.state.currGroup.friends[i].statusPosted)}</Text>
 			        	</View>
 			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'8%'}}>No recent status</Text>
 			        }

@@ -171,7 +171,7 @@ export default class example extends Component {
             }
             
             AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
-            firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true})
+            firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone})
             this.props.navigation.navigate('Home', {})
         }
     })

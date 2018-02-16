@@ -28,7 +28,7 @@ class SettingsScreen extends React.Component {
     }
 
     _sendFeedback = function() {
-        OpenAnything.Email('rekindlapp.gmail.com', 'Feedback on rekindl')
+        OpenAnything.Email('rekindlapp@gmail.com', 'Feedback on rekindl')
     }
 
     _signOut = function() {
