@@ -52,12 +52,29 @@ export default class DetailScreen extends React.Component {
   	_rekindlPressed = function(friend) {
   		Alert.alert(
   			'Report Activity',
-  			'Have you recently connected with ' + friend.name + ' and wish to rekindle this fire?',
+  			'Have you recently connected with ' + friend.firstName + ' and wish to rekindle this fire?',
   			[
   				{text: 'No'},
   				{text: 'Yes', onPress: () => {this.props.navigation.state.params.rekindl(friend); this.props.navigation.goBack()}}
   			]
   		)
+  	}
+
+  	_getLastConnectedTime = function(timestamp) {
+  		if(timestamp === 'never') return 'never'
+  		timeApart = Date.now() - timestamp
+  		daysApart = Math.floor(timeApart * 1.0/86400000)
+  		message = ''
+  		if(daysApart === 0) {
+  			message = 'today'
+  		}
+  		else if(daysApart === 1) {
+  			message = 'yesterday'
+  		}
+  		else {
+  			message = daysApart.toString() + ' days ago'
+  		}
+  		return message
   	}
 
 
@@ -84,7 +101,7 @@ export default class DetailScreen extends React.Component {
 			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'8%'}}>No recent status</Text>
 			        }
 			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'15%'}}>
-			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[i].name, this.state.currGroup.friends[i].number)}}>
+			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[i].firstName, this.state.currGroup.friends[i].number)}}>
 			        		<Image source={require('../../assets/icons/send-text.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
 			        	<TouchableOpacity activeOpacity={0.25} style={{left:'50%'}} onPress={() => {this._callPress(this.state.currGroup.friends[i].number)}}>
@@ -94,7 +111,7 @@ export default class DetailScreen extends React.Component {
 			        <TouchableOpacity style={{position:'absolute', bottom:'10%'}} activeOpacity={0.25} onPress={() => {this._rekindlPressed(this.state.currGroup.friends[i])}}>
 			        	<Text style={{backgroundColor:'transparent', color:'white'}}>Report Activity</Text>
 			        </TouchableOpacity>
-			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this.state.currGroup.friends[i].lastConnected}</Text>
+			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this._getLastConnectedTime(this.state.currGroup.friends[i].lastConnected)}</Text>
 			   	</View>
 			)
 			})(i)

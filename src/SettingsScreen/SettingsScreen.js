@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, View, Text, Image, FlatList, TouchableHighlight, Dimensions } from 'react-native';
 import firebase from '../../firebase.js'
+import * as OpenAnything from 'react-native-openanything';
 
 class SettingsScreen extends React.Component {
   
@@ -27,7 +28,7 @@ class SettingsScreen extends React.Component {
     }
 
     _sendFeedback = function() {
-        console.log('feedback')
+        OpenAnything.Email('rekindlapp.gmail.com', 'Feedback on rekindl')
     }
 
     _signOut = function() {

@@ -105,7 +105,7 @@ class AddFriendScreen extends React.Component {
 
 _renderItem(item, navigation){
     return(
-      <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image }});}}>
+      <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image, category:'biweekFriend' }});}}>
         <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
                 <View style={{flex: 1, height: 80, flexDirection: 'row', marginLeft:10, marginRight:10}}>
                     <Image source={item.image} style={{height:50, width:50, borderRadius:50/2}}/>

@@ -56,6 +56,38 @@ class HomeScreen extends React.Component {
 
                 for (var key in list) {
                     friend = list[key]
+                    if(friend.lastConnected != 'never') {
+                        var fireTime = 7
+                        switch(friend.category) {
+                            case 'biweekFriend':
+                                fireTime = 14
+                                break;
+                            case 'monthFriend':
+                                fireTime = 30
+                                break;
+                            case 'bimonthFriend':
+                                fireTime = 60
+                                break;
+                        }
+                        fireTime *= 86400000 //total lifespan of fire in ms
+                        var timeApart = Date.now() - friend.lastConnected //time in ms since last connection
+                        switch(Math.floor(fireTime*1.0/timeApart)) {
+                            case 0:
+                                friend.currFire = 'dead'
+                                break;
+                            case 1:
+                                friend.currFire = 'tiny'
+                                break;
+                            case 2:
+                                friend.currFire = 'small'
+                                break;
+                            case 3:
+                                friend.currFire = 'medium'
+                                break;
+                            default:
+                                friend.currFire = 'large'
+                        }
+                    }
 
                     if(friendPhotos && friendPhotos[key]) {
                         friend.photo = friendPhotos[key]
@@ -190,8 +222,9 @@ rekindl = (user) => {
 
     user.key = this.state.sortedFriends[1].friends.length + Date.now();
     
-    user.currFire = 'tiny'
-    user.lastConnected = Date.now();
+    user.currFire = 'dead'
+    var daysAgoToMakeTiny = 0
+    user.lastConnected = 'never';
     user.status = null
     user.statusAge = null
     user.number = user.phone.toString()
