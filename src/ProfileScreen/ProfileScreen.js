@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage, Modal, Button, AlertIOS } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as firebase from 'firebase'; 
 
@@ -11,7 +11,17 @@ class ProfileScreen extends React.Component {
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
-        this.state = {user: {firstName: '', lastName:'', photo: require('../../assets/profilePictures/default-profile.png'),  loggedOut: false, birthday: '', status: ''}, editActive: false}
+        this.state = {
+          user: {
+            name: '',
+            photo: require('../../assets/profilePictures/mike.png'),
+            loggedOut: false,
+            birthday: '',
+            status: ''
+          }, 
+          editActive: false,
+          statusChange: ''
+        }
     }
 
   async componentWillMount() {
@@ -105,6 +115,18 @@ setEditorStyle() {
   }
 }
 
+resetModal() {
+  this.setState({
+    editActive: false,
+    statusChange: ''
+  });
+}
+
+setStatus(text) {
+  firebase.database().ref('users').child(this.state.user.uid).child('status').set(text);
+  this.resetModal();
+}
+
 /*render method for new prototype*/
   render() {
     const navigation = this.props.navigation;
@@ -138,10 +160,47 @@ setEditorStyle() {
           this.setState({
             editActive: true
           });
+          AlertIOS.prompt(
+            'Change Status',
+            null,
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel'
+              },
+              {
+                text: 'Change',
+                onPress: (text) =>  this.setStatus(text)
+              }
+            ]);
         }}>
         <Image source={require('../../assets/icons/edit.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
         </TouchableHighlight>
         </View>
+        {/*
+        <Modal
+          visible={this.state.editActive}
+          animation={'slide'}
+          presentationStyle={'formSheet'}>
+          <View style={{flex:0, alignItems:'center', padding: 20}}>
+            <TextInput
+              autogrow={true}
+              multiline={true}
+              placeholder="Enter a status"
+              onChangeText={(text) => this.setState({statusChange:text})}
+              />
+            <Button
+              title='Change'
+              onPress={() => this.setStatus()}>
+            </Button>
+            <Button
+              title='Cancel'
+              onPress={() => this.resetModal()}>
+            </Button>
+          </View>
+        </Modal>
+      */}
+        {/*
         <TextInput
                 autogrow={true}
                 multiline={true}
@@ -153,6 +212,8 @@ setEditorStyle() {
                 }}
                 returnKeyType='done'
             />
+            */
+          }
         </View>
       </KeyboardAwareScrollView>
     );
