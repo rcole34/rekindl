@@ -117,6 +117,7 @@ export default class example extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        inputs: {},
         success:true,
         photo: require('../../assets/profilePictures/default-profile.png')
     };
@@ -147,6 +148,12 @@ export default class example extends Component {
     if(values.firstName === '') {
       errMess += 'First name is required. '
     }
+    if(values.lastName === '') {
+      errMess += 'Last name is required. '
+    }
+    if(values.email === '') {
+      errMess += 'Email is required. '
+    }
     if(values.phone.length != 10) {
       errMess += 'Phone number must consist of 10 digits and no spaces. '
     }
@@ -176,6 +183,10 @@ export default class example extends Component {
             this.props.navigation.navigate('Home', {})
         }
     })
+  }
+
+  focusNextField = (id) => {
+    this.state.inputs[id].focus();
   }
 
   _scrollToTextInput(reactNode: any) {this.scroll.props.scrollToFocusedInput(reactNode)}
@@ -211,33 +222,45 @@ export default class example extends Component {
           
         <View style={{ flexDirection: 'row' }}>
             <TextInput
-              ref={'textInputFN'}
+              ref={ input => {
+                this.state.inputs['firstName'] = input;
+              }}
               name={'firstName' }
               type={'TextInput'}
+              blurOnSubmit={ false }
               underlineColorAndroid={'transparent'}
               autoCapitalize={'words'}
               autoCorrect={false}
               placeholder={'*First Name'}
               style={styles.textInput }
-              returnKeyType='done'
+              returnKeyType='next'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
+              onSubmitEditing={() => {
+                this.focusNextField('lastName');
+              }}
               onFocus={(event: Event) => {
                 this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
               }}/>
 
-              <TextInput
-              ref={'textInputLN'}
+            <TextInput
+              ref={ input => {
+                this.state.inputs['lastName'] = input;
+              }}
               name={'lastName' }
               type={'TextInput'}
+              blurOnSubmit={ false }
               underlineColorAndroid={'transparent'}
               autoCapitalize={'words'}
               autoCorrect={false}
-              placeholder={'Last Name'}
+              placeholder={'*Last Name'}
               style={styles.textInput }
-              returnKeyType='done'
+              returnKeyType='next'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
+              onSubmitEditing={() => {
+                this.focusNextField('phone');
+              }}
               onFocus={(event: Event) => {
                 this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
               }}/>
@@ -246,18 +269,24 @@ export default class example extends Component {
 
         <View style={{ flexDirection: 'row', marginTop: 30 }}>
             <TextInput
-              ref={'textInputPN'}
+              ref={ input => {
+                this.state.inputs['phone'] = input;
+              }}
               name={'phone' }
               type={'TextInput'}
+              blurOnSubmit={ false }
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
               placeholder={'*Phone Number (10 digits)'}
               style={styles.textInput }
-              returnKeyType='done'
+              returnKeyType='next'
               keyboardType='phone-pad'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
+              onSubmitEditing={() => {
+                this.focusNextField('email');
+              }}
               onFocus={(event: Event) => {
                 this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
               }}/>
@@ -267,17 +296,23 @@ export default class example extends Component {
 
 
             <TextInput
-              ref={'textInputEM'}
+              ref={ input => {
+                this.state.inputs['email'] = input;
+              }}
               name={'email' }
               type={'TextInput'}
+              blurOnSubmit={ false }
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
               placeholder={'*Email'}
               style={styles.textInput }
-              returnKeyType='done'
+              returnKeyType='next'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
+              onSubmitEditing={() => {
+                this.focusNextField('pw1');
+              }}
               onFocus={(event: Event) => {
                 this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
               }}/>
@@ -286,18 +321,27 @@ export default class example extends Component {
         <View style={{ flexDirection: 'row', marginTop:30 }}>
 
             <TextInput
-              ref={'textInputPW'}
+              ref={ input => {
+                this.state.inputs['pw1'] = input;
+              }}
               name={'password' }
               type={'TextInput'}
+              blurOnSubmit={ false }
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
               placeholder={'*Password'}
+              onSubmitEditing={() => {
+                this.focusNextField('two');
+              }}
               style={styles.textInput }
-              returnKeyType='done'
+              returnKeyType='next'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
               secureTextEntry={true}
+              onSubmitEditing={() => {
+                this.focusNextField('pw2');
+              }}
               onFocus={(event: Event) => {
                 this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
               }}/>
@@ -307,7 +351,9 @@ export default class example extends Component {
           <View style={{ flexDirection: 'row', marginTop:30 }}>
 
             <TextInput
-              ref={'textInputPW2'}
+              ref={ input => {
+                this.state.inputs['pw2'] = input;
+              }}
               name={'password2' }
               type={'TextInput'}
               underlineColorAndroid={'transparent'}
