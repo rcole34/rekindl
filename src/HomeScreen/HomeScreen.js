@@ -4,7 +4,6 @@ import Swipeout from 'react-native-swipeout'
 import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
 import {AppLoading} from 'expo'
-import friendListObject from '../../data.js'
 import firebase from '../../firebase.js'
 
 class HomeScreen extends React.Component {  
