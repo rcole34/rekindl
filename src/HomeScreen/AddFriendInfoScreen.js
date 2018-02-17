@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableWithoutFeedback, Animated, StatusBar, TextInput, Picker, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { TouchableWithoutFeedback, Animated, StatusBar, TextInput, Picker, Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation'
 
@@ -65,15 +65,18 @@ class FloatingLabelInput extends React.Component {
 class AddFriendInfoScreen extends React.Component {
     constructor(props) {
     super(props);
-    this.state = {value: '', newFriend:{firstName:'', lastName: '', photo:require('../../assets/profilePictures/default-profile.png'), phone:'', category: 'weekFriend'}};
+    this.state = {value: '', newFriend:{firstName:null, lastName: null , photo:require('../../assets/profilePictures/default-profile.png'), phone:null, category: 'weekFriend'}};
   }
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
             <TouchableWithoutFeedback onPress={() => {
+                if(navigation.state.params.newFriend.lastName != null && navigation.state.params.newFriend.firstName != null && navigation.state.params.newFriend.phone != null && navigation.state.params.newFriend.lastName != '' && navigation.state.params.newFriend.firstName != '' && navigation.state.params.newFriend.phone != ''){
                     navigation.state.params.onSave(navigation.state.params.newFriend);
                     navigation.navigate('Home');
-
+                  } else {
+                     Alert.alert('Please fill out all fields')
+                   }
                 }}>
                     <View><Text style={{color: '#f1f1f1', marginRight: 15, marginBottom: 5, fontSize:18}}>Add</Text></View>
             </TouchableWithoutFeedback>,
@@ -156,9 +159,13 @@ class AddFriendInfoScreen extends React.Component {
             {/*<TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
-                    navigation.state.params.onSave(this.state.newFriend);
-                    navigation.goBack()
+                    if(this.state.newFriend.firstName != '' && this.state.newFriend.lastName != '' && this.state.newFriend.phone != undefined){
+                      navigation.state.params.onSave(this.state.newFriend);
+                      navigation.goBack()
+                  } else {
+                    Alert.alert('Oops!', error.message)
                     /*navigation.state.params.goBack()*
+                  }
 
                 }}>
                 <View style={{alignItems: 'center', justifyContent:'center', flexDirection:'column', backgroundColor:'#EE4948',height:64, width:64, borderRadius:64/2, shadowColor: '#000000', shadowOffset: {width: 0, height: 4}, shadowRadius: 4, shadowOpacity: 0.7}}>
