@@ -7,6 +7,8 @@
  //firebase facebook redirect uri: https://rekindl-27d5f.firebaseapp.com/__/auth/handler
 
 import React, { Component } from 'react';
+import ReactNative from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from '../../firebase.js'
 
 import {
@@ -63,7 +65,8 @@ const styles = StyleSheet.create({
     color: '#f1f1f1',
   },
   form: {
-    margin: 20
+    margin: 20,
+    width: 250
   },
   textInput: {
     padding: 0,
@@ -82,7 +85,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontFamily: 'Helvetica',
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft:20,
@@ -105,7 +107,6 @@ const styles = StyleSheet.create({
   callingCodeText: {
     fontSize: 20,
     color: "#f1f1f1",
-    fontFamily: 'Helvetica',
     fontWeight: 'bold',
     paddingRight: 10
   }
@@ -177,6 +178,8 @@ export default class example extends Component {
     })
   }
 
+  _scrollToTextInput(reactNode: any) {this.scroll.props.scrollToFocusedInput(reactNode)}
+
   render() {
 
     let headerText = 'Sign up to start rekindling'
@@ -184,7 +187,14 @@ export default class example extends Component {
 
     return (
 
-      <View style={styles.container}>
+      <KeyboardAwareScrollView
+        innerRef={ref => {this.scroll = ref}}
+        style={styles.container}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        extraScrollHeight={30}
+        eanbleAutomaticScroll={true}
+        contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+        scrollEnabled={false}>
 
         <Text style={styles.header}>{headerText}</Text>
 
@@ -209,10 +219,12 @@ export default class example extends Component {
               autoCorrect={false}
               placeholder={'*First Name'}
               style={styles.textInput }
-              returnKeyType='next'
-              autoFocus
+              returnKeyType='done'
               placeholderTextColor={'#999'}
-              selectionColor={'#f1f1f1'}/>
+              selectionColor={'#f1f1f1'}
+              onFocus={(event: Event) => {
+                this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
+              }}/>
 
               <TextInput
               ref={'textInputLN'}
@@ -223,9 +235,12 @@ export default class example extends Component {
               autoCorrect={false}
               placeholder={'Last Name'}
               style={styles.textInput }
-              returnKeyType='next'
+              returnKeyType='done'
               placeholderTextColor={'#999'}
-              selectionColor={'#f1f1f1'}/>
+              selectionColor={'#f1f1f1'}
+              onFocus={(event: Event) => {
+                this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
+              }}/>
         </View>
 
 
@@ -239,10 +254,13 @@ export default class example extends Component {
               autoCorrect={false}
               placeholder={'*Phone Number (10 digits)'}
               style={styles.textInput }
-              returnKeyType='next'
+              returnKeyType='done'
               keyboardType='phone-pad'
               placeholderTextColor={'#999'}
-              selectionColor={'#f1f1f1'}/>
+              selectionColor={'#f1f1f1'}
+              onFocus={(event: Event) => {
+                this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
+              }}/>
         </View>
 
         <View style={{ flexDirection: 'row', marginTop: 30 }}>
@@ -257,9 +275,12 @@ export default class example extends Component {
               autoCorrect={false}
               placeholder={'*Email'}
               style={styles.textInput }
-              returnKeyType='next'
+              returnKeyType='done'
               placeholderTextColor={'#999'}
-              selectionColor={'#f1f1f1'}/>
+              selectionColor={'#f1f1f1'}
+              onFocus={(event: Event) => {
+                this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
+              }}/>
         </View>
 
         <View style={{ flexDirection: 'row', marginTop:30 }}>
@@ -273,10 +294,13 @@ export default class example extends Component {
               autoCorrect={false}
               placeholder={'*Password'}
               style={styles.textInput }
-              returnKeyType='next'
+              returnKeyType='done'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
-              secureTextEntry={true}/>
+              secureTextEntry={true}
+              onFocus={(event: Event) => {
+                this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
+              }}/>
 
           </View>
 
@@ -294,7 +318,10 @@ export default class example extends Component {
               returnKeyType='done'
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
-              secureTextEntry={true}/>
+              secureTextEntry={true}
+              onFocus={(event: Event) => {
+                this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
+              }}/>
 
           </View>
 
@@ -311,7 +338,7 @@ export default class example extends Component {
           textContent={'One moment...'}
           textStyle={{ color: '#fff' }} />
 
-      </View>
+      </KeyboardAwareScrollView>
 
     );
   }

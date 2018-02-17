@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontFamily: 'Helvetica',
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft:20,
@@ -101,7 +100,6 @@ const styles = StyleSheet.create({
   callingCodeText: {
     fontSize: 20,
     color: "#f1f1f1",
-    fontFamily: 'Helvetica',
     fontWeight: 'bold',
     paddingRight: 10
   }
