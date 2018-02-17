@@ -8,7 +8,7 @@ import { SearchBar } from 'react-native-elements'
 import "@expo/vector-icons";
 
 var data = {friends:[]}
-
+var dataCopy = {friends:[]}
 var hasFetched = false
 
 var contacts = []
@@ -53,6 +53,7 @@ class AddFriendScreen extends React.Component {
     }
   }
 
+
   data.friends.sort(function(a, b){
  var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase();
  if (nameA < nameB) //sort string ascending
@@ -62,7 +63,7 @@ class AddFriendScreen extends React.Component {
  return 0; //default return value (no sorting)
 });
 
-
+dataCopy.friends = data.friends
 
 
 }
@@ -73,22 +74,40 @@ class AddFriendScreen extends React.Component {
 
   }
 
+componentDidMount(){
+  data.friends = dataCopy.friends
+  this.forceUpdate()
+}
 
-  _enterManually = function() {
 
+searchText(text){
+  var dataCopy2 = {friends:[]}
+  dataCopy2.friends = dataCopy.friends
+  console.log(text)
+    data.friends = dataCopy2.friends.filter((el) =>
+    el.name.toLowerCase().indexOf(text.toLowerCase()) > -1)
+    this.forceUpdate()
   }
+
+
+resetData(text){
+  console.log("RESET")
+}
+
 
 
 /* render method for new prototype*/
   render() {
         const { navigate } = this.props.navigation;
-        console.log(this.props.navigation)
+       // console.log(this.props.navigation)
 
     return(
       <View style={styles.container}>
       <SearchBar
       noIcon = 'true'
       placeholder='Search' 
+      onChangeText={this.searchText.bind(this)}
+   onClearText={this.resetData()}
       containerStyle = {{top: -25}}/>
 
 
@@ -105,7 +124,7 @@ class AddFriendScreen extends React.Component {
 
 _renderItem(item, navigation){
     return(
-      <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image, category:'biweekFriend' }});}}>
+    <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image, category:'biweekFriend' }});}}>
         <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
                 <View style={{flex: 1, height: 80, flexDirection: 'row', marginLeft:10, marginRight:10}}>
                     <Image source={item.image} style={{height:50, width:50, borderRadius:50/2}}/>
