@@ -6,19 +6,18 @@
       "bundleIdentifier": "edu.stanford.cs194h.rekindl",
       "buildNumber": "1.0",
       "splash": {
-        "icon": "./assets/icons/white-with-logo.png",
+        "image": "./assets/icons/splash.png",
         "backgroundColor": "#222222"
       }
     },
-    "slug": "rekindl194h",
+    "slug": "rekindl194hv2",
     "name": "rekindl",
     "description": "Reignite faded friendships.",
     "version": "1.0",
     "icon": "./assets/icons/logo-black-bg.png",
     "splash": {
-        "icon": "./assets/icons/white-with-logo.png",
-        "backgroundColor": "#222222",
-        
+      "image": "./assets/icons/splash.png",
+      "backgroundColor": "#222222"
     },
 
   }

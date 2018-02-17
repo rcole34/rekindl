@@ -3,6 +3,7 @@ import { StatusBar, Alert, Dimensions, View, Text, Button, FlatList, StyleSheet,
 import Swipeout from 'react-native-swipeout'
 import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
+import {AppLoading} from 'expo'
 import friendListObject from '../../data.js'
 import firebase from '../../firebase.js'
 
@@ -54,7 +55,7 @@ class HomeScreen extends React.Component {
                         userPhones[user.phone] = {status: user.status, statusPosted: user.statusPosted}
                     }
                 })
-                console.log(userPhones)
+                //console.log(userPhones)
 
 
                 deadFriends.friends = []
@@ -180,7 +181,10 @@ class HomeScreen extends React.Component {
 /* render method for new prototype*/
   render() {
     if (this.state.isLoading) {
-      return <View style={{flex: 1, backgroundColor:'#333', justifyContent: 'center', alignItems: 'center'}}><Text style={{color:'white'}}>Loading...</Text></View>;
+        return (
+            <AppLoading/>
+        );
+      //return <View style={{flex: 1, backgroundColor:'#333', justifyContent: 'center', alignItems: 'center'}}><Text style={{color:'white'}}>Loading...</Text></View>;
     }
 
     const { navigate } = this.props.navigation;
