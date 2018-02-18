@@ -1,6 +1,7 @@
  //firebase facebook redirect uri: https://rekindl-27d5f.firebaseapp.com/__/auth/handler
 
 import React, { Component } from 'react';
+import {Segment } from 'expo'
 
 import {
   StyleSheet,
@@ -53,6 +54,8 @@ export default class example extends Component {
 
   constructor(props) {
     super(props);
+    Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Registration Screen")
   }
 
 
@@ -75,11 +78,15 @@ export default class example extends Component {
 
         <Text style={styles.header}>{headerText}</Text>
 
-          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('SignUp', {})}>
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => {
+            Segment.track("Reg - Clicked Sign Up");
+            this.props.navigation.navigate('SignUp', {})}}>
             <Text style={styles.buttonText}>{ button1Text }</Text>
           </TouchableOpacity></View>
 
-          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('SignIn', {})}>
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button2} onPress={() => {
+            Segment.track("Reg - Clicked Sign In");
+            this.props.navigation.navigate('SignIn', {})}}>
             <Text style={styles.buttonText}>{ button2Text }</Text>
           </TouchableOpacity></View>
 

@@ -2,12 +2,14 @@ import React from 'react';
 import { Alert, View, Text, Image, FlatList, TouchableHighlight, Dimensions } from 'react-native';
 import firebase from '../../firebase.js'
 import * as OpenAnything from 'react-native-openanything';
+import {Segment } from 'expo'
 
 class SettingsScreen extends React.Component {
   
     constructor(props) {
         super(props);
-
+        Segment.identify(Expo.Constants.deviceId)
+        Segment.screen("Settings Screen")
         this.state = {settings: [
                 {key: 1, title: 'Notification Settings', onPress: /*this.props.navigation.navigate('NotificationSettings', {})*/this._deleteAccount}, 
                 {key: 2, title: 'Manage Connections', onPress: /*this.props.navigation.navigate('ManageConnections', {})*/this._deleteAccount},
@@ -28,10 +30,12 @@ class SettingsScreen extends React.Component {
     }
 
     _sendFeedback = function() {
+        Segment.track("Send Feedback");
         OpenAnything.Email('rekindlapp@gmail.com', 'Feedback on rekindl')
     }
 
     _signOut = function() {
+        Segment.track("Signed Out");
         firebase.auth().signOut().then(function() {
             //this.props.navigation.navigate('Registration',{})
         }).catch(function(error) {
@@ -40,6 +44,7 @@ class SettingsScreen extends React.Component {
     }
 
     _deleteAccount = function() {
+        Segment.track("Feature not Implemented");
         Alert.alert('Oops!', 'Sorry, this feature is not yet implemented.')
     }
 

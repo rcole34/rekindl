@@ -5,7 +5,8 @@ import * as OpenAnything from 'react-native-openanything';
 import {AsyncStorage} from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { LinearGradient } from 'expo'
-
+import {Segment } from 'expo'
+import firebase from '../../firebase.js'
 // name accessed via {navigation.state.params.name}
 
 
@@ -17,6 +18,8 @@ export default class DetailScreen extends React.Component {
     	super(props);
     	var currFriend = this.props.navigation.state.params.currFriend
     	var currGroup = {}
+      Segment.identify(Expo.Constants.deviceId)
+      Segment.screen("Friend Detail Screen")
     	if(currFriend.currFire === 'dead') {
     		currGroup = this.props.navigation.state.params.sortedFriends[0]
     	} else if(currFriend.currFire === 'tiny') {
@@ -54,7 +57,9 @@ export default class DetailScreen extends React.Component {
   			'Have you recently connected with ' + friend.firstName + ' and wish to rekindle this fire?',
   			[
   				{text: 'No'},
-  				{text: 'Yes', onPress: () => {this.props.navigation.state.params.rekindl(friend); this.props.navigation.goBack()}}
+  				{text: 'Yes', onPress: () => {
+            Segment.track("Reported Activity Alert Confirmation");
+            this.props.navigation.state.params.rekindl(friend); this.props.navigation.goBack()}}
   			]
   		)
   	}
@@ -100,14 +105,21 @@ export default class DetailScreen extends React.Component {
 			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'8%'}}>No recent status</Text>
 			        }
 			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'15%'}}>
-			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {this._sendTextPress(this.state.currGroup.friends[i].firstName, this.state.currGroup.friends[i].number)}}>
+			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {
+                 Segment.track("Message Friend");
+
+                  this._sendTextPress(this.state.currGroup.friends[i].firstName, this.state.currGroup.friends[i].number)}}>
 			        		<Image source={require('../../assets/icons/send-text.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
-			        	<TouchableOpacity activeOpacity={0.25} style={{left:'50%'}} onPress={() => {this._callPress(this.state.currGroup.friends[i].number)}}>
+			        	<TouchableOpacity activeOpacity={0.25} style={{left:'50%'}} onPress={() => {
+                  Segment.track("Call Friend");
+                  this._callPress(this.state.currGroup.friends[i].number)}}>
 			        		<Image source={require('../../assets/icons/phone-outline.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
 			        </View>
-			        <TouchableOpacity style={{position:'absolute', bottom:'10%'}} activeOpacity={0.25} onPress={() => {this._rekindlPressed(this.state.currGroup.friends[i])}}>
+			        <TouchableOpacity style={{position:'absolute', bottom:'10%'}} activeOpacity={0.25} onPress={() => {
+                Segment.track("Report Activity");
+                this._rekindlPressed(this.state.currGroup.friends[i])}}>
 			        	<Text style={{backgroundColor:'transparent', color:'white'}}>Report Activity</Text>
 			        </TouchableOpacity>
 			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this._getLastConnectedTime(this.state.currGroup.friends[i].lastConnected)}</Text>

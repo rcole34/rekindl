@@ -8,6 +8,7 @@
 
 import React, { Component } from 'react';
 import firebase from '../../firebase.js'
+import {Segment } from 'expo'
 
 import {
   AppRegistry,
@@ -113,6 +114,8 @@ export default class example extends Component {
         success:true,
       
     };
+    Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Sign In Screen")
   }
 
 
@@ -178,7 +181,9 @@ export default class example extends Component {
 
           </View>
 
-          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={this._signIn}>
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => {
+            Segment.track("Signed In");
+            this._signIn()}}>
             <Text style={styles.buttonText}>{ buttonText }</Text>
           </TouchableOpacity></View>
 

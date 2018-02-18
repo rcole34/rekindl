@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
+import {Platform, View, Text, Button, FlatList, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import DetailScreen from './src/HomeScreen/DetailScreen.js';
 import HomeScreen from './src/HomeScreen/HomeScreen.js'
@@ -12,9 +12,15 @@ import RegScreen from "./src/Registration/RegScreen.js";
 import SignInScreen from "./src/Registration/SignInScreen.js";
 import SignUpScreen from "./src/Registration/SignUpScreen.js";
 import * as firebase from './firebase.js';
+import {Segment } from 'expo'
 
 console.disableYellowBox = true;
 
+if (Platform.OS === 'ios'){
+    Segment.initializeIOS("KMvbA4VExehbgtYn2J6rBPNoFcqHbJOs")
+  } else {
+    Segment.initializeAndroid("QeIEXEsYpLHs0l5MXmiiezthFZsDwjQI")
+  }
 
 class LogoTitle extends React.Component {
   render() {

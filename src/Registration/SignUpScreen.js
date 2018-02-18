@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from '../../firebase.js'
+import {Segment } from 'expo'
 
 import {
   AppRegistry,
@@ -116,6 +117,8 @@ export default class example extends Component {
 
   constructor(props) {
     super(props);
+    Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Sign Up Screen")
     this.state = {
         inputs: {},
         success:true,
@@ -140,21 +143,28 @@ export default class example extends Component {
     let values = this.refs.form.getValues()
     errMess = ''
     if(values.password !== values.password2) {
+     Segment.track("Sign Up Error - Paswords Do Not Match");
       errMess += 'Passwords do not match. '
     }
     if(values.password.length < 5) {
+      Segment.track("Sign Up Error - Password too short");
       errMess += 'Password must be longer than 5 characters. '
     }
     if(values.firstName === '') {
+      Segment.track("Sign Up Error - No First Name");
+
       errMess += 'First name is required. '
     }
     if(values.lastName === '') {
+      Segment.track("Sign Up Error - No Last Name");
       errMess += 'Last name is required. '
     }
     if(values.email === '') {
+      Segment.track("Sign Up Error - No Email");
       errMess += 'Email is required. '
     }
     if(values.phone.length != 10) {
+      Segment.track("Sign Up Error - Invalid Phone Number");
       errMess += 'Phone number must consist of 10 digits and no spaces. '
     }
     if(errMess !== '') {
@@ -209,7 +219,9 @@ export default class example extends Component {
 
         <Text style={styles.header}>{headerText}</Text>
 
-        <View style={{alignItems:'center', justifyContent:'center'}}><TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{alignItems:'center', justifyContent:'center', height:100, width:100, borderRadius:100/2, marginBottom:10}} onPress = {() => {this._pickImage()}}>
+        <View style={{alignItems:'center', justifyContent:'center'}}><TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{alignItems:'center', justifyContent:'center', height:100, width:100, borderRadius:100/2, marginBottom:10}} onPress = {() => {
+          Segment.track("Chose Profile Photo - Sign Up");
+          this._pickImage()}}>
                 <Image source = {this.state.photo} style = {{alignItems: 'center', justifyContent: 'center', height:100, width:100, borderRadius:100/2}}>
                     <View style={{alignItems: 'center', justifyContent: 'center', height:100, width:100, borderRadius:100/2, backgroundColor:'rgba(150,150,150,0.4)'}}>
                         <Text>set photo</Text>
@@ -237,6 +249,7 @@ export default class example extends Component {
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
               onSubmitEditing={() => {
+                Segment.track("Sign Up - Entered First Name");
                 this.focusNextField('lastName');
               }}
               onFocus={(event: Event) => {
@@ -259,6 +272,8 @@ export default class example extends Component {
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
               onSubmitEditing={() => {
+                Segment.track("Sign Up - Entered Last Name");
+
                 this.focusNextField('phone');
               }}
               onFocus={(event: Event) => {
@@ -285,6 +300,8 @@ export default class example extends Component {
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
               onSubmitEditing={() => {
+                Segment.track("Sign Up - Entered Phone");
+
                 this.focusNextField('email');
               }}
               onFocus={(event: Event) => {
@@ -311,6 +328,7 @@ export default class example extends Component {
               placeholderTextColor={'#999'}
               selectionColor={'#f1f1f1'}
               onSubmitEditing={() => {
+                Segment.track("Sign Up - Entered Email");
                 this.focusNextField('pw1');
               }}
               onFocus={(event: Event) => {
@@ -340,6 +358,7 @@ export default class example extends Component {
               selectionColor={'#f1f1f1'}
               secureTextEntry={true}
               onSubmitEditing={() => {
+                Segment.track("Sign Up - Entered Password");
                 this.focusNextField('pw2');
               }}
               onFocus={(event: Event) => {
@@ -372,7 +391,9 @@ export default class example extends Component {
           </View>
 
           
-          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={this._signUp}>
+          <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => {
+            Segment.track("Signed Up");
+            this._signUp()}}>
             <Text style={styles.buttonText}>{ buttonText }</Text>
           </TouchableOpacity></View>
 

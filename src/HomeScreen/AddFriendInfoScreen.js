@@ -2,7 +2,8 @@ import React from 'react';
 import { TouchableWithoutFeedback, Animated, StatusBar, TextInput, Picker, Alert, View, Text, Button, StyleSheet, Image, TouchableHighlight, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation'
-
+import {Segment } from 'expo'
+import firebase from '../../firebase.js'
 
 class FloatingLabelInput extends React.Component {
 
@@ -64,18 +65,24 @@ class FloatingLabelInput extends React.Component {
 
 class AddFriendInfoScreen extends React.Component {
     constructor(props) {
+
     super(props);
     this.state = {value: '', newFriend:{firstName:null, lastName: null , photo:require('../../assets/profilePictures/default-profile.png'), phone:null, category: 'weekFriend'}};
+    Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Add A Friend Info Screen")
   }
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
             <TouchableWithoutFeedback onPress={() => {
+
                 if(navigation.state.params.newFriend.lastName != null && navigation.state.params.newFriend.firstName != null && navigation.state.params.newFriend.phone != null && navigation.state.params.newFriend.lastName != '' && navigation.state.params.newFriend.firstName != '' && navigation.state.params.newFriend.phone != ''){
                     navigation.state.params.onSave(navigation.state.params.newFriend);
+                    Segment.track("Added a Friend");
                     navigation.navigate('Home');
                   } else {
-                     Alert.alert('Please fill out all fields')
+                     Segment.track("Failed to Add a Friend - Missing Fields");
+                     Alert.alert('Please fill out all fields');
                    }
                 }}>
                     <View><Text style={{color: '#f1f1f1', marginRight: 15, marginBottom: 5, fontSize:18}}>Add</Text></View>
@@ -103,7 +110,9 @@ class AddFriendInfoScreen extends React.Component {
     const navigation = this.props.navigation;
     return (
       <View style={{ flex: 1, padding: 40, backgroundColor: '#333' }}>
-      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {this._pickImage()}}>
+      <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {
+        Segment.track("Clicked to Select Photo for a Friend")
+        this._pickImage()}}>
                 <Image source = {navigation.state.params.newFriend.photo} style = {{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2}}>
                     <View style={{alignItems: 'center', justifyContent: 'center', height:150, width:150, borderRadius:150/2, backgroundColor:'rgba(150,150,150,0.4)'}}>
                         <Text>set photo</Text>

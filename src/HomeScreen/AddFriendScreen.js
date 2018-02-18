@@ -4,8 +4,12 @@ import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
 import React, { Component } from 'react';
 import { SearchBar } from 'react-native-elements'
+import {Segment } from 'expo'
+import firebase from '../../firebase.js'
+
 
 import "@expo/vector-icons";
+
 
 var data = {friends:[]}
 var dataCopy = {friends:[]}
@@ -17,6 +21,8 @@ var contacts = []
 class AddFriendScreen extends React.Component {
   constructor(props) {
     super(props);
+    Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Contacts Screen")
     this.state = {isLoading: true}
     async function showFirstContactAsync() {
   // Ask for permission to query contacts.
@@ -107,7 +113,7 @@ resetData(text){
       noIcon = 'true'
       placeholder='Search' 
       onChangeText={this.searchText.bind(this)}
-   onClearText={this.resetData()}
+     onClearText={this.resetData()}
       containerStyle = {{top: -25}}/>
 
 
@@ -124,7 +130,9 @@ resetData(text){
 
 _renderItem(item, navigation){
     return(
-    <TouchableOpacity onPress={() => { navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image, category:'biweekFriend' }});}}>
+    <TouchableOpacity onPress={() => { 
+      Segment.track("Chose a friend on Contacts");
+      navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName: item.name.split(" ")[0], lastName: item.name.split(" ")[1], phone: item.phone, photo: item.image, category:'biweekFriend' }});}}>
         <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
                 <View style={{flex: 1, height: 80, flexDirection: 'row', marginLeft:10, marginRight:10}}>
                     <Image source={item.image} style={{height:50, width:50, borderRadius:50/2}}/>

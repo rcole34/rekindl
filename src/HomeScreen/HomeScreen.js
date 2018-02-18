@@ -5,6 +5,10 @@ import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
 import {AppLoading} from 'expo'
 import firebase from '../../firebase.js'
+import {Segment } from 'expo'
+
+
+
 
 class HomeScreen extends React.Component {  
     
@@ -12,11 +16,15 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {isLoading: true}
+    Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Home Screen")
   }
 
   static navigationOptions = ({navigation}) => ({
         headerRight: 
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave, uid: navigation.state.params.uid, value: navigation.state.params.value, newFriend:navigation.state.params.newFriend})}>
+            <TouchableWithoutFeedback onPress={() => {
+                Segment.track("Home - Clicked Add A Friend");
+                navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave, uid: navigation.state.params.uid, value: navigation.state.params.value, newFriend:navigation.state.params.newFriend})}}>
                     <Image source={require('../../assets/icons/rounded-plus.png')} style={{tintColor: '#f1f1f1', height: 30, width: 30, marginRight: 15, marginBottom: 5}}/>
             </TouchableWithoutFeedback>,
     })
@@ -208,7 +216,9 @@ _renderCategory(item, navigation) {
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:item.friends.length!=0?-20:15}}>
                 <Text style={{fontSize:24, color:'white', fontWeight:'200'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
-                {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends, rekindl: this.rekindl})}}>
+                {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { 
+                    Segment.track("Home - Clicked View All")
+                    navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends, rekindl: this.rekindl})}}>
                     <Text style={{color:"white"}}>View All</Text>
                 </TouchableOpacity>}
             </View>
@@ -227,7 +237,9 @@ _renderCategory(item, navigation) {
 _renderList(item, navigation) {
     return(
         <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
-            <TouchableOpacity activeOpacity={0.25} onPress={() => { navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends, rekindl: this.rekindl});}}>
+            <TouchableOpacity activeOpacity={0.25} onPress={() => { 
+                Segment.track("Home - Clicked On A Friend")
+                navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends, rekindl: this.rekindl});}}>
                 <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
                     <Image source={item.photo} style={{height:80, width:80, borderRadius:80/2}}/>
                     <Text style={{color:'white'}}>{item.firstName} {item.lastName[0]}.</Text>

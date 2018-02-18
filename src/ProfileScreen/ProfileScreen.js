@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage, Modal, Button, AlertIOS } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as firebase from 'firebase'; 
+import {Segment } from 'expo'
 
 
 class ProfileScreen extends React.Component {
@@ -11,6 +12,8 @@ class ProfileScreen extends React.Component {
   constructor(props) {
         super(props);
         const navigation = this.props.navigation;
+        Segment.identify(Expo.Constants.deviceId)
+        Segment.screen("User Profile Screen")
         this.state = {
           user: {
             name: '',
@@ -133,7 +136,9 @@ setStatus(text) {
         <View style={{flexDirection:'row', alignItems: 'center'}}>
           <Text style = {{fontSize:48, color:'white'}}>{this.state.user.firstName} {this.state.user.lastName}</Text>
           <TouchableOpacity activeOpacity={0.25}
-          onPress={() => navigation.navigate('Settings', {})}>
+          onPress={() => {
+            Segment.track("Clicked Settings");
+            navigation.navigate('Settings', {})}}>
             <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
           </TouchableOpacity>
         </View>
@@ -149,6 +154,7 @@ setStatus(text) {
         <Text style = {{fontSize:20, color:'white'}}>Status: {this.state.user.status}</Text>
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
         onPress={() => {
+          Segment.track("Clicked Edit Status")
           this.setState({
             editActive: true
           });

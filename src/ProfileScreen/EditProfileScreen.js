@@ -2,13 +2,16 @@ import React from 'react';
 import { View, Text, Button, FlatList, StyleSheet, TouchableHighlight, Image, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import { ImagePicker } from 'expo';
-
+import {Segment } from 'expo'
+import firebase from '../../firebase.js'
 class EditProfileScreen extends React.Component {
 
     constructor(props) {
         super(props);
         const navigation = this.props.navigation;
         this.state = {user: navigation.state.params.user};
+            Segment.identify(Expo.Constants.deviceId)
+    Segment.screen("Edit Profile Screen")   
     }
 
     _pickImage = async () => {
