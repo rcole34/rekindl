@@ -251,7 +251,7 @@ _renderList(item, navigation) {
 
 rekindl = (user) => {
     var currUser = firebase.auth().currentUser;
-    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now(), category: user.category})    
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now(), category: user.category, photo:user.photo})    
   };
 
 

@@ -130,10 +130,19 @@ export default class example extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
+      base64: true
     });
 
     if (!result.cancelled) {
-        this.setState({photo: { uri: result.uri }});
+        type = "image/"
+        endIndex = result.uri.lastIndexOf('.')
+        if(endIndex === -1) {
+            type += 'jpg'
+        }
+        else {
+            type += result.uri.substring(endIndex + 1)
+        }
+        this.setState({photo: {uri: 'data:'+type+';base64,'+result.base64}});
     }
   };
 
@@ -176,7 +185,7 @@ export default class example extends Component {
     });
     firebase.auth().onAuthStateChanged(async user => {
         if(user) {
-          let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
+          //let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
             user.updateProfile({
               displayName: values.firstName + ' ' + values.lastName,
               phoneNumber: values.phone
@@ -184,12 +193,12 @@ export default class example extends Component {
               Alert.alert('Oops!', error.message)
               return
             });
-            if(userPhotos){
-                userPhotos[user.uid] = this.state.photo
-            }
+            // if(userPhotos){
+            //     userPhotos[user.uid] = this.state.photo
+            // }
             
-            AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
-            firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone})
+            //AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
+            firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone, photo:this.state.photo})
             this.props.navigation.navigate('Home', {})
         }
     })

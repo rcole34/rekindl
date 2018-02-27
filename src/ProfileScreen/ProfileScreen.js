@@ -28,7 +28,7 @@ class ProfileScreen extends React.Component {
     }
 
   async componentWillMount() {
-    let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
+    //let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             this.state.user.uid = user.uid
@@ -37,8 +37,8 @@ class ProfileScreen extends React.Component {
                 this.state.user.lastName = snapshot.val().lastName;
                 //this.state.user.birthday = snapshot.val().birthday;
                 this.state.user.status = snapshot.val().status;
-                if(userPhotos && userPhotos[user.uid]) {
-                    this.state.user.photo = userPhotos[user.uid]
+                if(snapshot.val().photo) {
+                    this.state.user.photo = snapshot.val().photo
                 }
                 
                 this.setState({
