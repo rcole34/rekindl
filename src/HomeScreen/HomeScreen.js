@@ -41,10 +41,10 @@ class HomeScreen extends React.Component {
             //console.log(user)
             firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
                 list = snapshot.val()
-                let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
+                //let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
                 if (list == null) {
                     this.setState({
-                        friendPhotos: friendPhotos,
+                        //friendPhotos: friendPhotos,
                         sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
                         isLoading: false,
                         width: Dimensions.get('window').width,
@@ -113,10 +113,10 @@ class HomeScreen extends React.Component {
                     }
 
                     //set friend photos
-                    if(friendPhotos && friendPhotos[key]) {
-                        friend.photo = friendPhotos[key]
-                    }
-                    else {
+                    // if(friendPhotos && friendPhotos[key]) {
+                    //     friend.photo = friendPhotos[key]
+                    // }
+                    /*else*/ if(!friend.photo) {
                         friend.photo = defaultPhoto
                     }
 
@@ -154,7 +154,7 @@ class HomeScreen extends React.Component {
                     }
                 };
                 this.setState({
-                    friendPhotos: friendPhotos,
+                    //friendPhotos: friendPhotos,
                     sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
                     isLoading: false,
                     width: Dimensions.get('window').width,
@@ -165,7 +165,7 @@ class HomeScreen extends React.Component {
 
         } else {
             this.setState({
-                friendPhotos: {},
+                //friendPhotos: {},
                 sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
                 isLoading: false,
                 width: Dimensions.get('window').width,
@@ -268,14 +268,14 @@ rekindl = (user) => {
     user.statusAge = null
     user.number = user.phone.toString()
     delete user.phone
-    let friendPhotos = this.state.friendPhotos
-    if(friendPhotos){
-        friendPhotos[user.number] = user.photo
-    }
+    // let friendPhotos = this.state.friendPhotos
+    // if(friendPhotos){
+    //     friendPhotos[user.number] = user.photo
+    // }
 
-    AsyncStorage.setItem('friendPhotos', JSON.stringify(friendPhotos))
+    // AsyncStorage.setItem('friendPhotos', JSON.stringify(friendPhotos))
 
-    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: user.currFire, number: user.number, lastConnected: user.lastConnected, category: user.category})
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: user.currFire, number: user.number, lastConnected: user.lastConnected, category: user.category, photo: user.photo})
     
   };
 

@@ -94,10 +94,19 @@ class AddFriendInfoScreen extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
+      base64: true
     });
 
     if (!result.cancelled) {
-        const newFriend = Object.assign({}, this.props.navigation.state.params.newFriend, {photo: {uri: result.uri} }); 
+        type = "image/"
+        endIndex = result.uri.lastIndexOf('.')
+        if(endIndex === -1) {
+            type += 'jpg'
+        }
+        else {
+            type += result.uri.substring(endIndex + 1)
+        }
+        const newFriend = Object.assign({}, this.props.navigation.state.params.newFriend, {photo: {uri: 'data:'+type+';base64,'+result.base64} }); 
         this.props.navigation.setParams({ newFriend });
     }
   };

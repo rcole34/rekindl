@@ -51,6 +51,7 @@ class AddFriendScreen extends React.Component {
       friend.name = contacts.data[i].name
       friend.phone = contacts.data[i].phoneNumbers[0].digits
       if(contacts.data[i].imageAvailable){
+        //console.log(contacts.data[i].image)
         friend.image = {uri: contacts.data[i].image.uri}
       } else {
         friend.image = require('../../assets/profilePictures/default-profile.png')
