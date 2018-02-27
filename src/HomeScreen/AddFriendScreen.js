@@ -123,6 +123,15 @@ resetData(text){
             //onEndReached={(info: {distanceFromEnd: 1}) => this.getContacts()}
             data={data.friends}
             extraData={this.state}
+            ListHeaderComponent={<TouchableOpacity onPress={()=>{
+              Segment.track("Manually enter new friend's info");
+              this.props.navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName:'', lastName:'', phone:'', photo: require('../../assets/profilePictures/default-profile.png'), category:'biweekFriend'}});}}>
+              <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
+                <View style={{flex: 1, height: 60, flexDirection: 'row', marginLeft:10, marginRight:10}}>
+                  <Text style={{color:'white', marginLeft: 15, paddingTop: 10}}>Enter Manually</Text>
+                </View>
+              </View>
+              </TouchableOpacity>}
             renderItem={({item}) => this._renderItem(item, {navigate})}/>
       </View>
       );
