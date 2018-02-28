@@ -198,7 +198,7 @@ export default class example extends Component {
             // if(userPhotos){
             //     userPhotos[user.uid] = this.state.photo
             // }
-            
+
             //AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
             if(this.state.chosePhoto) {
               firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone, photo:this.state.photo})
@@ -246,7 +246,7 @@ export default class example extends Component {
 
         <Form ref={'form'} style={styles.form}>
 
-          
+
         <View style={{ flexDirection: 'row' }}>
             <TextInput
               ref={ input => {
@@ -363,7 +363,7 @@ export default class example extends Component {
               underlineColorAndroid={'transparent'}
               autoCapitalize={'none'}
               autoCorrect={false}
-              placeholder={'*Password'}
+              placeholder={'*Password (6 digits)'}
               onSubmitEditing={() => {
                 this.focusNextField('two');
               }}
@@ -405,7 +405,7 @@ export default class example extends Component {
 
           </View>
 
-          
+
           <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => {
             Segment.track("Signed Up");
             this._signUp()}}>
@@ -425,4 +425,3 @@ export default class example extends Component {
     );
   }
 }
-
