@@ -180,10 +180,10 @@ class HomeScreen extends React.Component {
 /* render method for new prototype*/
   render() {
     if (this.state.isLoading) {
-        return (
-            <AppLoading/>
-        );
-      //return <View style={{flex: 1, backgroundColor:'#333', justifyContent: 'center', alignItems: 'center'}}><Text style={{color:'white'}}>Loading...</Text></View>;
+        // return (
+        //     <AppLoading/>
+        // );
+      return <View style={{flex: 1, backgroundColor:'#333', justifyContent: 'center', alignItems: 'center'}}><Text style={{color:'white'}}>Loading...</Text></View>;
     }
 
     const { navigate } = this.props.navigation;
