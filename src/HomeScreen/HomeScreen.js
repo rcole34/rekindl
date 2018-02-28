@@ -31,13 +31,6 @@ class HomeScreen extends React.Component {
     })
 
     async componentWillMount() {
-        //console.log('will mount')
-        if(this.props.navigation.state.params.mustLoadData) {
-            this.loadData()
-        }
-    }
-
-    async loadData() {
         var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
         var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
         var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
@@ -169,7 +162,10 @@ class HomeScreen extends React.Component {
             })
             
         }.bind(this))
+
     }
+
+    
 
 
     componentDidMount() {
