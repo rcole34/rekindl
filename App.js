@@ -11,7 +11,8 @@ import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
 import RegScreen from "./src/Registration/RegScreen.js";
 import SignInScreen from "./src/Registration/SignInScreen.js";
 import SignUpScreen from "./src/Registration/SignUpScreen.js";
-import * as firebase from './firebase.js';
+import SetUpScreen from "./SetUp.js"
+import firebase from './firebase.js';
 import {Segment } from 'expo'
 
 console.disableYellowBox = true;
@@ -32,7 +33,22 @@ class LogoTitle extends React.Component {
   }
 }
 
+
+
 const RootNavigator = StackNavigator({
+  SetUp: {
+    screen: SetUpScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: '',
+      headerLeft: '',
+      
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#f1f1f1',
+      headerBackTitle: ' '
+    }),
+  },
   Home: {
     screen: HomeScreen,
     navigationOptions: ({navigation}) => ({

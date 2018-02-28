@@ -122,7 +122,8 @@ export default class example extends Component {
     this.state = {
         inputs: {},
         success:true,
-        photo: require('../../assets/profilePictures/default-profile.png')
+        photo: require('../../assets/profilePictures/default-profile.png'),
+        chosePhoto: false
     };
   }
 
@@ -134,6 +135,7 @@ export default class example extends Component {
     });
 
     if (!result.cancelled) {
+        this.setState({chosePhoto: true})
         type = "image/"
         endIndex = result.uri.lastIndexOf('.')
         if(endIndex === -1) {
@@ -198,8 +200,12 @@ export default class example extends Component {
             // }
             
             //AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
-            firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone, photo:this.state.photo})
-            this.props.navigation.navigate('Home', {})
+            if(this.state.chosePhoto) {
+              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone, photo:this.state.photo})
+            } else {
+              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone})
+            }
+            //this.props.navigation.navigate('Home', {})
         }
     })
   }

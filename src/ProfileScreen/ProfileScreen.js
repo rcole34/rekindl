@@ -29,33 +29,25 @@ class ProfileScreen extends React.Component {
 
   async componentWillMount() {
     //let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            this.state.user.uid = user.uid
-            firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
-                this.state.user.firstName = snapshot.val().firstName;
-                this.state.user.lastName = snapshot.val().lastName;
-                //this.state.user.birthday = snapshot.val().birthday;
-                this.state.user.status = snapshot.val().status;
-                if(snapshot.val().photo) {
-                    this.state.user.photo = snapshot.val().photo
-                }
-                
-                this.setState({
-                    user: this.state.user,
-                    editActive: false
-                });
-                
-            })
-            // if(userPhotos && userPhotos[user.uid]) {
-            //     this.state.user.photo = userPhotos[user.uid]
-            // }
-            // this.setState({
-            //     user: this.state.user,
-            //     editActive: false
-            // });
+    var user = firebase.auth().currentUser;
+    this.state.user.uid = user.uid
+    firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+        if(snapshot.val()) {
+            this.state.user.firstName = snapshot.val().firstName;
+            this.state.user.lastName = snapshot.val().lastName;
+            //this.state.user.birthday = snapshot.val().birthday;
+            this.state.user.status = snapshot.val().status;
+            if(snapshot.val().photo) {
+                this.state.user.photo = snapshot.val().photo
+            }
+        
+            this.setState({
+                user: this.state.user,
+                editActive: false
+            });
         }
-    }.bind(this));
+        
+    });
   }
 
   //componentDidMount() {this.setupListener();}

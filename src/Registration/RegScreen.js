@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 export default class example extends Component {
 
   constructor(props) {
+    // console.log('Registration screen')
     super(props);
     Segment.identify(Expo.Constants.deviceId)
     Segment.screen("Registration Screen")

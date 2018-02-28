@@ -13,14 +13,15 @@ import {Segment } from 'expo'
 class HomeScreen extends React.Component {  
     
 
-  constructor(props) {
-    super(props);
-    this.state = {isLoading: true}
-    Segment.identify(Expo.Constants.deviceId)
-    Segment.screen("Home Screen")
-  }
+    constructor(props) {
+        super(props);
+        this.state = {isLoading: true}
+        Segment.identify(Expo.Constants.deviceId)
+        Segment.screen("Home Screen")
+        //console.log('constructor')
+    }
 
-  static navigationOptions = ({navigation}) => ({
+    static navigationOptions = ({navigation}) => ({
         headerRight: 
             <TouchableWithoutFeedback onPress={() => {
                 Segment.track("Home - Clicked Add A Friend");
@@ -29,130 +30,26 @@ class HomeScreen extends React.Component {
             </TouchableWithoutFeedback>,
     })
 
-  async componentWillMount() {
-    var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
-    var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
-    var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
-    var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"toasty", friends:[]}
-    var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
+    async componentWillMount() {
+        //console.log('will mount')
+        if(this.props.navigation.state.params.mustLoadData) {
+            this.loadData()
+        }
+    }
+
+    async loadData() {
+        var deadFriends = {key: 1, fire: require('../../assets/fires/dead_fire.png'), currFire:"dead", message:"vanishing", friends:[]}
+        var tinyFriends = {key: 2, fire: require('../../assets/fires/tiny_fire.png'), currFire:"tiny", message:"fading", friends:[]}
+        var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
+        var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"toasty", friends:[]}
+        var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
     
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {            
-            //console.log(user)
-            firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
-                list = snapshot.val()
-                //let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
-                if (list == null) {
-                    this.setState({
-                        //friendPhotos: friendPhotos,
-                        sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
-                        isLoading: false,
-                        width: Dimensions.get('window').width,
-                        height: Dimensions.get('window').width
-                    })
-                    return
-                }
-
-                //get statuses of users, organized by phone number
-                userPhones = {}
-                await firebase.database().ref('users').once('value', async function(snapshot) {
-                    users = snapshot.val()
-                    for(uid in users) {
-                        user = users[uid]
-                        userPhones[user.phone] = {status: user.status, statusPosted: user.statusPosted}
-                    }
-                })
-                //console.log(userPhones)
-
-
-                deadFriends.friends = []
-                tinyFriends.friends = []
-                smallFriends.friends = []
-                mediumFriends.friends = []
-                largeFriends.friends = []
-                let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
-                let fires = [require('../../assets/fires/dead_fire.png'), require('../../assets/fires/tiny_fire.png'), require('../../assets/fires/small_fire.png'), require('../../assets/fires/medium_fire.png'), require('../../assets/fires/large_fire.png')]
-                let bgFires = [require('../../assets/fires/vanishing.png'), require('../../assets/fires/fading.png'), require('../../assets/fires/calm.jpg'), require('../../assets/fires/toasty.png'), require('../../assets/fires/roaring.png')]
-        
-                
-
-                for (var key in list) {
-                    friend = list[key]
-                    //set fire to appropriate size
-                    if(friend.lastConnected != 'never') {
-                        var fireTime = 7
-                        switch(friend.category) {
-                            case 'biweekFriend':
-                                fireTime = 14
-                                break;
-                            case 'monthFriend':
-                                fireTime = 30
-                                break;
-                            case 'bimonthFriend':
-                                fireTime = 60
-                                break;
-                        }
-                        fireTime *= 86400000 //total lifespan of fire in ms
-                        var timeApart = Date.now() - friend.lastConnected //time in ms since last connection
-                        switch(Math.floor(fireTime*1.0/timeApart)) {
-                            case 0:
-                                friend.currFire = 'dead'
-                                break;
-                            case 1:
-                                friend.currFire = 'tiny'
-                                break;
-                            case 2:
-                                friend.currFire = 'small'
-                                break;
-                            case 3:
-                                friend.currFire = 'medium'
-                                break;
-                            default:
-                                friend.currFire = 'large'
-                        }
-                    }
-
-                    //set friend photos
-                    // if(friendPhotos && friendPhotos[key]) {
-                    //     friend.photo = friendPhotos[key]
-                    // }
-                    /*else*/ if(!friend.photo) {
-                        friend.photo = defaultPhoto
-                    }
-
-                    //connect friends to their status
-                    if(userPhones[friend.number]) {
-                        friend.status = userPhones[friend.number].status
-                        friend.statusPosted = userPhones[friend.number].statusPosted
-                    }
-
-                    //sort into categories
-                    if(friend.currFire === 'dead') {
-                        friend.bgFire = bgFires[0]
-                        friend.fire = fires[0]
-                        deadFriends.friends.push(friend)
-                    }
-                    else if(friend.currFire === 'tiny') {
-                        friend.bgFire = bgFires[1]
-                        friend.fire = fires[1]
-                        tinyFriends.friends.push(friend)
-                    }
-                    else if(friend.currFire === 'small') {
-                        friend.bgFire = bgFires[2]
-                        friend.fire = fires[2]
-                        smallFriends.friends.push(friend)
-                    }
-                    else if(friend.currFire === 'medium') {
-                        friend.bgFire = bgFires[3]
-                        friend.fire = fires[3]
-                        mediumFriends.friends.push(friend)
-                    }
-                    else if(friend.currFire === 'large') {
-                        friend.bgFire = bgFires[4]
-                        friend.fire = fires[4]
-                        largeFriends.friends.push(friend)
-                    }
-                };
+        var user = firebase.auth().currentUser;
+        //console.log('logged in as ' + user.displayName)
+        firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
+            list = snapshot.val()
+            //let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
+            if (list == null) {
                 this.setState({
                     //friendPhotos: friendPhotos,
                     sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
@@ -160,28 +57,127 @@ class HomeScreen extends React.Component {
                     width: Dimensions.get('window').width,
                     height: Dimensions.get('window').width
                 })
-                
-            }.bind(this))
+                return
+            }
 
-        } else {
+            //get statuses of users, organized by phone number
+            userPhones = {}
+            await firebase.database().ref('users').once('value', async function(snapshot) {
+                users = snapshot.val()
+                for(uid in users) {
+                    user = users[uid]
+                    userPhones[user.phone] = {status: user.status, statusPosted: user.statusPosted}
+                }
+            })
+            //console.log(userPhones)
+
+
+            deadFriends.friends = []
+            tinyFriends.friends = []
+            smallFriends.friends = []
+            mediumFriends.friends = []
+            largeFriends.friends = []
+            let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
+            let fires = [require('../../assets/fires/dead_fire.png'), require('../../assets/fires/tiny_fire.png'), require('../../assets/fires/small_fire.png'), require('../../assets/fires/medium_fire.png'), require('../../assets/fires/large_fire.png')]
+            let bgFires = [require('../../assets/fires/vanishing.png'), require('../../assets/fires/fading.png'), require('../../assets/fires/calm.jpg'), require('../../assets/fires/toasty.png'), require('../../assets/fires/roaring.png')]
+
+        
+
+            for (var key in list) {
+                friend = list[key]
+                //set fire to appropriate size
+                if(friend.lastConnected != 'never') {
+                    var fireTime = 7
+                    switch(friend.category) {
+                        case 'biweekFriend':
+                            fireTime = 14
+                            break;
+                        case 'monthFriend':
+                            fireTime = 30
+                            break;
+                        case 'bimonthFriend':
+                            fireTime = 60
+                            break;
+                    }
+                    fireTime *= 86400000 //total lifespan of fire in ms
+                    var timeApart = Date.now() - friend.lastConnected //time in ms since last connection
+                    switch(Math.floor(fireTime*1.0/timeApart)) {
+                        case 0:
+                            friend.currFire = 'dead'
+                            break;
+                        case 1:
+                            friend.currFire = 'tiny'
+                            break;
+                        case 2:
+                            friend.currFire = 'small'
+                            break;
+                        case 3:
+                            friend.currFire = 'medium'
+                            break;
+                        default:
+                            friend.currFire = 'large'
+                    }
+                }
+
+                //set friend photos
+                // if(friendPhotos && friendPhotos[key]) {
+                //     friend.photo = friendPhotos[key]
+                // }
+                /*else*/ if(!friend.photo) {
+                    friend.photo = defaultPhoto
+                }
+
+                //connect friends to their status
+                if(userPhones[friend.number]) {
+                    friend.status = userPhones[friend.number].status
+                    friend.statusPosted = userPhones[friend.number].statusPosted
+                }
+
+                //sort into categories
+                if(friend.currFire === 'dead') {
+                    friend.bgFire = bgFires[0]
+                    friend.fire = fires[0]
+                    deadFriends.friends.push(friend)
+                }
+                else if(friend.currFire === 'tiny') {
+                    friend.bgFire = bgFires[1]
+                    friend.fire = fires[1]
+                    tinyFriends.friends.push(friend)
+                }
+                else if(friend.currFire === 'small') {
+                    friend.bgFire = bgFires[2]
+                    friend.fire = fires[2]
+                    smallFriends.friends.push(friend)
+                }
+                else if(friend.currFire === 'medium') {
+                    friend.bgFire = bgFires[3]
+                    friend.fire = fires[3]
+                    mediumFriends.friends.push(friend)
+                }
+                else if(friend.currFire === 'large') {
+                    friend.bgFire = bgFires[4]
+                    friend.fire = fires[4]
+                    largeFriends.friends.push(friend)
+                }
+            };
             this.setState({
-                //friendPhotos: {},
+                //friendPhotos: friendPhotos,
                 sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
                 isLoading: false,
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').width
             })
-            //go to sign in page and remove back button
-            this.props.navigation.navigate('Registration',{})
-        }
-    }.bind(this))
-    
-  }
+            
+        }.bind(this))
+    }
+
 
     componentDidMount() {
+        //console.log('did mount')
         this.props.navigation.setParams({ onSave: this.onSave });
         this.props.navigation.setParams({ value: '', newFriend: {firstName:'', lastName:'', category: 'weekFriend', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}} );
     }
+
 
 
 

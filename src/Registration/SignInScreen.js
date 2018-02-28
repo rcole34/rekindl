@@ -126,11 +126,11 @@ export default class example extends Component {
         Alert.alert('Oops!', error.message)
 
     })
-    firebase.auth().onAuthStateChanged(user => {
-        if(user) {
-            this.props.navigation.navigate('Home', {})
-        }
-    })
+    // firebase.auth().onAuthStateChanged(user => {
+    //     if(user) {
+    //         this.props.navigation.navigate('Home', {})
+    //     }
+    // })
   }
 
   render() {
