@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage, Modal, Button, AlertIOS } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as firebase from 'firebase'; 
+import * as firebase from 'firebase';
 import {Segment } from 'expo'
 
 
 class ProfileScreen extends React.Component {
 
-  
+
 
   constructor(props) {
         super(props);
@@ -21,7 +21,7 @@ class ProfileScreen extends React.Component {
             loggedOut: false,
             birthday: '',
             status: ''
-          }, 
+          },
           editActive: false,
           statusChange: ''
         }
@@ -40,13 +40,13 @@ class ProfileScreen extends React.Component {
             if(snapshot.val().photo) {
                 this.state.user.photo = snapshot.val().photo
             }
-        
+
             this.setState({
                 user: this.state.user,
                 editActive: false
             });
         }
-        
+
     });
   }
 
@@ -67,10 +67,10 @@ class ProfileScreen extends React.Component {
     const birthday = data.birthday
     //this.state.user.photo = {uri: userphoto.data.url}
     //this.state.user.name = username
-    const user = Object.assign({}, this.state.user, { name: username, photo: {uri: userphoto.data.url}, birthday: birthday, loggedOut: false}); 
+    const user = Object.assign({}, this.state.user, { name: username, photo: {uri: userphoto.data.url}, birthday: birthday, loggedOut: false});
                     this.setState({ user });
     //console.log(birthday)
-    
+
 
     }
   }
@@ -79,16 +79,16 @@ class ProfileScreen extends React.Component {
     this.setState({user: user});
   };
 
-setStatusStyle() {
-  distStr = this.state.editActive ? 'none' : 'flex';
-  return {
-    marginTop:'5%',
-    width: 275,
-    flexDirection: 'row',
-    alignItems: 'center',
-    display: distStr
-  }
-}
+// setStatusStyle() {
+//   distStr = this.state.editActive ? 'none' : 'flex';
+//   return {
+//     marginTop:'5%',
+//     width: 275,
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     display: distStr
+//   }
+// }
 
 setEditorStyle() {
   distStr = !this.state.editActive ? 'none' : 'flex';
@@ -124,26 +124,25 @@ setStatus(text) {
       contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
       scrollEnabled={false}>
         <Image source = {this.state.user.photo} style = {{marginTop:'5%', height:150, width:150, borderRadius:150/2}}/>
-        
-        <View style={{flexDirection:'row', alignItems: 'center'}}>
-          <Text style = {{fontSize:48, color:'white'}}>{this.state.user.firstName} {this.state.user.lastName}</Text>
+
+        <View style={{paddingTop: 15, flexDirection:'row', alignItems: 'center'}}>
+          <Text style = {{fontSize:32, color:'white'}}>{this.state.user.firstName} {this.state.user.lastName}</Text>
           <TouchableOpacity activeOpacity={0.25}
           onPress={() => {
             Segment.track("Clicked Settings");
             navigation.navigate('Settings', {})}}>
-            <Image source={require('../../assets/icons/settings.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
+            <Image source={require('../../assets/icons/settings.png')} style={{height:20, width:20, tintColor:'white', marginLeft:10}}/>
           </TouchableOpacity>
         </View>
         {/*<Text style = {{fontSize:24, color:'white'}}>Birthday: {this.state.user.birthday}</Text>*/}
         <TouchableOpacity activeOpacity={0.25} onPress={this.logInFB.bind(this)}>
-          <View style={this.state.user.loggedOut ? {flexDirection:'row', alignItems:'center', marginTop:20} : {display:'none'}}> 
+          <View style={this.state.user.loggedOut ? {flexDirection:'row', alignItems:'center', marginTop:20} : {display:'none'}}>
             <Image source={require('../../assets/icons/facebook.png')} style={{height:20, width:20, marginRight:15}}/>
             <Text  style={{fontSize:18, color:'white', textDecorationLine:'underline'}}>Connect Account</Text>
           </View>
         </TouchableOpacity>
-        <View style={{alignItems: 'center'}}>
-        <View style={this.setStatusStyle()}>
-        <Text style = {{fontSize:20, color:'white'}}>Status: {this.state.user.status}</Text>
+        <View style={{marginTop: 25, alignItems: 'center'}}>
+        <Text style = {{fontSize:20, color:'white'}}>{this.state.user.status}</Text>
         <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
         onPress={() => {
           Segment.track("Clicked Edit Status")
@@ -164,9 +163,11 @@ setStatus(text) {
               }
             ]);
         }}>
-        <Image source={require('../../assets/icons/edit.png')} style={{height:30, width:30, tintColor:'white', marginLeft:10}}/>
-        </TouchableHighlight>
+        <View style={{marginTop: 20, borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
+          <Text style={{backgroundColor:'transparent', color: 'white'}}>Update status</Text>
         </View>
+        {/* <Image source={require('../../assets/icons/edit.png')} style={{height:20, width:20, tintColor:'white', marginLeft:10}}/> */}
+        </TouchableHighlight>
         {/*
         <Modal
           visible={this.state.editActive}
