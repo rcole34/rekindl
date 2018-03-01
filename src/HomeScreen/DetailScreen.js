@@ -53,7 +53,7 @@ export default class DetailScreen extends React.Component {
 
   	_rekindlPressed = function(friend) {
   		Alert.alert(
-  			'Report Activity',
+  			'Update connection',
   			'Have you recently connected with ' + friend.firstName + ' and wish to rekindle this fire?',
   			[
   				{text: 'No'},
@@ -117,10 +117,12 @@ export default class DetailScreen extends React.Component {
 			        		<Image source={require('../../assets/icons/phone-outline.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
 			        </View>
-			        <TouchableOpacity style={{position:'absolute', bottom:'10%'}} activeOpacity={0.25} onPress={() => {
-                Segment.track("Report Activity");
+			        <TouchableOpacity style={{position:'absolute', bottom:'9%'}} activeOpacity={0.25} onPress={() => {
+                Segment.track("Update connection");
                 this._rekindlPressed(this.state.currGroup.friends[i])}}>
-			        	<Text style={{backgroundColor:'transparent', color:'white'}}>Report Activity</Text>
+								<View style={{borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
+								<Text style={{backgroundColor:'transparent', color: 'white'}}>Update connection</Text>
+								</View>
 			        </TouchableOpacity>
 			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this._getLastConnectedTime(this.state.currGroup.friends[i].lastConnected)}</Text>
 			   	</View>
@@ -131,10 +133,10 @@ export default class DetailScreen extends React.Component {
   		return (
 	  		<View style={{flex: 1, backgroundColor:'#222'}}>
 				<Swiper ref="cardSwiper"
-						loop={false} 
-						bounces={true} 
-						index={this.state.index} 
-						style={{right:'5%', left:'5%', top:'2%', bottom:'3%'}} 
+						loop={false}
+						bounces={true}
+						index={this.state.index}
+						style={{right:'5%', left:'5%', top:'2%', bottom:'3%'}}
 						dot={
 							<View style={{backgroundColor:'white', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />
 						}
@@ -143,7 +145,7 @@ export default class DetailScreen extends React.Component {
 								<View style={{backgroundColor: '#333', width: 6, height: 6, borderRadius: 3}} />
 							</View>
 						}>
-					{pages}  
+					{pages}
 			    </Swiper>
 			</View>
 		);
