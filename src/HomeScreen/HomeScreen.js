@@ -203,18 +203,21 @@ class HomeScreen extends React.Component {
 
 /*method to render the categories of friends on the home screen*/
 _renderCategory(item, navigation) {
+    const numFriends = item.friends.length
     return(
-        <View style={{backgroundColor:item.key%2==0?'#222':'#333', flex: 1, height: item.friends.length==0?100:200, marginTop: 0, width:this.state.width, flexDirection: 'column', justifyContent: 'center'}}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top:item.friends.length!=0?-20:15}}>
+        <View style={{backgroundColor:item.key%2==0?'#222':'#333', flex: 1, height: numFriends ? 200 : 50, marginTop: 0, width:this.state.width, opacity: numFriends ? 1 : 0.5, flexDirection: 'column', justifyContent: 'center'}}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top: numFriends ? -20 : 15, }}>
                 <Text style={{fontSize:24, color:'white', fontWeight:'200'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
-                {item.friends.length==0?null:<TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { 
+                {numFriends ? 
+                <TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { 
                     Segment.track("Home - Clicked View All")
                     navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends, rekindl: this.rekindl})}}>
                     <Text style={{color:"white"}}>View All</Text>
-                </TouchableOpacity>}
+                </TouchableOpacity> 
+                : null }
             </View>
-            {item.friends.length==0?<View style={{flex: 1, flexDirection:'row', marginTop:25, alignItems:'center', justifyContent:'center'}}><Text style={{fontStyle:'italic', color:'white'}}>No friends to display in this category</Text></View> : null}
+
             <FlatList
                 style={{top:-35}}
                 data={item.friends}

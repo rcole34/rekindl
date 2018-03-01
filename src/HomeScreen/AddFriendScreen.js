@@ -112,9 +112,9 @@ resetData(text){
       <View style={styles.container}>
       <SearchBar
       noIcon = 'true'
-      placeholder='Search' 
+      placeholder='Search and add from your contacts' 
       onChangeText={this.searchText.bind(this)}
-     onClearText={this.resetData()}
+      onClearText={this.resetData()}
       containerStyle = {{top: -25}}/>
 
 
@@ -127,8 +127,8 @@ resetData(text){
               Segment.track("Manually enter new friend's info");
               this.props.navigation.navigate('AddFriendInfo', {onSave: this.props.navigation.state.params.onSave, newFriend: {firstName:'', lastName:'', phone:'', photo: require('../../assets/profilePictures/default-profile.png'), category:'biweekFriend'}});}}>
               <View style={{flex: 1, flexDirection: 'row', marginLeft:10, marginRight:10}} >
-                <View style={{flex: 1, height: 60, flexDirection: 'row', marginLeft:10, marginRight:10}}>
-                  <Text style={{color:'white', marginLeft: 15, paddingTop: 10}}>Enter Manually</Text>
+                <View style={{flex: 1, height: 60, flexDirection: 'row', marginLeft:10, marginRight:10, /* button style */ borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
+                  <Text style={{color:'white', marginLeft: 15, paddingTop: 10}}>Enter New Friend Manually</Text>
                 </View>
               </View>
               </TouchableOpacity>}
