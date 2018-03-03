@@ -201,9 +201,9 @@ export default class example extends Component {
 
             //AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
             if(this.state.chosePhoto) {
-              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone, photo:this.state.photo})
+              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', statusPosted:Date.now(), notifications:true, phone: values.phone, photo:this.state.photo})
             } else {
-              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', notifications:true, phone: values.phone})
+              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', statusPosted:Date.now(), notifications:true, phone: values.phone})
             }
             //this.props.navigation.navigate('Home', {})
         }

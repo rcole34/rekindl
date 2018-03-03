@@ -53,7 +53,7 @@ export default class DetailScreen extends React.Component {
 
   	_rekindlPressed = function(friend) {
   		Alert.alert(
-  			'Update connection',
+  			'Rekindle',
   			'Have you recently connected with ' + friend.firstName + ' and wish to rekindle this fire?',
   			[
   				{text: 'No'},
@@ -118,10 +118,10 @@ export default class DetailScreen extends React.Component {
 			        	</TouchableOpacity>
 			        </View>
 			        <TouchableOpacity style={{position:'absolute', bottom:'9%'}} activeOpacity={0.25} onPress={() => {
-                Segment.track("Update connection");
+                Segment.track("Rekindle");
                 this._rekindlPressed(this.state.currGroup.friends[i])}}>
 								<View style={{borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
-									<Text style={{backgroundColor:'transparent', color: 'white'}}>Update connection</Text>
+								<Text style={{backgroundColor:'transparent', color: 'white'}}>Rekindle</Text>
 								</View>
 			        </TouchableOpacity>
 			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this._getLastConnectedTime(this.state.currGroup.friends[i].lastConnected)}</Text>

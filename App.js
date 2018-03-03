@@ -41,7 +41,6 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       headerTitle: '',
       headerLeft: '',
-      
       headerStyle: {
         backgroundColor: '#222',
       },
@@ -64,7 +63,8 @@ const RootNavigator = StackNavigator({
         backgroundColor: '#222',
       },
       headerTintColor: '#f1f1f1',
-      headerBackTitle: ' '
+      headerBackTitle: ' ',
+      gesturesEnabled: false
     }),
   },
   Detail: {
@@ -109,7 +109,8 @@ const RootNavigator = StackNavigator({
       },
       headerLeft: null,
       headerTintColor: '#fff',
-      headerBackTitle: ' '
+      headerBackTitle: ' ',
+      gesturesEnabled: false
     }),
   },
   AddFriend: {
