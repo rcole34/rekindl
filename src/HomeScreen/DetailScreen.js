@@ -121,7 +121,7 @@ export default class DetailScreen extends React.Component {
                 Segment.track("Update connection");
                 this._rekindlPressed(this.state.currGroup.friends[i])}}>
 								<View style={{borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
-								<Text style={{backgroundColor:'transparent', color: 'white'}}>Update connection</Text>
+									<Text style={{backgroundColor:'transparent', color: 'white'}}>Update connection</Text>
 								</View>
 			        </TouchableOpacity>
 			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this._getLastConnectedTime(this.state.currGroup.friends[i].lastConnected)}</Text>
