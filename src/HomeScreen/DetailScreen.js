@@ -65,6 +65,7 @@ export default class DetailScreen extends React.Component {
   	}
 
   	_getLastConnectedTime = function(timestamp) {
+  		if(!timestamp) return 'at unknown time'
   		if(timestamp === 'never') return 'never'
   		timeApart = Date.now() - timestamp
   		daysApart = Math.floor(timeApart * 1.0/86400000)

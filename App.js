@@ -5,6 +5,8 @@ import DetailScreen from './src/HomeScreen/DetailScreen.js';
 import HomeScreen from './src/HomeScreen/HomeScreen.js'
 import AddFriendScreen from './src/HomeScreen/AddFriendScreen.js';
 import SettingsScreen from "./src/SettingsScreen/SettingsScreen.js";
+import ManageConnections from "./src/SettingsScreen/ManageConnections.js";
+import EditConnection from "./src/SettingsScreen/EditConnection.js";
 import AddFriendInfoScreen from './src/HomeScreen/AddFriendInfoScreen.js';
 import ProfileScreen from "./src/ProfileScreen/ProfileScreen.js";
 import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
@@ -148,6 +150,28 @@ const RootNavigator = StackNavigator({
   },
   Settings: {
     screen: SettingsScreen,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
+  },
+  ManageConnections: {
+    screen: ManageConnections,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
+  },
+  EditConnection: {
+    screen: EditConnection,
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
