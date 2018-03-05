@@ -76,7 +76,6 @@ export default class example extends Component {
     return (
 
       <View style={styles.container}>
-
         <Text style={styles.header}>{headerText}</Text>
 
           <View style={{justifyContent:'center', alignItems:'center'}}><TouchableOpacity style={styles.button} onPress={() => {
