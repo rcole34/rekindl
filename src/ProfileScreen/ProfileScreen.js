@@ -34,12 +34,13 @@ class ProfileScreen extends React.Component {
     //let userPhotos = JSON.parse(await AsyncStorage.getItem('userPhotos')) || {}
     var user = firebase.auth().currentUser;
     this.state.user.uid = user.uid
-    firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+    firebase.database().ref('users').child(user.uid).once('value', (snapshot) => {
         if(snapshot.val()) {
             this.state.user.firstName = snapshot.val().firstName;
             this.state.user.lastName = snapshot.val().lastName;
             //this.state.user.birthday = snapshot.val().birthday;
             this.state.user.status = snapshot.val().status;
+
             this.state.user.notifications = snapshot.val().notifications;
             if (!this.state.handlerSet && this.state.user.notifications) {
               this._notificationSubscription = Notifications.addListener(handleNotifications);
@@ -49,7 +50,9 @@ class ProfileScreen extends React.Component {
               this._notificationSubscription.remove(handleNotifications);
               this.state.handlerSet = false;
             }
-            if(snapshot.val().photo) {
+            
+
+            if(snapshot.val().photo && snapshot.val().photo.uri) {
                 this.state.user.photo = snapshot.val().photo
             }
 

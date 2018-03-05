@@ -84,6 +84,7 @@ export default class DetailScreen extends React.Component {
   	}
 
     componentWillMount() {
+      var user = firebase.auth().currentUser;
       firebase.database().ref('users').child(user.uid).child('notifications').on('value', (snapshot) => {
         if (snapshot.val() && !this.state.handlerSet) {
         this._notificationSubscription = Notifications.addListener(handleNotifications);

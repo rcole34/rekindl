@@ -133,7 +133,7 @@ class HomeScreen extends React.Component {
                 // if(friendPhotos && friendPhotos[key]) {
                 //     friend.photo = friendPhotos[key]
                 // }
-                /*else*/ if(!friend.photo) {
+                /*else*/ if(!friend.photo || !friend.photo.uri) {
                     friend.photo = defaultPhoto
                 }
 
