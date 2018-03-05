@@ -5,7 +5,8 @@ import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from 'react-native'
 import {AppLoading} from 'expo'
 import firebase from '../../firebase.js'
-import {Segment } from 'expo'
+import {Segment, Notifications } from 'expo'
+import {handleNotifications} from '../../notificationHandler.js';
 
 
 
@@ -15,7 +16,7 @@ class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {isLoading: true}
+        this.state = {isLoading: true, handlerSet: false}
         Segment.identify(Expo.Constants.deviceId)
         Segment.screen("Home Screen")
         //console.log('constructor')
@@ -39,6 +40,22 @@ class HomeScreen extends React.Component {
     
         var user = firebase.auth().currentUser;
         //console.log('logged in as ' + user.displayName)
+        firebase.database().ref('users').child(user.uid).child('notifications').on('value', (snapshot) => {
+                if (snapshot.val() && !this.state.handlerSet) {
+                    this._notificationSubscription = Notifications.addListener(handleNotifications);
+                    console.log("Home Set handler");
+                    this.state.handlerSet = true;
+                    this.setState({
+                        handlerSet: this.state.handlerSet
+                    });
+                } else if (!snapshot.val() && this.state.handlerSet) {
+                    this._notificationSubscription.remove(handleNotifications);
+                    this.state.handlerSet = false;
+                    this.setState({
+                      handlerSet: this.state.handlerSet
+                    });
+                }
+            });
         firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
             list = snapshot.val()
             //let friendPhotos = JSON.parse(await AsyncStorage.getItem('friendPhotos')) || {}
@@ -157,6 +174,7 @@ class HomeScreen extends React.Component {
                 //friendPhotos: friendPhotos,
                 sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
                 isLoading: false,
+                handlerSet: this.state.handlerSet,
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').width
             })
@@ -172,6 +190,18 @@ class HomeScreen extends React.Component {
         //console.log('did mount')
         this.props.navigation.setParams({ onSave: this.onSave });
         this.props.navigation.setParams({ value: '', newFriend: {firstName:'', lastName:'', category: 'weekFriend', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}} );
+    }
+
+    componentWillUnmount() {
+        console.log("Unmounting home");
+        console.log(this.state.handlerSet);
+        if (this.state.handlerSet) {
+            console.log("Removing handler");
+            this._notificationSubscription.remove(handleNotifications);
+            this.setState({
+                handlerSet: false
+            })
+        }
     }
 
 

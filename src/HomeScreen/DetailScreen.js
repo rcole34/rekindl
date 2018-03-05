@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation'
 import { LinearGradient } from 'expo'
 import {Segment } from 'expo'
 import firebase from '../../firebase.js'
+import {handleNotifications} from '../../notificationHandler.js'
 // name accessed via {navigation.state.params.name}
 
 
@@ -39,7 +40,7 @@ export default class DetailScreen extends React.Component {
     			break
     		}
     	};
-    	this.state = {currGroup: currGroup, currFriend: currFriend, index: index, width: Dimensions.get('window').width, height: Dimensions.get('window').height};
+    	this.state = {currGroup: currGroup, currFriend: currFriend, index: index, width: Dimensions.get('window').width, height: Dimensions.get('window').height, handlerSet: false};
 
   	}
 
@@ -80,6 +81,34 @@ export default class DetailScreen extends React.Component {
   		}
   		return message
   	}
+
+    componentWillMount() {
+      firebase.database().ref('users').child(user.uid).child('notifications').on('value', (snapshot) => {
+        if (snapshot.val() && !this.state.handlerSet) {
+        this._notificationSubscription = Notifications.addListener(handleNotifications);
+        console.log("Set handler");
+        this.state.handlerSet = true;
+        this.setState({
+          handlerSet: this.state.handlerSet
+        });
+      } else if (!snapshot.val() && this.state.handlerSet) {
+        this._notificationSubscription.remove(handleNotifications);
+        this.state.handlerSet = false;
+        this.setState({
+          handlerSet: this.state.handlerSet
+        });
+      }
+    });
+    }
+
+    componentWillUnmount() {
+      if (this.state.handlerSet) {
+        this._notificationSubscription.remove(handleNotifications);
+        this.setState({
+          handlerSet: false
+        });
+      }
+    }
 
 
 

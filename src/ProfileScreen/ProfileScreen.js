@@ -2,7 +2,8 @@ import React from 'react';
 import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage, Modal, Button, AlertIOS } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as firebase from 'firebase';
-import {Segment } from 'expo'
+import {Segment, Notifications } from 'expo'
+import {handleNotifications} from '../../notificationHandler.js';
 
 
 class ProfileScreen extends React.Component {
@@ -20,8 +21,10 @@ class ProfileScreen extends React.Component {
             photo: require('../../assets/profilePictures/default-profile.png'),
             loggedOut: false,
             birthday: '',
-            status: ''
+            status: '',
+            notifications: false,
           },
+          handlerSet: false,
           editActive: false,
           statusChange: ''
         }
@@ -37,12 +40,22 @@ class ProfileScreen extends React.Component {
             this.state.user.lastName = snapshot.val().lastName;
             //this.state.user.birthday = snapshot.val().birthday;
             this.state.user.status = snapshot.val().status;
+            this.state.user.notifications = snapshot.val().notifications;
+            if (!this.state.handlerSet && this.state.user.notifications) {
+              this._notificationSubscription = Notifications.addListener(handleNotifications);
+              console.log("Set handler");
+              this.state.handlerSet = true;
+            } else if (!this.state.user.notifications && this.state.handlerSet) {
+              this._notificationSubscription.remove(handleNotifications);
+              this.state.handlerSet = false;
+            }
             if(snapshot.val().photo) {
                 this.state.user.photo = snapshot.val().photo
             }
 
             this.setState({
                 user: this.state.user,
+                handlerSet: this.state.handlerSet,
                 editActive: false
             });
         }
@@ -51,7 +64,14 @@ class ProfileScreen extends React.Component {
   }
 
   //componentDidMount() {this.setupListener();}
-  componentWilUnmount() {firebase.database().ref('users').child(this.state.user.uid).off('value');}
+  componentWillUnmount() {
+    console.log("Unmounting");
+    if (this.state.handlerSet) this._notificationSubscription.remove(handleNotifications);
+    firebase.database().ref('users').child(this.state.user.uid).off('value');
+    this.setState({
+      handlerSet: false
+    });
+  }
 
       async logInFB() {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('575341286140281', {

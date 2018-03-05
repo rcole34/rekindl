@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppLoading} from 'expo'
+import {AppLoading, Permissions} from 'expo'
 import { NavigationActions } from 'react-navigation'
 import firebase from './firebase.js'
 import { View, Text, Image, TouchableOpacity } from 'react-native';
@@ -12,7 +12,7 @@ export default class SetUpScreen extends React.Component {
     }
 
     componentWillMount() {
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(async function(user) {
             if (user) {
                 firebase.database().ref('users').child(user.uid).child('mustLoadData').set(true)
                 this.setState({isLoading: false})

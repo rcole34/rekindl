@@ -11,9 +11,10 @@ import EditProfileScreen from "./src/ProfileScreen/EditProfileScreen.js";
 import RegScreen from "./src/Registration/RegScreen.js";
 import SignInScreen from "./src/Registration/SignInScreen.js";
 import SignUpScreen from "./src/Registration/SignUpScreen.js";
-import SetUpScreen from "./SetUp.js"
+import SetUpScreen from "./SetUp.js";
+import PushOptionScreen from "./src/SettingsScreen/PushOptionScreen.js";
 import firebase from './firebase.js';
-import {Segment } from 'expo'
+import { Segment, Permissions, Notifications } from 'expo'
 
 console.disableYellowBox = true;
 
@@ -168,6 +169,18 @@ const RootNavigator = StackNavigator({
       headerBackTitle: ' '
     }),
   },
+  PushOption: {
+    screen: PushOptionScreen,
+    navigationOptions: ({navigation}) => ({
+      title: <LogoTitle/>,
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+      headerBackTitle: ' '
+    }),
+
+  }
 });
 
 export default RootNavigator;

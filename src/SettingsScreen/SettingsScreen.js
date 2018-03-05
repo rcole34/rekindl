@@ -2,7 +2,8 @@ import React from 'react';
 import { Alert, AlertIOS, View, Text, Image, FlatList, TouchableHighlight, Dimensions } from 'react-native';
 import firebase from '../../firebase.js'
 import * as OpenAnything from 'react-native-openanything';
-import {Segment } from 'expo'
+import {Segment, Permissions, Notifications } from 'expo';
+import {registerForNotifications, handleNotifications} from '../../notificationHandler.js';
 
 class SettingsScreen extends React.Component {
   
@@ -11,14 +12,14 @@ class SettingsScreen extends React.Component {
         Segment.identify(Expo.Constants.deviceId)
         Segment.screen("Settings Screen")
         this.state = {settings: [
-                {key: 1, title: 'Notification Settings', onPress: /*this.props.navigation.navigate('NotificationSettings', {})*/this._deleteAccount}, 
+                {key: 1, title: 'Notification Settings', onPress: /*this.props.navigation.navigate('NotificationSettings', {})*/this._moveToPushOptions}, 
                 {key: 2, title: 'Manage Connections', onPress: /*this.props.navigation.navigate('ManageConnections', {})*/this._deleteAccount},
                 /*{key: 3, title: 'Change Default Text Message', onPress: this.props.navigation.navigate('DefaultText', {})},*/
                 /*{key: 4, title: 'View Tutorial', onPress: this.props.navigation.navigate('Tutorial', {})this._deleteAccount},*/
                 {key: 5, title: 'Send Feedback', onPress: this._sendFeedback},
                 {key: 6, title: 'Sign Out', onPress: this._signOut},
                 {key: 7, title: 'Delete Account', onPress: this._deleteAccountPressed}
-            ]}
+            ], handlerSet: false}
 
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -73,6 +74,39 @@ class SettingsScreen extends React.Component {
             Alert.alert('Oops!', error.message);
         });
         
+    }
+
+    _moveToPushOptions = function() {
+        console.log("Moving");
+        console.log(this.props);
+        this.props.navigation.navigate("PushOption", {});
+    }.bind(this);
+
+    componentWillMount() {
+        var currUser = firebase.auth().currentUser;
+        firebase.database().ref('users').child(currUser.uid).child('notifications').on('value', (snapshot) => {
+            if (snapshot.val() && !this.state.handlerSet) {
+                this._notificationSubscription = Notifications.addListener(handleNotifications);
+                this.state.handlerSet = true;
+            } else if (!snapshot.val() && this.state.handlerSet) {
+                this._notificationSubscription.remove(handleNotifications);
+                this.state.handlerSet = false;
+            }
+            this.setState({
+                handlerSet: this.state.handlerSet
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        console.log("Settings Mounting");
+        if (this.state.handlerSet) {
+            this._notificationSubscription.remove(handleNotifications);
+            this.setState({
+                handlerSet: false
+            });
+
+        }
     }
 
   
