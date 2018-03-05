@@ -170,9 +170,28 @@ class HomeScreen extends React.Component {
                     largeFriends.friends.push(friend)
                 }
             };
+
+            var sortedFriends = [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends]
+            for(index in sortedFriends) {
+                if(!sortedFriends[index].friends) continue;
+                sortedFriends[index].friends.sort(function(a, b){
+                var timeA=a.lastConnected, timeB=b.lastConnected;
+                if(timeA === timeB)
+                    return 0;
+                if(timeA === 'never')
+                    return -1;
+                if(timeB === 'never')
+                    return 1;
+                if (timeA < timeB) //sort string ascending
+                    return -1;
+                if (timeA > timeB)
+                    return 1;
+                return 0; //default return value (no sorting)
+            });
+            }
             this.setState({
                 //friendPhotos: friendPhotos,
-                sortedFriends: [deadFriends, tinyFriends, smallFriends, mediumFriends, largeFriends],
+                sortedFriends: sortedFriends,
                 isLoading: false,
                 handlerSet: this.state.handlerSet,
                 width: Dimensions.get('window').width,

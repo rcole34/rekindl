@@ -39,7 +39,7 @@ class ProfileScreen extends React.Component {
             this.state.user.firstName = snapshot.val().firstName;
             this.state.user.lastName = snapshot.val().lastName;
             //this.state.user.birthday = snapshot.val().birthday;
-            this.state.user.status = snapshot.val().status;
+            
 
             this.state.user.notifications = snapshot.val().notifications;
             if (!this.state.handlerSet && this.state.user.notifications) {
@@ -64,6 +64,13 @@ class ProfileScreen extends React.Component {
         }
 
     });
+
+    firebase.database().ref('users').child(user.uid).child('status').on('value', (snapshot) => {
+        if(snapshot.val()) {
+            this.state.user.status = snapshot.val();
+            this.setState({user: this.state.user})
+        }
+    })
   }
 
   //componentDidMount() {this.setupListener();}
