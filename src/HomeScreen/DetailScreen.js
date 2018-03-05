@@ -5,7 +5,7 @@ import * as OpenAnything from 'react-native-openanything';
 import {AsyncStorage} from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { LinearGradient } from 'expo'
-import {Segment } from 'expo'
+import {Segment, Notifications } from 'expo'
 import firebase from '../../firebase.js'
 import {handleNotifications} from '../../notificationHandler.js'
 // name accessed via {navigation.state.params.name}
