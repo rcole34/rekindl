@@ -4,9 +4,9 @@ import firebase from './firebase.js';
 
 registerForNotifications = async function() {
     var currUser = firebase.auth().currentUser;
-    //console.log('Got current user');
+    console.log('Got current user');
     firebase.database().ref('users').child(currUser.uid).child('pushToken').once('value', async (snapshot) => {
-        if (snapshot == null) {
+        if (snapshot.val() == null) {
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
             let finalStatus = existingStatus;
             console.log(existingStatus);
