@@ -11,8 +11,8 @@ import {handleNotifications} from '../../notificationHandler.js';
 
 
 
-class HomeScreen extends React.Component {  
-    
+class HomeScreen extends React.Component {
+
 
     constructor(props) {
         super(props);
@@ -23,7 +23,7 @@ class HomeScreen extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        headerRight: 
+        headerRight:
             <TouchableWithoutFeedback onPress={() => {
                 Segment.track("Home - Clicked Add A Friend");
                 navigation.navigate('AddFriend', {onSave: navigation.state.params.onSave, uid: navigation.state.params.uid, value: navigation.state.params.value, newFriend:navigation.state.params.newFriend})}}>
@@ -37,7 +37,7 @@ class HomeScreen extends React.Component {
         var smallFriends = {key: 3, fire: require('../../assets/fires/small_fire.png'), currFire:"small", message:"calm", friends:[]}
         var mediumFriends = {key: 4, fire: require('../../assets/fires/medium_fire.png'), currFire:"medium", message:"toasty", friends:[]}
         var largeFriends = {key: 5, fire: require('../../assets/fires/large_fire.png'), currFire:"large", message:"roaring", friends:[]}
-    
+
         var user = firebase.auth().currentUser;
         //console.log('logged in as ' + user.displayName)
         firebase.database().ref('users').child(user.uid).child('notifications').on('value', (snapshot) => {
@@ -87,11 +87,12 @@ class HomeScreen extends React.Component {
             smallFriends.friends = []
             mediumFriends.friends = []
             largeFriends.friends = []
-            let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
+            // let defaultPhoto = require('../../assets/profilePictures/default-profile.png')
+            let defaultPhotos = {a: require('../../assets/profilePictures/a.png') ,b: require('../../assets/profilePictures/b.png') ,c: require('../../assets/profilePictures/c.png') ,d: require('../../assets/profilePictures/d.png') ,e: require('../../assets/profilePictures/e.png') ,f: require('../../assets/profilePictures/f.png') ,g: require('../../assets/profilePictures/g.png') ,h: require('../../assets/profilePictures/h.png') ,i: require('../../assets/profilePictures/i.png') ,j: require('../../assets/profilePictures/j.png') ,k: require('../../assets/profilePictures/k.png') ,l: require('../../assets/profilePictures/l.png') ,m: require('../../assets/profilePictures/m.png') ,n: require('../../assets/profilePictures/n.png') ,o: require('../../assets/profilePictures/o.png') ,p: require('../../assets/profilePictures/p.png') ,q: require('../../assets/profilePictures/q.png') ,r: require('../../assets/profilePictures/r.png') ,s: require('../../assets/profilePictures/s.png') ,t: require('../../assets/profilePictures/t.png') ,u: require('../../assets/profilePictures/u.png') ,v: require('../../assets/profilePictures/v.png') ,w: require('../../assets/profilePictures/w.png') ,x: require('../../assets/profilePictures/x.png') ,y: require('../../assets/profilePictures/y.png') ,z: require('../../assets/profilePictures/z.png') };
             let fires = [require('../../assets/fires/dead_fire.png'), require('../../assets/fires/tiny_fire.png'), require('../../assets/fires/small_fire.png'), require('../../assets/fires/medium_fire.png'), require('../../assets/fires/large_fire.png')]
             let bgFires = [require('../../assets/fires/vanishing.png'), require('../../assets/fires/fading.png'), require('../../assets/fires/calm.jpg'), require('../../assets/fires/toasty.png'), require('../../assets/fires/roaring.png')]
 
-        
+
 
             for (var key in list) {
                 friend = list[key]
@@ -134,7 +135,8 @@ class HomeScreen extends React.Component {
                 //     friend.photo = friendPhotos[key]
                 // }
                 /*else*/ if(!friend.photo || !friend.photo.uri) {
-                    friend.photo = defaultPhoto
+                    let photo = defaultPhotos[friend.firstName.charAt(0).toLowerCase()];
+                    friend.photo = photo;
                 }
 
                 //connect friends to their status
@@ -197,12 +199,12 @@ class HomeScreen extends React.Component {
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').width
             })
-            
+
         }.bind(this))
 
     }
 
-    
+
 
 
     componentDidMount() {
@@ -245,7 +247,7 @@ class HomeScreen extends React.Component {
             extraData={this.state}
             renderItem={({item}) => this._renderCategory(item, {navigate})}/>
 
-      
+
     </View>
 
   )};
@@ -258,12 +260,12 @@ _renderCategory(item, navigation) {
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top: numFriends ? -20 : 15, }}>
                 <Text style={{fontSize:24, color:'white', fontWeight:'200'}}>{item.message}</Text>
                 <Image source={item.fire} style={{height:40, width:40, marginLeft:5}}/>
-                {numFriends ? 
-                <TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => { 
+                {numFriends ?
+                <TouchableOpacity style={{position:'absolute', right: '3%'}} activeOpacity={0.25} onPress={() => {
                     Segment.track("Home - Clicked View All")
                     navigation.navigate('Detail', {currFriend: item.friends[0], sortedFriends: this.state.sortedFriends, rekindl: this.rekindl})}}>
                     <Text style={{color:"white"}}>View All</Text>
-                </TouchableOpacity> 
+                </TouchableOpacity>
                 : null }
             </View>
 
@@ -281,7 +283,7 @@ _renderCategory(item, navigation) {
 _renderList(item, navigation) {
     return(
         <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
-            <TouchableOpacity activeOpacity={0.25} onPress={() => { 
+            <TouchableOpacity activeOpacity={0.25} onPress={() => {
                 Segment.track("Home - Clicked On A Friend")
                 navigation.navigate('Detail', {currFriend: item, sortedFriends: this.state.sortedFriends, rekindl: this.rekindl});}}>
                 <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center', marginLeft:10, marginRight:10}}>
@@ -295,7 +297,7 @@ _renderList(item, navigation) {
 
 rekindl = (user) => {
     var currUser = firebase.auth().currentUser;
-    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now(), category: user.category, photo:user.photo})    
+    firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: 'large', number: user.number, lastConnected: Date.now(), category: user.category, photo:user.photo})
   };
 
 
@@ -304,7 +306,7 @@ rekindl = (user) => {
     var currUser = firebase.auth().currentUser;
 
     user.key = this.state.sortedFriends[1].friends.length + Date.now();
-    
+
     user.currFire = 'dead'
     var daysAgoToMakeTiny = 0
     user.lastConnected = 'never';
@@ -320,7 +322,7 @@ rekindl = (user) => {
     // AsyncStorage.setItem('friendPhotos', JSON.stringify(friendPhotos))
 
     firebase.database().ref('users').child(currUser.uid).child('friends').child(user.number).set({key: user.key, firstName: user.firstName, lastName: user.lastName, currFire: user.currFire, number: user.number, lastConnected: user.lastConnected, category: user.category, photo: user.photo})
-    
+
   };
 
 
