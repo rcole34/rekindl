@@ -43,7 +43,7 @@ class HomeScreen extends React.Component {
         firebase.database().ref('users').child(user.uid).child('notifications').on('value', (snapshot) => {
                 if (snapshot.val() && !this.state.handlerSet) {
                     this._notificationSubscription = Notifications.addListener(handleNotifications);
-                    console.log("Home Set handler");
+                    //console.log("Home Set handler");
                     this.state.handlerSet = true;
                     this.setState({
                         handlerSet: this.state.handlerSet
@@ -193,10 +193,10 @@ class HomeScreen extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log("Unmounting home");
-        console.log(this.state.handlerSet);
+        //console.log("Unmounting home");
+        //console.log(this.state.handlerSet);
         if (this.state.handlerSet) {
-            console.log("Removing handler");
+            //console.log("Removing handler");
             this._notificationSubscription.remove(handleNotifications);
             this.setState({
                 handlerSet: false

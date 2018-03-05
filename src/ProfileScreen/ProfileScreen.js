@@ -43,7 +43,7 @@ class ProfileScreen extends React.Component {
             this.state.user.notifications = snapshot.val().notifications;
             if (!this.state.handlerSet && this.state.user.notifications) {
               this._notificationSubscription = Notifications.addListener(handleNotifications);
-              console.log("Set handler");
+              //console.log("Set handler");
               this.state.handlerSet = true;
             } else if (!this.state.user.notifications && this.state.handlerSet) {
               this._notificationSubscription.remove(handleNotifications);
@@ -65,7 +65,7 @@ class ProfileScreen extends React.Component {
 
   //componentDidMount() {this.setupListener();}
   componentWillUnmount() {
-    console.log("Unmounting");
+    //console.log("Unmounting");
     if (this.state.handlerSet) this._notificationSubscription.remove(handleNotifications);
     firebase.database().ref('users').child(this.state.user.uid).off('value');
     this.setState({

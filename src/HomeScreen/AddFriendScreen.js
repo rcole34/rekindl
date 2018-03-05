@@ -112,6 +112,7 @@ resetData(text){
       <View style={styles.container}>
       <SearchBar
       noIcon = 'true'
+      autoCorrect = 'false'
       placeholder='Search and add from your contacts' 
       onChangeText={this.searchText.bind(this)}
       onClearText={this.resetData()}

@@ -66,6 +66,7 @@ export default class DetailScreen extends React.Component {
   	}
 
   	_getLastConnectedTime = function(timestamp) {
+  		if(!timestamp) return 'at unknown time'
   		if(timestamp === 'never') return 'never'
   		timeApart = Date.now() - timestamp
   		daysApart = Math.floor(timeApart * 1.0/86400000)
@@ -86,7 +87,7 @@ export default class DetailScreen extends React.Component {
       firebase.database().ref('users').child(user.uid).child('notifications').on('value', (snapshot) => {
         if (snapshot.val() && !this.state.handlerSet) {
         this._notificationSubscription = Notifications.addListener(handleNotifications);
-        console.log("Set handler");
+        //console.log("Set handler");
         this.state.handlerSet = true;
         this.setState({
           handlerSet: this.state.handlerSet

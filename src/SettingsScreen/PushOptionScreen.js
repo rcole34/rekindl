@@ -103,11 +103,11 @@ class PushOptionScreen extends React.Component {
 
   componentWillMount() {
     var currUser = firebase.auth().currentUser;
-    console.log("Mounting");
+    //console.log("Mounting");
     firebase.database().ref('users').child(currUser.uid).child('notifications').on('value', (snapshot) => {
       if (snapshot.val()) {
         if (!this.state.handlerSet) {
-          console.log("Setting handler");
+          //console.log("Setting handler");
           this._notificationSubscription = Notifications.addListener(handleNotifications);
           this.state.handlerSet = true;
         }
@@ -122,7 +122,7 @@ class PushOptionScreen extends React.Component {
         notifs: snapshot.val(),
         buttonText: this.setButtonText(snapshot.val())
       });
-      console.log(snapshot.val());
+      //console.log(snapshot.val());
       // this.setState({
       //   notifs: snapshot.val()
       // })
@@ -141,7 +141,7 @@ class PushOptionScreen extends React.Component {
   async changeNotifPrefs() {
     var currUser = firebase.auth().currentUser;
     if (!this.state.notifs) {
-      console.log("Turning on notifs");
+      //console.log("Turning on notifs");
       await registerForNotifications();
     }
     var val = !this.state.notifs;
@@ -156,7 +156,7 @@ class PushOptionScreen extends React.Component {
 
   async sendNotif() {
     var currUser = firebase.auth().currentUser;
-    console.log("Sending");
+    //console.log("Sending");
     await sendNotification(currUser.uid, "Title", "Body");
   }
 

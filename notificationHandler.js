@@ -4,7 +4,7 @@ import firebase from './firebase.js';
 
 registerForNotifications = async function() {
     var currUser = firebase.auth().currentUser;
-    console.log('Got current user');
+    //console.log('Got current user');
     firebase.database().ref('users').child(currUser.uid).child('pushToken').once('value', async (snapshot) => {
         if (snapshot == null) {
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
@@ -21,7 +21,7 @@ registerForNotifications = async function() {
             let pushToken = await Notifications.getExpoPushTokenAsync();
             firebase.database().ref('users').child(currUser.uid).child('pushToken').set(pushToken);
         } else {
-            console.log("Already stored push token");
+            //console.log("Already stored push token");
         }
     }).catch(function(error) {
         console.log(error.message);
