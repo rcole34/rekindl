@@ -10,7 +10,7 @@ class ManageConnections extends React.Component {
     constructor(props) {
         super(props);
         Segment.identify(Expo.Constants.deviceId)
-        Segment.screen("Settings Screen")
+        //Segment.screen("Settings Screen")
         //this.state = {friends:[{photo:require('../../assets/profilePictures/default-profile.png'), firstName: 'Ryan', lastName: 'Cole'},{photo:require('../../assets/profilePictures/default-profile.png'), firstName: 'Johnny', lastName: 'Rocket'}]}
 
         
@@ -28,6 +28,8 @@ class ManageConnections extends React.Component {
     async componentWillMount() {
         var user = firebase.auth().currentUser;
         this.setState({uid: user.uid})
+        let defaultPhotos = {a: require('../../assets/profilePictures/a.png') ,b: require('../../assets/profilePictures/b.png') ,c: require('../../assets/profilePictures/c.png') ,d: require('../../assets/profilePictures/d.png') ,e: require('../../assets/profilePictures/e.png') ,f: require('../../assets/profilePictures/f.png') ,g: require('../../assets/profilePictures/g.png') ,h: require('../../assets/profilePictures/h.png') ,i: require('../../assets/profilePictures/i.png') ,j: require('../../assets/profilePictures/j.png') ,k: require('../../assets/profilePictures/k.png') ,l: require('../../assets/profilePictures/l.png') ,m: require('../../assets/profilePictures/m.png') ,n: require('../../assets/profilePictures/n.png') ,o: require('../../assets/profilePictures/o.png') ,p: require('../../assets/profilePictures/p.png') ,q: require('../../assets/profilePictures/q.png') ,r: require('../../assets/profilePictures/r.png') ,s: require('../../assets/profilePictures/s.png') ,t: require('../../assets/profilePictures/t.png') ,u: require('../../assets/profilePictures/u.png') ,v: require('../../assets/profilePictures/v.png') ,w: require('../../assets/profilePictures/w.png') ,x: require('../../assets/profilePictures/x.png') ,y: require('../../assets/profilePictures/y.png') ,z: require('../../assets/profilePictures/z.png') };
+
         //get friends of user
         await firebase.database().ref('users').child(user.uid).child('friends').on('value', async function(snapshot) {
             list = snapshot.val()
@@ -35,6 +37,10 @@ class ManageConnections extends React.Component {
             friends = []
             for (key in list) {
                 //console.log('adding friend to list', key, list[key])
+                if(!list[key].photo || !list[key].photo.uri) {
+                    let photo = defaultPhotos[list[key].firstName.charAt(0).toLowerCase()];
+                    list[key].photo = photo;
+                }
                 friends.push(list[key])
             };
             
