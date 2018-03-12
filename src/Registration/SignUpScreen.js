@@ -23,22 +23,16 @@ import {
   Alert,
   TouchableHighlight,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  Animated
 } from 'react-native';
 
 import { ImagePicker } from 'expo';
-import Frisbee from 'frisbee';
-import Spinner from 'react-native-loading-spinner-overlay';
+
 import Form from 'react-native-form';
 import CountryPicker from 'react-native-country-picker-modal';
 
-const api = new Frisbee({
-  baseURI: 'http://localhost:3000',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
-});
+
 
 const MAX_LENGTH_CODE = 6;
 const MAX_LENGTH_NUMBER = 20;
@@ -74,7 +68,9 @@ const styles = StyleSheet.create({
     margin: 0,
     flex: 1,
     fontSize: 20,
-    color: '#f1f1f1'
+    color: '#f1f1f1',
+    borderBottomWidth:1,
+    borderBottomColor:'#eee'
   },
   button: {
     marginTop: 50,
@@ -201,9 +197,9 @@ export default class example extends Component {
 
             //AsyncStorage.setItem('userPhotos', JSON.stringify(userPhotos))
             if(this.state.chosePhoto) {
-              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', statusPosted:Date.now(), notifications:false, phone: values.phone, photo:this.state.photo})
+              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'Just made my account! Hit me up and let\'s rekindl!', statusPosted:Date.now(), notifications:false, phone: values.phone, photo:this.state.photo})
             } else {
-              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'New to rekindl!', statusPosted:Date.now(), notifications:false, phone: values.phone})
+              firebase.database().ref('users').child(user.uid).set({firstName:values.firstName, lastName:values.lastName, status:'Just made my account! Hit me up and let\'s rekindl!', statusPosted:Date.now(), notifications:false, phone: values.phone})
             }
             //this.props.navigation.navigate('Home', {})
         }
@@ -270,7 +266,7 @@ export default class example extends Component {
               onFocus={(event: Event) => {
                 this._scrollToTextInput(ReactNative.findNodeHandle(event.target))
               }}/>
-
+            <View style={{width:'10%'}}/>
             <TextInput
               ref={ input => {
                 this.state.inputs['lastName'] = input;
@@ -415,11 +411,7 @@ export default class example extends Component {
 
         </Form>
 
-        <Spinner
-          visible={this.state.spinner}
-          textContent={'One moment...'}
-          textStyle={{ color: '#fff' }} />
-
+        
       </KeyboardAwareScrollView>
 
     );

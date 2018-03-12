@@ -45,7 +45,7 @@ const RootNavigator = StackNavigator({
       headerTitle: '',
       headerLeft: '',
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#f1f1f1',
       headerBackTitle: ' '
@@ -63,7 +63,7 @@ const RootNavigator = StackNavigator({
       </TouchableWithoutFeedback>,
       
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#f1f1f1',
       headerBackTitle: ' ',
@@ -75,7 +75,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -86,7 +86,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -97,7 +97,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -108,7 +108,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerLeft: null,
       headerTintColor: '#fff',
@@ -121,7 +121,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       headerTitle: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -132,7 +132,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -143,7 +143,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -154,7 +154,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -165,7 +165,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -176,7 +176,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -187,7 +187,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '
@@ -198,7 +198,7 @@ const RootNavigator = StackNavigator({
     navigationOptions: ({navigation}) => ({
       title: <LogoTitle/>,
       headerStyle: {
-        backgroundColor: '#222',
+        backgroundColor: '#111',
       },
       headerTintColor: '#fff',
       headerBackTitle: ' '

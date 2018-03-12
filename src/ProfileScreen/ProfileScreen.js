@@ -172,8 +172,8 @@ setStatus(text) {
           </View>
         </TouchableOpacity>
         <View style={{marginTop: 25, alignItems: 'center'}}>
-        <Text style = {{fontSize:20, color:'white'}}>{this.state.user.status}</Text>
-        <TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
+        <Text style = {{fontSize:20, color:'white'}}>"{this.state.user.status}"</Text>
+        <TouchableOpacity 
         onPress={() => {
           Segment.track("Clicked Edit Status")
           this.setState({
@@ -181,7 +181,7 @@ setStatus(text) {
           });
           AlertIOS.prompt(
             'Change Status',
-            null,
+            'Enter a new status message so your connections know what to talk to you about!',
             [
               {
                 text: 'Cancel',
@@ -197,7 +197,7 @@ setStatus(text) {
           <Text style={{backgroundColor:'transparent', color: 'white'}}>Update status</Text>
         </View>
         {/* <Image source={require('../../assets/icons/edit.png')} style={{height:20, width:20, tintColor:'white', marginLeft:10}}/> */}
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/*
         <Modal
           visible={this.state.editActive}

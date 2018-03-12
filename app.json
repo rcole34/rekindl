@@ -7,7 +7,7 @@
       "buildNumber": "1.0",
       "splash": {
         "image": "./assets/icons/splash.png",
-        "backgroundColor": "#222222"
+        "backgroundColor": "#111111"
       }
     },
     "slug": "rekindl194hv3",
@@ -17,7 +17,7 @@
     "icon": "./assets/icons/logo-black-bg.png",
     "splash": {
       "image": "./assets/icons/splash.png",
-      "backgroundColor": "#222222"
+      "backgroundColor": "#111111"
     },
 
   }

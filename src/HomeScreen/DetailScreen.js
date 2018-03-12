@@ -130,12 +130,12 @@ export default class DetailScreen extends React.Component {
 			       	</View>
 			        {this.state.currGroup.friends[i].status?
 			        	<View style={{alignItems:'center'}}>
-			        		<Text style={{backgroundColor:'transparent',color:'white', fontSize:18, marginTop:'5%'}}>{this.state.currGroup.friends[i].status}</Text>
+			        		<Text style={{backgroundColor:'transparent',color:'white', fontSize:18, marginTop:'5%'}}>"{this.state.currGroup.friends[i].status}"</Text>
 			        		<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginLeft:'50%', marginTop:'4%'}}>Posted {this._getLastConnectedTime(this.state.currGroup.friends[i].statusPosted)}</Text>
 			        	</View>
-			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'8%'}}>No recent status</Text>
+			        	:<Text style={{backgroundColor:'transparent',color:'white', fontStyle:'italic', marginTop:'7%'}}>No recent status</Text>
 			        }
-			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'15%'}}>
+			        <View style={{alignItems:'center', flexDirection:'row', position:'absolute', bottom:'18%'}}>
 			        	<TouchableOpacity activeOpacity={0.25} style={{right:'50%'}} onPress={() => {
                  Segment.track("Message Friend");
 
@@ -148,11 +148,11 @@ export default class DetailScreen extends React.Component {
 			        		<Image source={require('../../assets/icons/phone-outline.png')} style={{height:50, width:50, tintColor:'#fff'}}/>
 			        	</TouchableOpacity>
 			        </View>
-			        <TouchableOpacity style={{position:'absolute', bottom:'9%'}} activeOpacity={0.25} onPress={() => {
+			        <TouchableOpacity style={{position:'absolute', bottom:'9.5%'}} activeOpacity={0.25} onPress={() => {
                 Segment.track("Rekindle");
                 this._rekindlPressed(this.state.currGroup.friends[i])}}>
 								<View style={{borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
-								<Text style={{backgroundColor:'transparent', color: 'white'}}>Rekindle</Text>
+								<Text style={{backgroundColor:'transparent', color: 'white', fontSize:20}}>Rekindle Friendship</Text>
 								</View>
 			        </TouchableOpacity>
 			        <Text style={{backgroundColor:'transparent',position:'absolute', bottom:'5%', color:'white', fontStyle:'italic'}}>Last connected {this._getLastConnectedTime(this.state.currGroup.friends[i].lastConnected)}</Text>

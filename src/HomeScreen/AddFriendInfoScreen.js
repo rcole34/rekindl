@@ -118,7 +118,7 @@ class AddFriendInfoScreen extends React.Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <View style={{ flex: 1, padding: 40, backgroundColor: '#333' }}>
+      <View style={{ flex: 1, padding: 30, backgroundColor: '#333' }}>
       <TouchableHighlight underlayColor='rgba(200,200,200,0.8)' style= {{height:150, width:150, borderRadius:150/2, marginBottom:20}} onPress = {() => {
         Segment.track("Clicked to Select Photo for a Friend")
         this._pickImage()}}>
@@ -140,7 +140,7 @@ class AddFriendInfoScreen extends React.Component {
                     }}
                     returnKeyType='done'/> 
         
-        <Text>{`\n`}</Text>
+        <Text style={{fontSize:8}}>{`\n`}</Text>
         <FloatingLabelInput
           label="Last Name"
           value={navigation.state.params.newFriend.lastName}
@@ -150,9 +150,9 @@ class AddFriendInfoScreen extends React.Component {
                     }}
                     returnKeyType='done'/> 
         
-        <Text>{`\n`}</Text>
+        <Text style={{fontSize:8}}>{`\n`}</Text>
        <FloatingLabelInput
-            style="marginTop: 100"
+          
           label="Phone Number"
           value={navigation.state.params.newFriend.phone}
                     keyboardType='phone-pad'
@@ -160,10 +160,13 @@ class AddFriendInfoScreen extends React.Component {
                         const newFriend = Object.assign({}, navigation.state.params.newFriend, { phone: text }); 
                         navigation.setParams({ newFriend });
                     }}
-                    returnKeyType='done'
-        /> 
-        <Text style={{marginTop: 40, color:'white', fontSize:18}}>How often do you want to reach out to this friend? </Text>
-                <Picker
+                    returnKeyType='done'/>
+
+        <Text style={{fontSize:8}}>{`\n`}</Text>
+        <View style={{backgroundColor:'#444', borderRadius:10, width:'100%'}}>
+        <Text style={{marginTop: 20, color:'white', fontSize:18, paddingLeft:10, paddingRight:10}}>How often do you want to reach out to this friend? </Text>
+            <Picker
+                
                 selectedValue={navigation.state.params.newFriend.category}
                 onValueChange={(itemValue, itemIndex) => {
                         const newFriend = Object.assign({}, navigation.state.params.newFriend, { category: itemValue }); 
@@ -173,7 +176,7 @@ class AddFriendInfoScreen extends React.Component {
                <Picker.Item color='white' label = 'Once every two weeks' value = 'biweekFriend'  />
                <Picker.Item color='white' label = 'Once a month' value = 'monthFriend' />
                <Picker.Item color='white' label = 'Once every two months' value = 'bimonthFriend' />
-            </Picker>
+            </Picker></View>
             {/*<TouchableHighlight underlayColor='rgba(200,200,200,0.8)'
                 style={{position:'absolute', right:20, bottom:20, height:64, width:64, borderRadius:64/2}}
                 onPress={() => {
