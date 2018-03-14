@@ -174,8 +174,12 @@ class PushOptionScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>{explainText}</Text>
+        {
+          /*
         <TouchableOpacity style={styles.button}
         onPress={() => {this.sendNotif();}}><Text>Test Notifs</Text></TouchableOpacity>
+        */
+      }
         <TouchableOpacity
         style={styles.button}
         onPress={() => {this.changeNotifPrefs()}}><Text>{this.state.buttonText}</Text></TouchableOpacity>

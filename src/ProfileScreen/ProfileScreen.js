@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage, Modal, Button, AlertIOS } from 'react-native';
+import { View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, AsyncStorage, Button, AlertIOS } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as firebase from 'firebase';
-import {Segment, Notifications } from 'expo'
+import {Segment, Notifications } from 'expo';
 import {handleNotifications} from '../../notificationHandler.js';
+import Modal from 'react-native-modalbox';
 
 
 class ProfileScreen extends React.Component {
@@ -109,6 +110,12 @@ class ProfileScreen extends React.Component {
     this.setState({user: user});
   };
 
+  /*
+  resetScrollToCoords={{ x: 0, y: 0 }}
+      contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+      scrollEnabled={false}
+      */
+
 // setStatusStyle() {
 //   distStr = this.state.editActive ? 'none' : 'flex';
 //   return {
@@ -144,15 +151,14 @@ setStatus(text) {
   this.resetModal();
 }
 
+
+
 /*render method for new prototype*/
   render() {
     const navigation = this.props.navigation;
     return (
-      <KeyboardAwareScrollView
-      style={{ flex: 1, flexDirection:'column', backgroundColor: '#333' }}
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
-      scrollEnabled={false}>
+      <View
+      style={{ flex: 1, flexDirection:'column', backgroundColor: '#333', alignItems: 'center', justifyContent: 'flex-start' }}>
         <Image source = {this.state.user.photo} style = {{marginTop:'5%', height:150, width:150, borderRadius:150/2}}/>
 
         <View style={{paddingTop: 15, flexDirection:'row', alignItems: 'center'}}>
@@ -173,6 +179,8 @@ setStatus(text) {
         </TouchableOpacity>
         <View style={{marginTop: 25, alignItems: 'center'}}>
         <Text style = {{fontSize:20, color:'white'}}>"{this.state.user.status}"</Text>
+        {
+          /*
         <TouchableOpacity 
         onPress={() => {
           Segment.track("Clicked Edit Status")
@@ -196,7 +204,17 @@ setStatus(text) {
         <View style={{marginTop: 20, borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
           <Text style={{backgroundColor:'transparent', color: 'white'}}>Update status</Text>
         </View>
-        {/* <Image source={require('../../assets/icons/edit.png')} style={{height:20, width:20, tintColor:'white', marginLeft:10}}/> */}
+
+        {/* <Image source={require('../../assets/icons/edit.png')} style={{height:20, width:20, tintColor:'white', marginLeft:10}}/> 
+        </TouchableOpacity> */
+      }
+        <TouchableOpacity 
+        onPress={() => {
+          this.refs.modal1.open();
+        }}>
+        <View style={{marginTop: 20, borderWidth: 1, borderColor: 'white', borderRadius: 8, padding: 5}}>
+          <Text style={{backgroundColor:'transparent', color: 'white'}}>Update Status</Text>
+        </View>
         </TouchableOpacity>
         {/*
         <Modal
@@ -236,7 +254,44 @@ setStatus(text) {
             */
           }
         </View>
-      </KeyboardAwareScrollView>
+        <Modal
+          style={{width:300, height:300}}
+          position={'center'}
+          ref={'modal1'}>
+          <Text
+            style={{margin:10, fontSize:20}}>Update Status</Text>
+          <TextInput
+            backgroundColor='#eee'
+            style={{margin:15, padding: 15, borderWidth:1, height: 100, fontSize: 16}}
+            multiline={true}
+            autoGrow={false}
+            maxHeight={100}
+            placeholder="Enter a status"
+            onChangeText={(text) => {this.setState({statusChange: text});}}/>
+            {
+            <View
+            style={{flex: 0, flexDirection: 'row', justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() => {
+                if (this.state.statusChange.length > 0) {
+                  this.setStatus(this.state.statusChange);
+                  this.refs.modal1.close();
+                }
+              }}>
+              <View style={{margin: 20, borderWidth: 1, borderColor: 'black', borderRadius: 8, padding: 5}}>
+                <Text style={{backgroundColor:'transparent', color: 'black'}}>Update</Text>
+              </View></TouchableOpacity>
+              <TouchableOpacity
+              onPress={() => {
+                this.resetModal();
+                this.refs.modal1.close();
+              }}><View style={{margin: 20, borderWidth: 1, borderColor: 'black', borderRadius: 8, padding: 5}}>
+                <Text style={{backgroundColor:'transparent', color: 'black'}}>Cancel</Text>
+              </View></TouchableOpacity>
+            </View>
+          }
+        </Modal>
+      </View>
     );
   }
 

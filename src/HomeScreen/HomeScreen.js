@@ -6,8 +6,7 @@ import {AsyncStorage} from 'react-native'
 import {AppLoading} from 'expo'
 import firebase from '../../firebase.js'
 import {Segment, Notifications } from 'expo'
-import {handleNotifications} from '../../notificationHandler.js';
-
+import {handleNotifications} from '../../notificationHandler.js'
 
 
 
@@ -213,18 +212,6 @@ class HomeScreen extends React.Component {
         this.props.navigation.setParams({ value: '', newFriend: {firstName:'', lastName:'', category: 'weekFriend', photo:require('../../assets/profilePictures/default-profile.png'), phone:''}} );
     }
 
-    componentWillUnmount() {
-        //console.log("Unmounting home");
-        //console.log(this.state.handlerSet);
-        if (this.state.handlerSet) {
-            //console.log("Removing handler");
-            this._notificationSubscription.remove(handleNotifications);
-            this.setState({
-                handlerSet: false
-            })
-        }
-    }
-
 
 
 
@@ -246,8 +233,6 @@ class HomeScreen extends React.Component {
             data={this.state.sortedFriends}
             extraData={this.state}
             renderItem={({item}) => this._renderCategory(item, {navigate})}/>
-
-
     </View>
 
   )};
